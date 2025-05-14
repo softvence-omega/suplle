@@ -1,4 +1,5 @@
 
+
 import FoodCard from "@/components/MangeMenu/FoodCard";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { motion } from "framer-motion";
@@ -132,7 +133,7 @@ const SectionTitle = ({ title }: { title: string }) => {
   );
 }
 
-const MenuManagement = () => {
+const MenuViewForOwner = () => {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -171,4 +172,4 @@ const MenuManagement = () => {
   </>;
 };
 
-export default MenuManagement;
+export default MenuViewForOwner;
