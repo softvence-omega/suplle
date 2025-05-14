@@ -1,26 +1,36 @@
 import { Route, Routes } from "react-router-dom";
 // import PrivateRoute from "./privateRoute";
 import DashboardLayout from "@/layout/DashboardLayout";
-import Login from "@/pages/Login";
-import Signup from "@/pages/Signup";
+import Login from "@/pages/auth/Login";
+import Signup from "@/pages/auth/Signup";
 import AdminDashboardLayout from "@/layout/AdminDashboardLayout";
 import DashboardHome from "@/pages/Dashboard/DashboardHome";
-import Orders from "@/pages/Dashboard/Orders";
-import MenuManagement from "@/pages/Dashboard/MenuManagement";
 import RestaurantLayout from "@/pages/Dashboard/RestaurantLayout";
-import UserManagement from "@/pages/Dashboard/UserManagement";
-import StaffManagement from "@/pages/Dashboard/StaffManagement";
 import AnalyticsAndReport from "@/pages/Dashboard/AnalyticsAndReport";
-import Setting from "@/pages/Dashboard/Setting";
 import AdminDashboardHome from "@/pages/AdminDashboard/AdminDashboardHome";
-import AdminRestaurant from "@/pages/AdminDashboard/AdminRestaurant";
-import AdminQrOrders from "@/pages/AdminDashboard/AdminQrOrders";
-import AdminQrDesigns from "@/pages/AdminDashboard/AdminQrDesigns";
-import AdminUserManagement from "@/pages/AdminDashboard/AdminUserManagement";
+import AdminQrOrders from "@/pages/AdminDashboard/QR/AdminQrOrders";
 import AdminAnalytics from "@/pages/AdminDashboard/AdminAnalytics";
 import AdminSubscription from "@/pages/AdminDashboard/AdminSubscription";
 import Home from "@/pages/Home";
 import DynamiRestaurant from "@/pages/DynamiRestaurant";
+import MenuViewForOwner from "@/pages/Dashboard/menu/MenuViewForOwner";
+import MenuAddForOwner from "@/pages/Dashboard/menu/MenuAddForOwner";
+import MenuEditForOwner from "@/pages/Dashboard/menu/MenuEditForOwner";
+import UserViewForOwner from "@/pages/Dashboard/user/UserViewForOwner";
+import UserCreateForOwner from "@/pages/Dashboard/user/UserCreateForOwner";
+import StaffViewForOwner from "@/pages/Dashboard/staff/StaffViewForOwner";
+import StaffDetailsForOwner from "@/pages/Dashboard/staff/StaffDetailsForOwner";
+import StaffAddForOwner from "@/pages/Dashboard/staff/StaffAddForOwner";
+import SettingForOwner from "@/pages/Dashboard/SettingForOwner";
+import SubscriptionsForOwner from "@/pages/Dashboard/SubscriptionsForOwner";
+import DineInOrderShowForOwner from "@/pages/Dashboard/order/DineInOrderShowForOwner";
+import TakeAwayOrderShowForOwner from "@/pages/Dashboard/order/TakeAwayOrderShowForOwner";
+import AdminRestaurantView from "@/pages/AdminDashboard/restaurant/AdminRestaurantView";
+import AdminRestaurantCreate from "@/pages/AdminDashboard/restaurant/AdminRestaurantCreate";
+import AdminMenuManagement from "@/pages/AdminDashboard/menu/AdminMenuManagement";
+import AdminQrDesignsView from "@/pages/AdminDashboard/QR/AdminQrDesignsView";
+import AdminQrDesignCreate from "@/pages/AdminDashboard/QR/AdminQrDesignCreate";
+import AdminUserView from "@/pages/AdminDashboard/user/AdminUserView";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +39,7 @@ const AppRoutes = () => {
       <Route path="/restaurant/:id" element={<DynamiRestaurant />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      {/* dahboard routes for owner ************************************************************* */}
       <Route
         path="dashboard"
         element={
@@ -38,14 +49,30 @@ const AppRoutes = () => {
         }
       >
         <Route path="" element={<DashboardHome />} />
-        <Route path="orders" element={<Orders />} />
-        <Route path="menu" element={<MenuManagement />} />
+        <Route path="info" element={<DashboardHome />} />
+
+        {/* order routes */}
+        <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />
+        <Route path="order/take-away" element={<TakeAwayOrderShowForOwner />} />
+        {/* menu routes */}
+        <Route path="menu/view" element={<MenuViewForOwner />} />
+        <Route path="menu/add" element={<MenuAddForOwner />} />
+        <Route path="menu/edit" element={<MenuEditForOwner />} />
+        {/* layout routes */}
         <Route path="restaurant-layout" element={<RestaurantLayout />} />
-        <Route path="user-management" element={<UserManagement />} />
-        <Route path="staff-management" element={<StaffManagement />} />
+        {/* user routes */}
+        <Route path="user/view" element={<UserViewForOwner />} />
+        <Route path="user/create" element={<UserCreateForOwner />} />
+        {/* staff routes */}
+        <Route path="staff/view" element={<StaffViewForOwner />} />
+        <Route path="staff/crate" element={<StaffAddForOwner />} />
+        <Route path="staff/details/:id" element={<StaffDetailsForOwner />} />
+        {/* other parent routes */}
         <Route path="analytics" element={<AnalyticsAndReport />} />
-        <Route path="setting" element={<Setting />} />
+        <Route path="subscriptions" element={<SubscriptionsForOwner />} />
+        <Route path="settings" element={<SettingForOwner />} />
       </Route>
+      {/* dahboard routes for admin ************************************************************* */}
       <Route
         path="/admin"
         element={
@@ -55,12 +82,22 @@ const AppRoutes = () => {
         }
       >
         <Route path="" element={<AdminDashboardHome />} />
-        <Route path="restaurant" element={<AdminRestaurant />} />
+        <Route path="dashboard" element={<AdminDashboardHome />} />
+        {/* restaurant routes */}
+        <Route path="restaurant/view" element={<AdminRestaurantView />} />
+        <Route path="restaurant/create" element={<AdminRestaurantCreate />} />
+        {/* menu routes */}
+        <Route path="menu/management" element={<AdminMenuManagement />} />
+        {/* qr orders routes */}
         <Route path="qr-orders" element={<AdminQrOrders />} />
-        <Route path="qr-designs" element={<AdminQrDesigns />} />
-        <Route path="user" element={<AdminUserManagement />} />
+        {/* qr design routes */}
+        <Route path="qr-designs/view" element={<AdminQrDesignsView />} />
+        <Route path="qr-designs/create" element={<AdminQrDesignCreate />} />
+        {/* user routes */}
+        <Route path="user/view" element={<AdminUserView />} />
+        {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
-        <Route path="subscription" element={<AdminSubscription />} />
+        <Route path="subscriptions" element={<AdminSubscription />} />
       </Route>
     </Routes>
   );
