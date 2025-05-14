@@ -1,4 +1,5 @@
 import MenuCard from "@/components/shared/MenuCard";
+import OrderCard from "@/components/shared/OrderCard";
 import PopularMenuItems from "@/components/shared/PopularMenuItems";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 
@@ -44,6 +45,22 @@ const DashboardHome = () => {
         rating={5}
         reviewCount={150}
         likes="12k"
+      />
+    </div>
+    <div className="p-5">	
+      <OrderCard
+        orderId="#001"
+        table="Table 45"
+        type="Dine-in"
+        people={6}
+        status="Pending"
+        time="2:56 AM"
+        total="133.50"
+        items={[
+          { name: "Margherita Pizza", quantity: 1 },
+          { name: "Caesar Salad", quantity: 2 },
+          { name: "BBQ Chicken", quantity: 3 },
+        ]}
       />
     </div>
   </div>;
