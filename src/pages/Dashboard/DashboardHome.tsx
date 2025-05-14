@@ -1,4 +1,5 @@
 import MenuCard from "@/components/shared/MenuCard";
+import PopularMenuItems from "@/components/shared/PopularMenuItems";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 
 const DashboardHome = () => {
@@ -35,6 +36,15 @@ const DashboardHome = () => {
       description="Delicious cheese pizza with fresh ingredients."
       imageUrl="https://example.com/pizza.jpg"  // Replace with your image URL
     />
+    </div>
+    <div className="p-5">
+      <PopularMenuItems
+        imageUrl="https://i.imgur.com/xZQZfNJ.jpg"
+        title="Biriyani polau"
+        rating={5}
+        reviewCount={150}
+        likes="12k"
+      />
     </div>
   </div>;
 };
