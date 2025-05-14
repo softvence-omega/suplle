@@ -27,7 +27,7 @@ const Sidebar = () => {
 
   const menuItems = [
     {
-      to: "/dashboard",
+      to: "/dashbo ard",
       icon: <IoHome className="w-5 h-5" />,
       text: "Dashboard",
     },

@@ -45,7 +45,7 @@ const DashboardLayout = () => {
             </div>
           </div>
         </header>
-        <main>
+        <main className="bg-[#F5F6F6] dark:bg-[#030303] min-h-screen p-4">
           <Outlet />
         </main>
       </div>
