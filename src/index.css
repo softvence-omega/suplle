@@ -19,6 +19,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-primary-dark: #161616;
   --color-primary: #11a8a5;
   --color-green-50: #e7f6f6;
   --color-green-100: #b5e4e3;

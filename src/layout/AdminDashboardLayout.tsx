@@ -5,7 +5,7 @@ import personImg from "@/assets/person.jpg";
 import NotificationIcon from "@/components/icons/NotificationIcon";
 import MessageIcon from "@/components/icons/MessageIcon";
 import { useState } from "react";
-import OwnerSiderBar from "@/features/Sidebar/DashboardSideBar";
+import AdminDashboardSideBar from "@/features/Sidebar/AdminDasboardSideBar";
 
 const AdminDashboardLayout = () => {
   const { theme, toggleTheme } = useThemeStore();
@@ -85,7 +85,7 @@ const AdminDashboardLayout = () => {
         </header>
 
         {/* Sidebar */}
-        <OwnerSiderBar
+        <AdminDashboardSideBar
           sidebarOpen={sidebarOpen}
           toggleDarkMode={toggleTheme}
           darkMode={theme === "dark"}
