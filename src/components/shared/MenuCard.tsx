@@ -19,12 +19,12 @@ const MenuCard: React.FC<MenuCardProps> = ({
   imageUrl,
 }) => {
   return (
-    <div className="w-[260px] h-[228px] bg-white rounded-xl shadow p-4 flex flex-col justify-between">
+    <div className="w-[260px] h-[228px] bg-white dark:bg-[#161616] rounded-xl shadow p-4 flex flex-col justify-between">
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="text-base font-medium text-[#333333]">{title}</h3>
-          <p className="text-sm font-normal text-[#333333]">{size}</p>
-          <p className="text-base font-medium text-[#333333]">{availability}</p>
+          <h3 className="text-base font-medium text-[#333333] dark:text-[#FFFFFF]">{title}</h3>
+          <p className="text-sm font-normal text-[#333333] dark:text-[#FFFFFF]">{size}</p>
+          <p className="text-base font-medium text-[#333333] dark:text-[#FFFFFF]">{availability}</p>
           <p className="text-2xl font-medium text-[#EEBD4F] mt-3">{price}</p>
         </div>
         <div className="relative w-[80px] h-[80px] rounded-xl overflow-hidden">
@@ -38,7 +38,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
           </div>
         </div>
       </div>
-      <p className="text-base font-normal text-[#333333] mt-4">{description}</p>
+      <p className="text-base font-normal text-[#333333] mt-4 dark:text-[#FFFFFF]">{description}</p>
     </div>
   );
 };

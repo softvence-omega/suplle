@@ -25,7 +25,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`py-2 px-5 w-1/2 h-12 flex items-center justify-center gap-2.5 rounded-xl bg-[#E7F6F6] text-[#0C7775] hover:bg-[#0f9996] hover:text-white text-xl font-medium  ${className}`}
+      className={`py-2 px-5 w-1/2 h-12 flex items-center justify-center gap-2.5 rounded-xl bg-[#E7F6F6] text-[#0C7775] hover:bg-[#0f9996] hover:text-white text-xl font-medium dark:bg-[#FFFFFF] dark:text-[#030303] dark:hover:bg-gray-500 ${className}`}
       {...rest}
     >
       {children}
