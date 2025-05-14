@@ -12,7 +12,7 @@ import AdminQrOrders from "@/pages/AdminDashboard/QR/AdminQrOrders";
 import AdminAnalytics from "@/pages/AdminDashboard/AdminAnalytics";
 import AdminSubscription from "@/pages/AdminDashboard/AdminSubscription";
 import Home from "@/pages/Home";
-import DynamiRestaurant from "@/pages/DynamiRestaurant";
+import DynamicRestaurant from "@/pages/DynamciRestaurant";
 import MenuViewForOwner from "@/pages/Dashboard/menu/MenuViewForOwner";
 import MenuAddForOwner from "@/pages/Dashboard/menu/MenuAddForOwner";
 import MenuEditForOwner from "@/pages/Dashboard/menu/MenuEditForOwner";
@@ -36,7 +36,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/restaurant/:id" element={<DynamiRestaurant />} />
+      <Route path="/restaurant/:id" element={<DynamicRestaurant />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       {/* dahboard routes for owner ************************************************************* */}
