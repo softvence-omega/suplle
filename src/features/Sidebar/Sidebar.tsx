@@ -26,7 +26,11 @@ const Sidebar = () => {
   };
 
   const menuItems = [
-    { to: "/dashboard", icon: <IoHome className="w-5 h-5" />, text: "Home" },
+    {
+      to: "/dashboard",
+      icon: <IoHome className="w-5 h-5" />,
+      text: "Dashboard",
+    },
     {
       to: "/analytics",
       icon: <IoBarChartSharp className="w-5 h-5" />,
