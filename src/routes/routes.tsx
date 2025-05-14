@@ -20,13 +20,13 @@ import AdminUserManagement from "@/pages/AdminDashboard/AdminUserManagement";
 import AdminAnalytics from "@/pages/AdminDashboard/AdminAnalytics";
 import AdminSubscription from "@/pages/AdminDashboard/AdminSubscription";
 import Home from "@/pages/Home";
-import DynamiRestaurant from "@/pages/DynamiRestaurant";
+import DynamicRestaurant from "@/pages/DynamciRestaurant";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/restaurant/:id" element={<DynamiRestaurant />} />
+      <Route path="/restaurant/:id" element={<DynamicRestaurant />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route
