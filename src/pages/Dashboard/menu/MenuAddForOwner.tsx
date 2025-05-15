@@ -6,6 +6,7 @@ import SectionHeader from "@/components/ui/sectionHeader";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectItem } from "@/components/ui/select";
+import SuppleFileUpload from "@/components/Forms/SuppleFileUpload";
 
 // Category Form Schema
 const categorySchema = z.object({
@@ -182,7 +183,7 @@ const MenuAddForOwner = () => {
           </div>
 
         {/* File Upload Section */}
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <div className="border-2 border-dashed border-gray-200 p-4 rounded-md">
             <div className="text-center">
               <p className="text-sm text-gray-500">Upload Menu File* (.XLSX or .CSV)</p>
@@ -195,7 +196,8 @@ const MenuAddForOwner = () => {
           </div>
 
 
-        </div>
+        </div> */}
+        <SuppleFileUpload label="Upload Menu File (.XLSX or .CSV)"/>
 
         <div className="flex justify-end">
           <Button type="submit" className="bg-[#11A8A5] text-white hover:bg-[#0D8C89]">

@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { MenuSectionItem } from "@/pages/Dashboard/menu/MenuViewForOwner";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const FoodCard = ({ title, size, price, description, imageSrc }: MenuSectionItem) => {
     return (
@@ -50,15 +51,15 @@ const FoodCard = ({ title, size, price, description, imageSrc }: MenuSectionItem
                                 alt={title}
                                 className="w-full h-full object-cover"
                             />
-                            <div style={{ borderRadius: "45px 0px 0px 0px" }} className="bg-white/90 dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0">
+                            <Link to={'/dashboard/menu/edit'} style={{ borderRadius: "45px 0px 0px 0px" }} className="bg-white/90 dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0">
                                 <motion.button
-                                    className="flex items-center justify-center bg-[#03081F] absolute bottom-0 right-0  text-white rounded-full w-6 h-6"
+                                    className="flex items-center justify-center bg-[#03081F] absolute bottom-[5px] right-[5px]  text-white rounded-full w-6 h-6"
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
                                 >
                                     <Plus size={12} />
                                 </motion.button>
-                            </div>
+                            </Link>
                         </motion.div>
                     </div>
                     <motion.div
