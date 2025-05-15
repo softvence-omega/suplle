@@ -1,4 +1,6 @@
+import IconAnimation from "./IconAnimation";
 import Navbar from "./Navbar";
+import { motion } from "framer-motion";
 
 const Banner = () => {
   return (
@@ -18,6 +20,9 @@ const Banner = () => {
           tracking.
         </p>
       </div>
+      <motion.div className="absolute bottom-44">
+        <IconAnimation />
+      </motion.div>
     </div>
   );
 };
