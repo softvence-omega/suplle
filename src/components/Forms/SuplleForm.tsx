@@ -1,4 +1,4 @@
-import type { DefaultValues, FieldValues, Resolver, SubmitHandler, UseFormProps } from "react-hook-form";
+import type { DefaultValues, FieldValues, SubmitHandler, UseFormProps } from "react-hook-form";
 import { FormProvider, useForm } from "react-hook-form";
 
 type TFormConfig<T extends FieldValues = FieldValues> = Omit<UseFormProps<T>, 'onSubmit'> & {
@@ -8,7 +8,7 @@ type TFormConfig<T extends FieldValues = FieldValues> = Omit<UseFormProps<T>, 'o
 type TFormProps<T extends FieldValues = FieldValues> = {
     children: React.ReactNode;
     onSubmit: SubmitHandler<T>;
-    onError?: (errors: any) => void;
+    onError?: (errors: unknown) => void;
     resetOnSubmit?: boolean;
     defaultValues?: DefaultValues<T>;
 } & Omit<TFormConfig<T>, 'defaultValues'>
