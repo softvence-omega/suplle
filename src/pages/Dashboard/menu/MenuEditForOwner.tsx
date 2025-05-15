@@ -7,6 +7,7 @@ import SectionHeader from "@/components/ui/sectionHeader";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectItem } from "@/components/ui/select";
+import SuppleTextarea from "@/components/Forms/SuppleTextarea";
 
 const menuItemSchema = z.object({
   itemName: z.string().min(1, "Item name is required"),
@@ -107,23 +108,25 @@ const MenuEditForOwner = () => {
             </SuppleSelect>
           </div>
           <div>
-            <SuppleFileUpload
-              name="image"
-              label="Upload Item Image*"
-              accept="image/*"
-              required
-            />
+          <SuppleFileUpload
+          InputClassName="p-2"
+            name="image"
+            label="Upload Item Image*"
+            accept="image/*"
+            required
+          />
           </div>
         </div>
 
         <div className="space-y-2">
-          <SuppleInput
+          <SuppleTextarea
             name="description"
             label="Description*"
           />
         </div>
 
         <SuppleFileUpload
+          InputClassName="p-4"
           name="menuFile"
           label="Upload Menu File*"
           accept=".xlsx,.csv"
