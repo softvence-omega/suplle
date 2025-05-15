@@ -50,7 +50,7 @@ const FoodCard = ({ title, size, price, description, imageSrc }: MenuSectionItem
                                 alt={title}
                                 className="w-full h-full object-cover"
                             />
-                            <div style={{ borderRadius: "45px 0px 0px 0px" }} className=" bg-white dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0">
+                            <div style={{ borderRadius: "45px 0px 0px 0px" }} className="bg-white/90 dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0">
                                 <motion.button
                                     className="flex items-center justify-center bg-[#03081F] absolute bottom-0 right-0  text-white rounded-full w-6 h-6"
                                     whileHover={{ scale: 1.1 }}
