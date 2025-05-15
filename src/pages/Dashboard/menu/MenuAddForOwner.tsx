@@ -39,9 +39,6 @@ const MenuAddForOwner = () => {
     { id: "4", name: "Drinks", items: 2 }
   ];
 
-  const sizes = ["Small", "Medium", "Large"];
-  const availabilityOptions = ["In Stock", "Out of Stock"];
-
   const onSubmitCategory = async (data: CategoryFormData) => {
     console.log("Category data:", data);
     // Add your API call here
