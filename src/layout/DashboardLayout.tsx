@@ -18,7 +18,7 @@ const DashboardLayout = () => {
     <div>
       <div className="bg-white min-h-screen">
         {/* Top Navigation */}
-        <header className="fixed w-full z-30 flex bg-green-100 p-2 items-center justify-between h-16 px-10">
+        <header className="fixed w-full transform ease-in-out duration-500 z-30 flex bg-green-100 dark:bg-primary-dark p-2 items-center justify-between h-16 px-10">
           <div
             className={`logo ${
               !sidebarOpen ? "ml-12" : ""
@@ -30,14 +30,14 @@ const DashboardLayout = () => {
           <div className="grow h-full flex items-center justify-center max-w-[200px]"></div>
 
           {/* input field */}
-          <div className="hidden md:flex w-full max-w-[438px] h-[40px] px-[14px] py-[8px] items-center gap-[16px] rounded-[8px] bg-[#F6F8FB] relative">
+          <div className="hidden md:flex w-full max-w-[438px] h-[40px] px-[14px] py-[8px] items-center gap-[16px] rounded-[8px] bg-[#F6F8FB] relative border dark:border-white dark:bg-primary-dark">
             <input
               type="text"
-              placeholder="Search..."
-              className="w-full bg-transparent border-none outline-none text-gray-700"
+              placeholder="Search results..."
+              className="w-full bg-transparent border-none outline-none text-gray-700 dark:text-white"
             />
             <svg
-              className="absolute right-4 text-gray-500"
+              className="absolute right-4 text-gray-500 dark:text-white"
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
@@ -56,10 +56,10 @@ const DashboardLayout = () => {
 
           {/* icon for message and notification */}
           <div className="flex justify-center items-center gap-4">
-            <div className="bg-green-200 size-8 flex justify-center items-center rounded-xl">
+            <div className="bg-green-200 dark:bg-green-100 size-8 flex justify-center items-center rounded-xl">
               <MessageIcon size={20} color="#202020" />
             </div>
-            <div className="bg-green-200 size-8 flex justify-center items-center rounded-xl">
+            <div className="bg-green-200 dark:bg-green-100 size-8 flex justify-center items-center rounded-xl">
               <NotificationIcon size={20} color="#202020" />
             </div>
           </div>
@@ -96,7 +96,7 @@ const DashboardLayout = () => {
         <main
           className={`content ${
             sidebarOpen ? "ml-12 md:ml-60" : "ml-12"
-          } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4`}
+          } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 bg-white dark:bg-secondary-dark`}
         >
           {/* Page Content Placeholder */}
           <div className="p-8">

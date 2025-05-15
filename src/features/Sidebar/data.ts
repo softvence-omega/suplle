@@ -13,7 +13,7 @@ import { generateRandomId } from "@/utils/utils";
 
 export const adminSeiderBarData = [
   {
-    id: generateRandomId,
+    id: generateRandomId(),
     label: "Dashboard",
     icon: WindowIcon,
     url: "/admin/dashboard",
@@ -27,11 +27,13 @@ export const adminSeiderBarData = [
         id: generateRandomId(),
         label: "Restaurant",
         url: "/admin/restaurant/view",
+        icon: RestaurantIcon,
       },
       {
         id: generateRandomId(),
         label: "Menu Management",
         url: "/admin/menu/management",
+        icon: SpoonIcon,
       },
     ],
   },
