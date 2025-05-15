@@ -3,6 +3,7 @@
 import FoodCard from "@/components/MangeMenu/FoodCard";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { motion } from "framer-motion";
+
 const menuSections = [
   {
     title: "Starters",

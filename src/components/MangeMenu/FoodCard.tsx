@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import type { MenuSectionItem } from "@/pages/Dashboard/MenuManagement";
+import type { MenuSectionItem } from "@/pages/Dashboard/menu/MenuViewForOwner";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 
