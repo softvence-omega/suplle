@@ -2,6 +2,10 @@ import { Navbar } from "@/components/dynamicResturants/Navbar";
 import { useParams } from "react-router-dom";
 import RestaurantBanner from "@/components/dynamicResturants/RestaurantBanner";
 import { Search } from "lucide-react";
+import FoodCategory from "@/components/dynamicResturants/FoodCategory";
+import OfferItem from "@/components/dynamicResturants/OfferItem";
+import FoodCategory1 from "@/components/dynamicResturants/FoodCategory1";
+import FoodList from "@/components/dynamicResturants/FoodList";
 
 const DynamicRestaurant = () => {
   const { id } = useParams();
@@ -24,6 +28,10 @@ const DynamicRestaurant = () => {
         />
         </div>
       </div>
+      <FoodCategory />
+      <OfferItem/>
+      <FoodCategory1 />
+      <FoodList />
     </div>
   );
 };
