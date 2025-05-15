@@ -9,52 +9,77 @@ const IconAnimation = () => {
   ]);
 
   useEffect(() => {
-    // First icon changes after 0.5s
-    const timer1 = setTimeout(() => {
-      setIcons((prev) =>
-        prev.map((icon) =>
-          icon.id === 1 ? { ...icon, color: "#22c55e" } : icon
+    let animationFrame: number;
+    let timers: NodeJS.Timeout[] = [];
+
+    const startAnimation = () => {
+      // Clear any existing timers
+      timers.forEach((timer) => clearTimeout(timer));
+      timers = [];
+
+      // First icon: white → green → white
+      timers.push(
+        setTimeout(
+          () => setIcons((prev) => updateIcon(prev, 1, "#11a8a5")),
+          200
         )
       );
-    }, 500);
+      timers.push(
+        setTimeout(() => setIcons((prev) => updateIcon(prev, 1, "white")), 800)
+      );
 
-    // Second icon changes after 1s
-    const timer2 = setTimeout(() => {
-      setIcons((prev) =>
-        prev.map((icon) =>
-          icon.id === 2 ? { ...icon, color: "#22c55e" } : icon
+      // Second icon: white → green → white
+      timers.push(
+        setTimeout(
+          () => setIcons((prev) => updateIcon(prev, 2, "#11a8a5")),
+          500
         )
       );
-    }, 1000);
+      timers.push(
+        setTimeout(() => setIcons((prev) => updateIcon(prev, 2, "white")), 1100)
+      );
 
-    // Third icon changes after 1.5s
-    const timer3 = setTimeout(() => {
-      setIcons((prev) =>
-        prev.map((icon) =>
-          icon.id === 3 ? { ...icon, color: "#22c55e" } : icon
+      // Third icon: white → green → white
+      timers.push(
+        setTimeout(
+          () => setIcons((prev) => updateIcon(prev, 3, "#11a8a5")),
+          800
         )
       );
-    }, 1500);
+      timers.push(
+        setTimeout(() => setIcons((prev) => updateIcon(prev, 3, "white")), 1400)
+      );
 
-    // Reset all to white after 2s (creates a loop)
-    const timer4 = setTimeout(() => {
-      setIcons((prev) => prev.map((icon) => ({ ...icon, color: "white" })));
-    }, 2000);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
+      // Schedule the next animation cycle
+      timers.push(
+        setTimeout(() => {
+          animationFrame = requestAnimationFrame(startAnimation);
+        }, 2000)
+      );
     };
-  }, [icons]); // Re-run when icons change
+
+    const updateIcon = (prevIcons: typeof icons, id: number, color: string) => {
+      return prevIcons.map((icon) =>
+        icon.id === id ? { ...icon, color } : icon
+      );
+    };
+
+    // Start the initial animation
+    startAnimation();
+
+    // Cleanup function
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+      cancelAnimationFrame(animationFrame);
+    };
+  }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center gap-1">
       {icons.map((icon) => (
         <FaChevronDown
           key={icon.id}
-          className={`text-5xl transition-colors duration-300 ${
+          className={`text-5xl transition-colors duration-200 ${
             icon.color === "white" ? "text-white" : "text-[#22c55e]"
           }`}
         />
