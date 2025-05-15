@@ -15,6 +15,8 @@ const menuItemSchema = z.object({
   size: z.string().min(1, "Size is required"),
   availability: z.string().min(1, "Availability is required"),
   description: z.string().min(1, "Description is required"),
+  image: z.string().min(1, "Item image is required"),
+  menuFile: z.string().optional(),
 });
 
 type MenuItemFormData = z.infer<typeof menuItemSchema>;
@@ -46,11 +48,13 @@ const MenuEditForOwner = () => {
         onSubmit={onSubmitMenuItem}
         defaultValues={{
           itemName: "Cheeseburger",
-          category: "Starters",
+          category: "starters",
           price: "20",
-          size: "Small",
-          availability: "Available",
+          size: "small",
+          availability: "available",
           description: "Satisfy your cravings with our best-selling Cheeseburger – the ultimate fast food indulgence! Made with a juicy beef patty, melted cheddar cheese, fresh lettuce, ripe tomatoes, crispy onions, and our signature burger sauce, all stacked inside a soft, toasted bun. Loved by foodies and burger lovers alike, this mouth-watering treat delivers bold flavour in every bite. Whether you're grabbing a quick lunch or treating yourself to a cheat meal, this burger never disappoints!",
+          image: "Burger-01.jpg",
+          menuFile: "",
         }}
         resolver={zodResolver(menuItemSchema)}
         className="space-y-4"
@@ -60,14 +64,12 @@ const MenuEditForOwner = () => {
             <SuppleInput
               name="itemName"
               label="Item Name*"
-              defaultValue="Cheeseburger"
             />
           </div>
           <div>
             <SuppleSelect
               name="category"
               label="Category*"
-              defaultValue="Starters"
             >
               <SelectItem value="starters">Starters</SelectItem>
               <SelectItem value="main">Main Course</SelectItem>
@@ -79,7 +81,6 @@ const MenuEditForOwner = () => {
             <SuppleInput
               name="price"
               label="Price*"
-              defaultValue="20"
               type="number"
             />
           </div>
@@ -87,7 +88,6 @@ const MenuEditForOwner = () => {
             <SuppleSelect
               name="size"
               label="Size*"
-              defaultValue="Small"
             >
               <SelectItem value="small">Small</SelectItem>
               <SelectItem value="medium">Medium</SelectItem>
@@ -98,7 +98,6 @@ const MenuEditForOwner = () => {
             <SuppleSelect
               name="availability"
               label="Availability*"
-              defaultValue="Available"
             >
               {availabilityOptions.map((option) => (
                 <SelectItem key={option} value={option.toLowerCase()}>
@@ -109,9 +108,9 @@ const MenuEditForOwner = () => {
           </div>
           <div>
             <SuppleFileUpload
+              name="image"
               label="Upload Item Image*"
               accept="image/*"
-              defaultFileName="Burger-01.jpg"
               required
             />
           </div>
@@ -121,11 +120,11 @@ const MenuEditForOwner = () => {
           <SuppleInput
             name="description"
             label="Description*"
-            defaultValue="Satisfy your cravings with our best-selling Cheeseburger – the ultimate fast food indulgence! Made with a juicy beef patty, melted cheddar cheese, fresh lettuce, ripe tomatoes, crispy onions, and our signature burger sauce, all stacked inside a soft, toasted bun. Loved by foodies and burger lovers alike, this mouth-watering treat delivers bold flavour in every bite. Whether you're grabbing a quick lunch or treating yourself to a cheat meal, this burger never disappoints!"
           />
         </div>
 
         <SuppleFileUpload
+          name="menuFile"
           label="Upload Menu File*"
           accept=".xlsx,.csv"
           helperText="Upload Menu File ( .XLSX or .CSV )"

@@ -12,6 +12,7 @@ interface SuppleFileUploadProps {
   helperText?: string;
   defaultFileName?: string;
   onChange?: (file: File | null) => void;
+  InputClassName?: string;
 }
 
 const SuppleFileUpload = ({
@@ -23,7 +24,8 @@ const SuppleFileUpload = ({
   icon,
   helperText,
   defaultFileName,
-  onChange
+  onChange,
+InputClassName
 }: SuppleFileUploadProps) => {
   const { control } = useFormContext();
   const {
@@ -64,7 +66,7 @@ const SuppleFileUpload = ({
           </button>
         </div>
       ) : (
-        <div className="border-2 border-dashed border-[#E8E8E8] bg-[#F8FDFD] p-4 rounded-md cursor-pointer">
+        <div className={`border-2 border-dashed border-[#E8E8E8] bg-[#F8FDFD] rounded-md cursor-pointer ${InputClassName}`}>
           <label className="flex items-center gap-2 cursor-pointer">
             {icon}
             <span className="text-sm text-gray-500">{helperText || "Click to upload file"}</span>

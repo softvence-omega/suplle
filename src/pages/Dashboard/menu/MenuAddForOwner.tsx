@@ -117,7 +117,7 @@ const MenuAddForOwner = () => {
         resolver={zodResolver(menuItemSchema)}
         className="space-y-4"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <SuppleInput
             name="itemName"
             label="Item Name"
@@ -162,6 +162,7 @@ const MenuAddForOwner = () => {
             <SelectItem value="not_available">Not Available</SelectItem>
           </SuppleSelect>
           <SuppleFileUpload
+          InputClassName="p-2"
             name="image"
             label="Upload Item Image*"
             accept="image/*"
@@ -181,6 +182,7 @@ const MenuAddForOwner = () => {
 
         <SuppleFileUpload
           name="menuFile"
+          InputClassName="p-4"
           label="Upload Menu File (.XLSX or .CSV)"
           accept=".xlsx,.csv"
           helperText="Upload Menu File ( .XLSX or .CSV )"
