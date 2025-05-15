@@ -31,12 +31,14 @@ import AdminMenuManagement from "@/pages/AdminDashboard/menu/AdminMenuManagement
 import AdminQrDesignsView from "@/pages/AdminDashboard/QR/AdminQrDesignsView";
 import AdminQrDesignCreate from "@/pages/AdminDashboard/QR/AdminQrDesignCreate";
 import AdminUserView from "@/pages/AdminDashboard/user/AdminUserView";
+import Welcome from "@/pages/Welcome";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/restaurant/:id" element={<DynamicRestaurant />} />
+      <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       {/* dahboard routes for owner ************************************************************* */}
