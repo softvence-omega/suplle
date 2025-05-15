@@ -1,9 +1,9 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
-interface SuppleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SuppleTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     name: string;
     label?: string;
     error?: string;
@@ -13,7 +13,7 @@ interface SuppleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     helperText?: string;
 }
 
-const SuppleInput = ({
+const SuppleTextarea = ({
     name,
     label,
     error,
@@ -22,12 +22,10 @@ const SuppleInput = ({
     containerClassName,
     labelClassName,
     helperText,
-    type = "text",
     required,
     ...props
-}: SuppleInputProps) => {
+}: SuppleTextareaProps) => {
     const { control } = useFormContext();
-
     return (
         <div className={cn("space-y-2", fullWidth && "w-full", containerClassName)}>
             {label && (
@@ -48,11 +46,10 @@ const SuppleInput = ({
                 name={name}
                 render={({ field, fieldState: { error: fieldError } }) => (
                     <div className="space-y-1">
-                        <Input
+                        <Textarea
                             {...field}
                             {...props}
                             id={name}
-                            type={type}
                             className={cn(
                                 fullWidth && "w-full",
                                 (error || fieldError) && "border-destructive focus-visible:ring-destructive/50",
@@ -77,4 +74,4 @@ const SuppleInput = ({
     );
 };
 
-export default SuppleInput;
+export default SuppleTextarea;
