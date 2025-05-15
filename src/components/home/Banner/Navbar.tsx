@@ -5,7 +5,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   return (
     <div className="bg-black/15 w-full flex justify-between items-center px-12 py-7 rounded-[50px]">
-      <div className="text-primary text-4xl font-bold">Suplle</div>
+      <div className="text-primary-gradient text-4xl font-bold">Suplle</div>
       <div className="flex gap-4 justify-center items-center">
         <Button
           className="bg-transparent border-1 border-primary rounded-3xl text-lg text-primary hover:text-white px-6 py-5"
