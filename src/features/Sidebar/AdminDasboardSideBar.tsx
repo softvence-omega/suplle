@@ -40,13 +40,13 @@ const AdminDashboardSideBar = ({
     <aside
       className={`w-60 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-48"
-      } fixed transition transform ease-in-out duration-1000 z-50 flex h-screen bg-primary`}
+      } fixed transition transform ease-in-out duration-1000 z-50 flex h-screen bg-primary  dark:bg-primary-dark`}
     >
       {/* Open sidebar button */}
       <div
         className={`max-toolbar ${
           sidebarOpen ? "translate-x-0" : "translate-x-24 scale-x-0"
-        } w-full -right-6 transition transform ease-in duration-300 flex items-center justify-between border-4 border-white bg-primary absolute top-2 rounded-full h-12`}
+        } w-full -right-6 transition transform ease-in duration-300 flex items-center justify-between border-4 border-white bg-primary dark:bg-primary-dark  absolute top-2 rounded-full h-12`}
       >
         <div className="flex pl-4 items-center space-x-2">
           <div>
@@ -106,7 +106,7 @@ const AdminDashboardSideBar = ({
       {/* Toggle sidebar button */}
       <div
         onClick={toggleSidebar}
-        className="-right-6 cursor-pointer transition transform ease-in-out duration-500 flex border-4 border-white bg-green-300 hover:bg-green-700 absolute top-2 p-3 rounded-full text-white hover:rotate-45"
+        className="-right-6 cursor-pointer transition transform ease-in-out duration-500 flex border-4 border-white bg-green-300 dark:bg-primary-dark hover:bg-green-700 absolute top-2 p-3 rounded-full text-white hover:rotate-45"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +196,9 @@ const AdminDashboardSideBar = ({
                   to={item.url}
                   className={({ isActive }) =>
                     `w-full text-white px-2 py-3 pl-8 flex items-center space-x-3 ${
-                      isActive ? "bg-green-700" : "hover:bg-green-300"
+                      isActive
+                        ? "bg-green-700 dark:bg-[#363232]"
+                        : "hover:bg-green-300 dark:hover:bg-[#242424]"
                     }`
                   }
                 >
@@ -237,7 +239,9 @@ const AdminDashboardSideBar = ({
                     to={item.url || "#"}
                     className={({ isActive }) =>
                       `text-white flex items-center ${
-                        isActive ? "bg-green-700" : "hover:bg-green-300"
+                        isActive
+                          ? "bg-green-700 dark:bg-[#363232]"
+                          : "hover:bg-green-300 dark:hover:bg-[#242424]"
                       }`
                     }
                   >
@@ -288,7 +292,9 @@ const AdminDashboardSideBar = ({
                           to={child.url || "#"}
                           className={({ isActive }) =>
                             `block px-4 py-2 text-white text-sm hover:bg-green-300 ${
-                              isActive ? "bg-green-700" : "hover:bg-green-300"
+                              isActive
+                                ? "bg-green-700 dark:bg-[#363232]"
+                                : "hover:bg-green-300 dark:hover:bg-[#242424]"
                             }`
                           }
                         >
