@@ -18,7 +18,7 @@ const DashboardLayout = () => {
     <div>
       <div className="bg-white min-h-screen">
         {/* Top Navigation */}
-        <header className="fixed w-full z-30 flex bg-green-100 p-2 items-center justify-between h-16 px-10">
+        <header className="fixed w-full z-30 flex bg-green-100  p-2 items-center justify-between h-16 px-10">
           <div
             className={`logo ${
               !sidebarOpen ? "ml-12" : ""

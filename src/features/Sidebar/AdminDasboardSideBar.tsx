@@ -192,7 +192,7 @@ const AdminDashboardSideBar = ({
               ) : (
                 // Regular menu item without children
                 <NavLink
-                  key={index}
+                  key={item.id}
                   to={item.url}
                   className={({ isActive }) =>
                     `w-full text-white px-2 py-3 pl-8 flex items-center space-x-3 ${
@@ -233,7 +233,14 @@ const AdminDashboardSideBar = ({
                 {hasChildren ? (
                   <Icon size={22} color="white" />
                 ) : (
-                  <NavLink to={item.url || "#"} className="flex items-center">
+                  <NavLink
+                    to={item.url || "#"}
+                    className={({ isActive }) =>
+                      `text-white flex items-center ${
+                        isActive ? "bg-green-700" : "hover:bg-green-300"
+                      }`
+                    }
+                  >
                     <Icon size={22} color="white" />
                   </NavLink>
                 )}
@@ -273,18 +280,22 @@ const AdminDashboardSideBar = ({
                   style={{ width: "180px" }}
                 >
                   <div className="py-2">
-                    <div className="px-4 py-2 font-medium text-white border-b border-gray-700 mb-1">
-                      {item.label}
-                    </div>
-                    {item.children.map((child) => (
-                      <NavLink
-                        key={child.id}
-                        to={child.url || "#"}
-                        className={`block px-4 py-2 text-white text-sm hover:bg-green-300 `}
-                      >
-                        {child.label}
-                      </NavLink>
-                    ))}
+                    {item.children.map((child) => {
+                      const Icon = child.icon;
+                      return (
+                        <NavLink
+                          key={child.id}
+                          to={child.url || "#"}
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-white text-sm hover:bg-green-300 ${
+                              isActive ? "bg-green-700" : "hover:bg-green-300"
+                            }`
+                          }
+                        >
+                          {<Icon />}
+                        </NavLink>
+                      );
+                    })}
                   </div>
                 </div>
               )}
