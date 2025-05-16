@@ -8,7 +8,6 @@ import PrimaryButton from "@/components/shared/PrimaryButton";
 
 const Welcome = () => {
   return (
-    // <div className="w-full min-h-screen bg-gradient-to-r from-[#0F9996] to-[#56DAAB] dark:bg-secondary-dark">
     <div className="w-full min-h-screen bg-gradient-to-r from-[#0F9996] to-[#56DAAB] dark:bg-gradient-to-r dark:from-[#030303] dark:to-[#030303]">
       <div className="flex justify-center md:justify-start md:px-[100px] pt-3 md:pt-6">
         <img src={logo} width={150} height={60} alt="Logo" />
@@ -17,9 +16,9 @@ const Welcome = () => {
         <div className="w-full md:w-1/2 flex flex-col gap-10">
           <div className="flex justify-center">
             <div className="max-w-[390px] w-full text-white flex flex-col gap-3">
-              <h2 className="text-center text-5xl font-semibold">Hello !</h2>
+              <h2 className="text-center text-5xl font-semibold">Welcomr</h2>
               <p className="text-[40px] font-light text-center">
-                Please log in to your account.
+                to our Restaurant Management System
               </p>
             </div>
           </div>

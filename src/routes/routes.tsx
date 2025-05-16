@@ -32,6 +32,8 @@ import AdminQrDesignsView from "@/pages/AdminDashboard/QR/AdminQrDesignsView";
 import AdminQrDesignCreate from "@/pages/AdminDashboard/QR/AdminQrDesignCreate";
 import AdminUserView from "@/pages/AdminDashboard/user/AdminUserView";
 import Welcome from "@/pages/Welcome";
+import OTP from "@/pages/auth/OTP";
+import ForgetPasword from "@/pages/auth/ForgetPasword";
 
 const AppRoutes = () => {
   return (
@@ -41,6 +43,8 @@ const AppRoutes = () => {
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/otp" element={<OTP />} />
+      <Route path="/forget-password" element={<ForgetPasword />} />
       {/* dahboard routes for owner ************************************************************* */}
       <Route
         path="dashboard"
