@@ -22,6 +22,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary-dark: #161616;
   --color-secondary-dark: #030303;
+  --color-primary-gray: #f0f0f0;
   --color-primary: #11a8a5;
   --color-green-50: #e7f6f6;
   --color-green-100: #b5e4e3;
@@ -33,7 +34,13 @@
   --color-green-700: #0c7775;
   --color-green-800: #095c5b;
   --color-green-900: #074745;
-  --color-primary-gradient: linear-gradient(270deg, #56daab 0%, #0f9996 100%);
+
+  --color-primary-gradient: linear-gradient(
+    176deg,
+    #56daab -18.78%,
+    #0f9996 111.3%
+  );
+
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -139,4 +146,12 @@
     @apply bg-background text-foreground;
     font-family: "Rubik", sans-serif;
   }
+}
+
+.text-primary-gradient {
+  background: var(--color-primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
