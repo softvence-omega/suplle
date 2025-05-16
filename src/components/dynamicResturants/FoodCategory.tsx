@@ -18,7 +18,7 @@ const FoodCategory = () => {
     const [selectFilteredValue, setselectFilteredValue] = useState('offers')
   return (
     <div className='bg-[#F3F3F3] border-1 border-solid w-full'>
-        <div className="flex flex-col md:flex-row items-center justify-evenly space-x-4 items-center gap-5">
+        <div className="flex flex-col md:flex-row items-center justify-evenly-start  md:justify-start  space-x-4 items-center gap-5">
           {
             foodCategoryData.map((item) => (
               <button onClick={()=>setselectFilteredValue(item.value)} key={item.id}  className={`${item.value === selectFilteredValue ? 'text-white bg-black': 'text-[#252525] bg-[#F3F3F3]'}   text-xl font-bold px-3 py-2 rounded-xl hover:bg-black hover:text-white`}>

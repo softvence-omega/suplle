@@ -1,6 +1,7 @@
 import { generateRandomId } from '@/utils/utils'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Wrapper from '../shared/Wrapper'
 
 const foodCategoryData1 = [
     { id: generateRandomId(), name: 'Starters', url: '/offers', value: 'Starters' },	
@@ -10,6 +11,7 @@ const foodCategoryData1 = [
 const FoodCategory1 = () => {
     const [selectFilteredValue, setselectFilteredValue] = useState('Starters')
   return (
+    <Wrapper>
     <div className='bg-[#F3F3F3] border-1 border-solid w-full'>
         <div className="flex flex-col md:flex-row items-center justify-start space-x-4 items-center gap-5">
           {
@@ -21,6 +23,7 @@ const FoodCategory1 = () => {
           }
         </div>
     </div>
+    </Wrapper>
   )
 }
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import RestaurantIcon from '../icons/RestaurantIcon'
 import { generateRandomId } from '@/utils/utils'
 import { Menu, X } from 'lucide-react'
+import Wrapper from '../shared/Wrapper'
 
 const navData = [
   {
@@ -31,6 +32,7 @@ export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
+    <Wrapper>
     <div className='w-full p-5'>
       <nav className="flex items-center justify-between w-full h-16 bg-white shadow-md px-4">
         {/* Logo and branding */}
@@ -87,5 +89,6 @@ export const Navbar = () => {
         </div>
       )}
     </div>
+    </Wrapper>
   )
 }

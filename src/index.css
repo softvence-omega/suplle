@@ -6,6 +6,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-primary-gradient: linear-gradient(270deg, #56daab 0%, #0f9996 100%);
 }
 
 @theme inline {
@@ -32,7 +33,7 @@
   --color-green-700: #0c7775;
   --color-green-800: #095c5b;
   --color-green-900: #074745;
-  --color-primary-gradient: linear-gradient(90deg, #56daab, #0f9996);
+  --color-primary-gradient: linear-gradient(270deg, #56daab 0%, #0f9996 100%);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);

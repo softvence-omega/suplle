@@ -180,7 +180,9 @@ const AdminDashboardSideBar = ({
                         to={child.url}
                         className={({ isActive }) =>
                           `w-full text-white py-3 pl-4 flex items-center space-x-3 ${
-                            isActive ? "bg-green-700" : "hover:bg-green-300"
+                            isActive
+                              ? "bg-green-700 dark:bg-[#363232]"
+                              : "hover:bg-green-300 dark:hover:bg-[#242424]"
                           }`
                         }
                       >
