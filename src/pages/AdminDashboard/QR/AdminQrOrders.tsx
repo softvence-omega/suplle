@@ -1,6 +1,7 @@
 import QROrderComponent from "@/components/admin-panel/qr-Orders/QROrderComponen";
 
 
+
 const AdminQrOrders = () => {
   return <div>
 
@@ -18,6 +19,7 @@ const AdminQrOrders = () => {
       
       <main>
    <QROrderComponent/>
+
       </main>
     </div>
 
