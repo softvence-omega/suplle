@@ -93,10 +93,11 @@ function DineInOrderShowForOwner() {
         <Button>+ Add Order</Button>
       </div>
 
-      <div className='flex flex-col md:flex-row gap-5 mt-5 items-start md:items-center justify-between w-full'>
-        <div className='flex ' >
-          <div>
+      <div className='flex flex-col md:flex-row gap-5 mt-5 items-start md:items-center justify-between '>
+        <div className='flex  w-[70%]' >
+          <div className='w-1/2'>
           <p className='text-base font-normal text-[#203849]'>Order Status</p>
+
           <Select>
             <SelectTrigger className=" h-[42px]">
               <SelectValue placeholder="Order Status" />
@@ -110,12 +111,12 @@ function DineInOrderShowForOwner() {
         </div>
 
 
-        <div>
+        <div className='w-1/2'>
           <InputComponent
           name="search_table"
           label="Search Table"
           labelClassName='text-[#203849] text-base font-normal'
-          inputClassName=' border-[#E1E9ED] rounded-lg py-[13px] px-3 focus:outline-none h-[42px]'
+          inputClassName=' border-[#E1E9ED] rounded-lg   focus:outline-none h-[42px]'
           type='text'
           placeholder='Search Table'
           register={register}
@@ -124,7 +125,7 @@ function DineInOrderShowForOwner() {
         </div>
         
 
-        <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-4'>
+        <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-4 w-[30%]'>
           <button onClick={() => setViewMode('grid')}>
             <GridIcon className={`${viewMode === 'grid' ? 'text-primary' : 'text-gray-400'}`} />
           </button>
