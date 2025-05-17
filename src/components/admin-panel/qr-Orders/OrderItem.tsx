@@ -16,9 +16,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onClick }) => {
     >
       <div className="flex items-center gap-3 w-full md:w-auto">
         <GrCart className="h-6 w-6 text-[#333333] dark:text-[#FFFFFF]" />
-        <div className="flex items-center gap-1 text-sm md:text-base">
-          <span className="text-[#333333] dark:text-[#FFFFFF]">Order</span>
-          <span className="text-[#333333] dark:text-[#FFFFFF]">#{order.id}</span>
+        <div className="flex items-center gap-1 ">
+          <span className="text-[#333333] dark:text-[#FFFFFF] text-base">Order</span>
+          <span className="text-[#333333] dark:text-[#FFFFFF] text-base">#{order.id}</span>
         </div>
       </div>
 

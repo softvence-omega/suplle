@@ -50,7 +50,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
               className="pb-2 px-1 text-sm font-light border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center"
             >
            
-              <ChevronsRight className="w-4 h-4 ml-1 bark:" />
+              <ChevronsRight className="w-4 h-4 ml-1 dark:text-[#FFFFFF]" />
             </button>
 
             {dropdownOpen && (
@@ -90,7 +90,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
               ${
                 activeTab === tab
                   ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 '
               }
             `}
           >

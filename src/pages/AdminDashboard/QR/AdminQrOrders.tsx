@@ -1,5 +1,10 @@
 import QROrderComponent from "@/components/admin-panel/qr-Orders/QROrderComponen";
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 42efa90cafa96c7971f644a6e44d53ec8aeb2c4a
 const AdminQrOrders = () => {
   return (
     <div>
@@ -16,10 +21,19 @@ const AdminQrOrders = () => {
           </div>
         </header>
 
+<<<<<<< HEAD
         <main>
           <QROrderComponent />
         </main>
       </div>
+=======
+      
+      
+      <main>
+   <QROrderComponent/>
+
+      </main>
+>>>>>>> 42efa90cafa96c7971f644a6e44d53ec8aeb2c4a
     </div>
   );
 };
