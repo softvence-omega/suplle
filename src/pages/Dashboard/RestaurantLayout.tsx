@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import qrCode from '../../assets/demoQR.png';
+import SectionHeader from '@/components/ui/sectionHeader';
 
 interface TableProps {
   id: number;
@@ -19,7 +20,7 @@ const RestaurantLayout = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-semibold mb-6">Restaurant Layout</h1>
+      <SectionHeader title='Resturant Layout'/>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Left Sidebar */}

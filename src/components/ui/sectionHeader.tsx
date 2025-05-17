@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
   title: string;
@@ -32,7 +33,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
             <ArrowLeft size={20} />
           </button>
         )}
-        <h2 className={`text-lg font-semibold ${titleClassName}`}>{title}</h2>
+      <h2 className={cn("text-lg", "font-semibold", titleClassName)}>{title}</h2>
       </div>
       {rightContent && <div>{rightContent}</div>}
     </div>
