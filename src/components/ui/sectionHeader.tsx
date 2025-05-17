@@ -7,6 +7,7 @@ interface SectionHeaderProps {
   showBackButton?: boolean;
   rightContent?: React.ReactNode;
   className?: string;
+  titleClassName?: string;
 }
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -14,6 +15,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
   showBackButton = false,
   rightContent,
   className = "",
+  titleClassName = "",
 }) => {
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
             <ArrowLeft size={20} />
           </button>
         )}
-        <h2 className="text-lg font-semibold">{title}</h2>
+        <h2 className={`text-lg font-semibold ${titleClassName}`}>{title}</h2>
       </div>
       {rightContent && <div>{rightContent}</div>}
     </div>
