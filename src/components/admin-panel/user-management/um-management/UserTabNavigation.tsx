@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import { ChevronsRight } from 'lucide-react';
-import type { OrderStatus } from './order';
+import React, { useState } from "react";
+import { ChevronsRight } from "lucide-react";
+import type { UserStatus } from "./user";
 
-type Tab = 'All' | OrderStatus;
+type Tab = "All" | UserStatus;
 
 interface TabNavigationProps {
   activeTab: Tab;
   onTabChange: (tab: Tab) => void;
 }
 
-const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
-  const allTabs: Tab[] = ['All', 'Pending', 'Processing', 'Completed', 'Cancelled'];
-
-  const visibleTabs = allTabs.slice(0, 3); // for mobile
-  const hiddenTabs = allTabs.slice(3);     // for mobile dropdown
-
+const UserTabNavigation: React.FC<TabNavigationProps> = ({
+  activeTab,
+  onTabChange,
+}) => {
+  const allTabs: Tab[] = ["All", "Staff", "Owner"];
+  const visibleTabs = allTabs.slice(0, 3);
+  const hiddenTabs = allTabs.slice(3);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const handleDropdownToggle = () => setDropdownOpen((prev) => !prev);
 
   return (
     <div className="border-b border-[#DDDDDD] dark:border-gray-800">
-      {/* ✅ Mobile view with More button */}
+      {/* Mobile view */}
       <div className="flex justify-between items-center sm:hidden">
-        {/* Left: First 3 Tabs */}
         <nav className="flex space-x-4" aria-label="Tabs">
           {visibleTabs.map((tab) => (
             <button
@@ -32,8 +33,8 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                 pb-2 px-1 text-sm font-light border-b-2 
                 ${
                   activeTab === tab
-                    ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? "border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }
               `}
             >
@@ -42,15 +43,13 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
           ))}
         </nav>
 
-        {/* Right: More Dropdown */}
         {hiddenTabs.length > 0 && (
           <div className="relative">
             <button
               onClick={handleDropdownToggle}
               className="pb-2 px-1 text-sm font-light border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center"
             >
-           
-              <ChevronsRight className="w-4 h-4 ml-1 bark:" />
+              <ChevronsRight className="w-4 h-4 ml-1" />
             </button>
 
             {dropdownOpen && (
@@ -65,8 +64,8 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
                       }}
                       className={`block w-full text-left px-4 py-2 text-sm ${
                         activeTab === tab
-                          ? 'bg-gray-100 text-black dark:bg-gray-700 dark:text-white'
-                          : 'text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
+                          ? "bg-gray-100 text-black dark:bg-gray-700 dark:text-white"
+                          : "text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
                       }`}
                     >
                       {tab}
@@ -79,7 +78,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
         )}
       </div>
 
-      {/* ✅ Desktop view: Show all tabs normally */}
+      {/* Desktop view */}
       <nav className="hidden sm:flex space-x-6 mt-1" aria-label="Tabs">
         {allTabs.map((tab) => (
           <button
@@ -89,8 +88,8 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
               pb-2 px-1 text-sm font-light border-b-2 transition-colors duration-200
               ${
                 activeTab === tab
-                  ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? "border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }
             `}
           >
@@ -102,4 +101,4 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   );
 };
 
-export default TabNavigation;
+export default UserTabNavigation;

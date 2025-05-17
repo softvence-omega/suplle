@@ -35,6 +35,7 @@ import Welcome from "@/pages/Welcome";
 import OTP from "@/pages/auth/OTP";
 import ForgetPasword from "@/pages/auth/ForgetPasword";
 import UserStaff from "@/components/admin-panel/user-management/UserStaff";
+import AdminUserManage from "@/pages/AdminDashboard/user/AdminUserManage";
 
 const AppRoutes = () => {
   return (
@@ -101,7 +102,7 @@ const AppRoutes = () => {
         <Route path="qr-designs/view" element={<AdminQrDesignsView />} />
         <Route path="qr-designs/create" element={<AdminQrDesignCreate />} />
         {/* user routes */}
-        <Route path="user/view" element={<AdminUserView />} />
+        <Route path="user/view" element={<AdminUserManage />} />
         <Route path="user/view/staff" element={<UserStaff />} />
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
