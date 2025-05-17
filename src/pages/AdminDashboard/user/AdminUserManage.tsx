@@ -1,11 +1,6 @@
-import QROrderComponent from "@/components/admin-panel/qr-Orders/QROrderComponen";
+import UserComponent from "@/components/admin-panel/user-management/um-management/UserComponent";
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 42efa90cafa96c7971f644a6e44d53ec8aeb2c4a
-const AdminQrOrders = () => {
+const AdminUserManage = () => {
   return (
     <div>
       <div className="">
@@ -21,21 +16,12 @@ const AdminQrOrders = () => {
           </div>
         </header>
 
-<<<<<<< HEAD
         <main>
-          <QROrderComponent />
+          <UserComponent />
         </main>
       </div>
-=======
-      
-      
-      <main>
-   <QROrderComponent/>
-
-      </main>
->>>>>>> 42efa90cafa96c7971f644a6e44d53ec8aeb2c4a
     </div>
   );
 };
 
-export default AdminQrOrders;
+export default AdminUserManage;
