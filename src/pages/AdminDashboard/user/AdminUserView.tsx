@@ -1,5 +1,11 @@
+import UserMenu from "@/components/admin-panel/user-management/UserMenu";
+
 const AdminUserView = () => {
-  return <div>AdminUserView</div>;
+  return (
+    <div>
+      <UserMenu />
+    </div>
+  );
 };
 
 export default AdminUserView;
