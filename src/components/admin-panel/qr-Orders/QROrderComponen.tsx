@@ -36,7 +36,7 @@ const QROrderComponent: React.FC = () => {
   return (
     <div className="">
         <div className="py-6">
-             <h2 className='text-2xl text-[#333333]'>QR Orders</h2>
+             <h2 className='md:text-2xl text-xl text-[#333333] dark:text-[#FFFFFF]'>QR Orders</h2>
         </div>
                
         <div className="pb-6">

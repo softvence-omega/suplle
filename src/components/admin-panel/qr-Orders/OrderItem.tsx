@@ -1,6 +1,5 @@
 import React from 'react';
 import { GrCart } from "react-icons/gr";
-
 import { ChevronRight } from 'lucide-react';
 import type { Order } from './order';
 
@@ -10,39 +9,35 @@ interface OrderItemProps {
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, onClick }) => {
-  
-
   return (
     <div 
       onClick={() => onClick(order.id)}
-      className="flex items-center justify-between py-4  border-b border-[#DDDDDD] hover:bg-gray-50 transition-colors duration-150 cursor-pointer"
+      className="flex flex-col lg:flex-row md:items-center justify-between md:gap-4 gap-3 md:py-4  py-3 border-b border-[#DDDDDD] cursor-pointer"
     >
-      <div className="flex items-center space-x-3">
-        <GrCart  className="h-6 w-6 text-[#333333]" />
-        <div className="flex items-center space-x-1">
-          <span className="text-[#333333]">Order</span>
-          <span className="text-[#333333]">#{order.id}</span>
+      <div className="flex items-center gap-3 w-full md:w-auto">
+        <GrCart className="h-6 w-6 text-[#333333] dark:text-[#FFFFFF]" />
+        <div className="flex items-center gap-1 text-sm md:text-base">
+          <span className="text-[#333333] dark:text-[#FFFFFF]">Order</span>
+          <span className="text-[#333333] dark:text-[#FFFFFF]">#{order.id}</span>
         </div>
       </div>
-      
-      <div className="">
-        <span className="text-[#203849] text-sm font-medium ">{order.vendor}</span>
-         </div>
-    <div className=" text-base font-normal text-black">
-         <span className='text-base font-normal text-black'>
-          {order.status}
-        </span>
-    </div>
 
-    <div className="">
-          <span className="text-gray-500">{order.time}</span>
+      <div className="text-sm md:text-base text-[#203849] dark:text-[#FFFFFF] font-medium w-full md:w-auto ">
+        {order.vendor}
+      </div>
+
+      <div className="text-sm md:text-base font-normal text-black dark:text-[#FFFFFF] w-full md:w-auto">
+        {order.status}
+      </div>
+
+      <div className="text-black dark:text-[#FFFFFF] text-sm md:text-base  font-normal w-full md:w-auto">
+        {order.time}
+      </div>
+
+      <div className="w-full md:w-auto flex justify-end md:justify-center">
+        <ChevronRight className="h-6 w-6 text-[#333333] dark:text-[#FFFFFF]" />
+      </div>
     </div>
-      <div className="">
-              <ChevronRight className="h-6 w-6 text-[#333333]" />
-      </div>
-      
-      </div>
-   
   );
 };
 
