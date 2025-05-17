@@ -15,12 +15,16 @@ interface InputComponentProps {
   errors?: FieldErrors<FieldValues>; // Full errors object from React Hook Form
   placeholder?: string;
   type?: string;
+  labelClassName?: string;
+  inputClassName?:string // Optional class name for the label
 }
 
 const InputComponent: React.FC<InputComponentProps> = ({
   name,
   label,
   className = "",
+  labelClassName = "",
+  inputClassName="",
   register,
   rules = {},
   errors,
@@ -33,7 +37,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
     <div className={`w-full ${className}`}>
       <label
         htmlFor={name}
-        className="text-[#484B52] dark:text-white text-sm font-medium"
+        className={`text-[#484B52] dark:text-white text-sm font-medium ${labelClassName}`}
       >
         {label}
       </label>
@@ -44,7 +48,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
           {...register(name, rules)} // Register the input field with React Hook Form, with optional rules
           id={name}
           name={name}
-          className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${
+          className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
             error ? "border-red-500" : ""
           }`}
           placeholder={placeholder || "Type here"}
