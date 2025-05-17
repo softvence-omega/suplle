@@ -20,7 +20,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
 
   const handleDropdownToggle = () => setDropdownOpen((prev) => !prev);
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outsidee
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
