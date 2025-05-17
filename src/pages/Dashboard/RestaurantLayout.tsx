@@ -2,6 +2,7 @@ import { useState } from 'react';
 import qrCode from '../../assets/demoQR.png';
 import SectionHeader from '@/components/ui/sectionHeader';
 import { IoMenu, IoClose } from "react-icons/io5";
+import { cn } from '@/lib/utils';
 
 interface TableProps {
   id: number;
@@ -37,7 +38,7 @@ const RestaurantLayout = () => {
   };
 
   return (
-    <div className=" bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
       <div className="flex gap-4 items-center justify-between">
         <SectionHeader className='flex-1' title='Restaurant Layout'/>
         <button
@@ -50,13 +51,13 @@ const RestaurantLayout = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 py-6 relative">
         {/* Left Sidebar */}
-        <div className={`
-          space-y-6 col-span-3 md:col-span-1
-          fixed md:relative top-0 right-0 h-full w-3/4 md:w-auto
-          bg-gray-50 p-4 md:p-0 z-50 transform transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
-          shadow-lg md:shadow-none
-        `}>
+        <div className={cn(
+          "space-y-6 col-span-3 md:col-span-1",
+          "fixed md:relative top-0 right-0 h-full w-3/4 md:w-auto",
+          "bg-gray-50 p-4 md:p-0 z-50 transform transition-transform duration-300 ease-in-out",
+          "shadow-lg md:shadow-none",
+          isSidebarOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'
+        )}>
           {/* Mobile Close Button */}
           <button
             className="md:hidden absolute top-4 left-4 p-2 rounded-lg bg-teal-500 text-white"
@@ -71,26 +72,20 @@ const RestaurantLayout = () => {
             <button className="w-full bg-teal-500 text-white py-2 px-4 rounded-full hover:bg-teal-600 mb-4">
               Add New Floor
             </button>
-            <button 
-              className={`w-full py-2 px-4 rounded-md mb-2 ${
-                selectedFloor === 'Ground Floor' 
-                ? 'bg-teal-500 text-white' 
-                : 'bg-gray-100 hover:bg-gray-200'
-              }`}
-              onClick={() => setSelectedFloor('Ground Floor')}
-            >
-              Ground Floor
-            </button>
-            <button 
-              className={`w-full py-2 px-4 rounded-md ${
-                selectedFloor === 'First Floor' 
-                ? 'bg-teal-500 text-white' 
-                : 'bg-gray-100 hover:bg-gray-200'
-              }`}
-              onClick={() => setSelectedFloor('First Floor')}
-            >
-              First Floor
-            </button>
+            {['Ground Floor', 'First Floor'].map((floor) => (
+              <button 
+                key={floor}
+                className={cn(
+                  "w-full py-2 px-4 rounded-md mb-2",
+                  selectedFloor === floor
+                    ? "bg-teal-500 text-white"
+                    : "bg-gray-100 hover:bg-gray-200"
+                )}
+                onClick={() => setSelectedFloor(floor)}
+              >
+                {floor}
+              </button>
+            ))}
           </div>
 
           {/* Table Properties */}
@@ -115,7 +110,7 @@ const RestaurantLayout = () => {
                   className="w-full border rounded-md p-2"
                 />
               </div>
-              <button className="w-full bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600">
+              <button className="w-full bg-teal-500 text-white py-2 px-4 rounded-full hover:bg-teal-600">
                 Generate QR Code
               </button>
             </div>
