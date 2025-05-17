@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import qrCode from '../../assets/demoQR.png';
 
 interface TableProps {
   id: number;
@@ -12,7 +13,7 @@ const RestaurantLayout = () => {
   const [tables, setTables] = useState<TableProps[]>(
     Array.from({ length: 12 }, (_, i) => ({
       id: i + 1,
-      qrCode: 'https://via.placeholder.com/150x150.png?text=QR+Code',
+      qrCode: qrCode,
     }))
   );
 
