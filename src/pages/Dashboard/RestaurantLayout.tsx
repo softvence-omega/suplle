@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import qrCode from '../../assets/demoQR.png';
 import SectionHeader from '@/components/ui/sectionHeader';
+import { IoMenu, IoClose } from "react-icons/io5";
 
 interface TableProps {
   id: number;
@@ -11,24 +12,63 @@ const RestaurantLayout = () => {
   const [selectedFloor, setSelectedFloor] = useState('Ground Floor');
   const [numTables, setNumTables] = useState('12');
   const [capacity, setCapacity] = useState('6');
-  const [tables, setTables] = useState<TableProps[]>(
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [tables, _setTables] = useState<TableProps[]>(
     Array.from({ length: 12 }, (_, i) => ({
       id: i + 1,
       qrCode: qrCode,
     }))
   );
 
+  // Function to handle QR code download
+  const handleDownloadQR = (tableId: number) => {
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = qrCode;
+    link.download = `table_${tableId}_qr_code.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <SectionHeader title='Resturant Layout'/>
+    <div className=" bg-gray-50 min-h-screen">
+      <div className="flex gap-4 items-center justify-between">
+        <SectionHeader className='flex-1' title='Restaurant Layout'/>
+        <button
+          className="md:hidden p-2 rounded-lg bg-teal-500 text-white"
+          onClick={toggleSidebar}
+        >
+          {isSidebarOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
+        </button>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 py-6 relative">
         {/* Left Sidebar */}
-        <div className="space-y-6">
+        <div className={`
+          space-y-6 col-span-3 md:col-span-1
+          fixed md:relative top-0 right-0 h-full w-3/4 md:w-auto
+          bg-gray-50 p-4 md:p-0 z-50 transform transition-transform duration-300 ease-in-out
+          ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
+          shadow-lg md:shadow-none
+        `}>
+          {/* Mobile Close Button */}
+          <button
+            className="md:hidden absolute top-4 left-4 p-2 rounded-lg bg-teal-500 text-white"
+            onClick={toggleSidebar}
+          >
+            <IoClose size={24} />
+          </button>
+
           {/* Floor Management */}
-          <div className="bg-white p-4 rounded-lg shadow">
+          <div className="bg-white p-4 rounded-lg shadow mt-12 md:mt-0">
             <h2 className="font-medium mb-4">Floors</h2>
-            <button className="w-full bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 mb-4">
+            <button className="w-full bg-teal-500 text-white py-2 px-4 rounded-full hover:bg-teal-600 mb-4">
               Add New Floor
             </button>
             <button 
@@ -82,18 +122,29 @@ const RestaurantLayout = () => {
           </div>
         </div>
 
+        {/* Overlay for mobile when sidebar is open */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+            onClick={toggleSidebar}
+          />
+        )}
+
         {/* Table Grid */}
         <div className="col-span-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {tables.map((table) => (
               <div key={table.id} className="bg-white p-4 rounded-lg shadow text-center">
                 <h3 className="font-medium mb-2">Table {table.id}</h3>
                 <img
                   src={table.qrCode}
                   alt={`QR Code for Table ${table.id}`}
-                  className="w-32 h-32 mx-auto mb-2"
+                  className="w-28 h-28 rounded mx-auto mb-2"
                 />
-                <button className="w-full bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600">
+                <button 
+                  onClick={() => handleDownloadQR(table.id)}
+                  className="w-full bg-teal-500 text-white p-1 md:py-2 md:px-3 rounded-full hover:bg-teal-600"
+                >
                   Download QR
                 </button>
               </div>

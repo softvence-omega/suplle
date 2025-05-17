@@ -147,8 +147,8 @@ const MenuViewForOwner = () => {
     }
   };
   return <>
-    <SectionHeader className="my-7 mx-9" title="Menu Management" />
-    <div className="flex flex-col mx-9">
+    <SectionHeader className="mb-4" title="Menu Management" />
+    <div className="flex flex-col">
       {menuSections.map((section: MenuSection, index: number) => (
         <div key={index} className="mb-8">
           <SectionTitle title={section.title} />
@@ -174,7 +174,7 @@ const MenuViewForOwner = () => {
     </div>
       <Link
         to="/dashboard/menu/add"
-        className="bg-[#11A8A5] mx-9 text-white px-4 py-2 rounded-md mt-4  transition duration-200 ease-in-out flex items-center w-36 gap-2 hover:bg-[#0A7B78] active:scale-95"
+        className="bg-[#11A8A5] text-white px-4 py-2 rounded-md mt-4  transition duration-200 ease-in-out flex items-center w-36 gap-2 hover:bg-[#0A7B78] active:scale-95"
       >
        <Plus/>  <span>Add Menu</span>
       </Link>

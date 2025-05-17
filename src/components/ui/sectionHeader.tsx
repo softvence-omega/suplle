@@ -22,7 +22,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-between bg-[#E7F6F6] dark:bg-[#161616] p-4 rounded-[8px] border dark:border-[#818486] border-[#E3E9ED] ${className}`}
+      className={`flex items-center justify-between bg-[#E7F6F6] dark:bg-[#161616] p-2 md:p-4 rounded-[8px] border dark:border-[#818486] border-[#E3E9ED] ${className}`}
     >
       <div className="flex items-center gap-2">
         {showBackButton && (
