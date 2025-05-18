@@ -1,0 +1,145 @@
+import { Button } from "@/components/ui/button";
+import { Eye, Pencil, Trash2 } from "lucide-react";
+import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
+import { useState } from "react";
+import { Modal } from "@/components/ui/modal";
+import { z } from "zod";
+import type { FieldValues } from "react-hook-form";
+import EditUserModal from "./EditUserModal";
+
+interface UserTableProps {
+  users: User[];
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
+}
+
+export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  const validData = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    phone: z.string().min(1, { message: "Phone is required" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
+  });
+
+ 
+
+  const handleView = (user: User) => {
+    setSelectedUser(user);
+    setViewModalOpen(true);
+  };
+
+  const handleEdit = (user: User) => {
+    setSelectedUser(user);
+    setEditModalOpen(true);
+  };
+
+  const handleEditSubmit = (data: FieldValues) => {
+    if (selectedUser) {
+      onEdit({ ...selectedUser, ...data });
+      setEditModalOpen(false);
+    }
+  };
+
+  return (
+    <div className="relative overflow-x-auto">
+      <table className="w-full text-sm text-left text-gray-500">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th scope="col" className="px-6 py-3">Sl.</th>
+            <th scope="col" className="px-6 py-3">User Name</th>
+            <th scope="col" className="px-6 py-3">Email</th>
+            <th scope="col" className="px-6 py-3">Role</th>
+            <th scope="col" className="px-6 py-3">Status</th>
+            <th scope="col" className="px-6 py-3">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user, index) => (
+            <tr key={user.id} className="bg-white border-b">
+              <td className="px-6 py-4">{index + 1}</td>
+              <td className="px-6 py-4">{user.userName}</td>
+              <td className="px-6 py-4">{user.email}</td>
+              <td className="px-6 py-4">{user.role}</td>
+              <td className="px-6 py-4">
+                <span className={`px-2 py-1 rounded-full text-xs ${user.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                  }`}>
+                  {user.status}
+                </span>
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleView(user)}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEdit(user)}
+                  >
+
+                    <EditUserModal
+                      selectedUser={user}
+                      onEdit={handleEditSubmit}
+                      trigger={<Pencil className="h-4 w-4" />}
+                    />
+                  </Button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* View Modal */}
+      <Modal
+        open={viewModalOpen}
+        onOpenChange={setViewModalOpen}
+        trigger={<></>}
+        title="User Details"
+      >
+        {selectedUser && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Name</label>
+                <p className="mt-1">{selectedUser.userName}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Email</label>
+                <p className="mt-1">{selectedUser.email}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Role</label>
+                <p className="mt-1">{selectedUser.role}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Status</label>
+                <p className="mt-1">
+                  <span className={`px-2 py-1 rounded-full text-xs ${selectedUser.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                    }`}>
+                    {selectedUser.status}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <Button onClick={() => setViewModalOpen(false)} type="button">Close</Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+    </div>
+  );
+}
+
+

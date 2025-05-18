@@ -1,6 +1,6 @@
 
 
-import FoodCard from "@/components/ManageMenu/FoodCard";
+import FoodCard from "@/components/dashboard/ManageMenu/FoodCard";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
