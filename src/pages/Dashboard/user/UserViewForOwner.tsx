@@ -7,13 +7,14 @@ import UserTable from "@/components/user/UserTable";
 import { useState, useCallback, useMemo } from "react";
 import Pagination from "@/utils/Pagination";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import SuppleInput from "@/components/Forms/SuppleInput";
 import SuppleForm from "@/components/Forms/SuplleForm";
 import SuppleSelect from "@/components/Forms/SuppleDropdown";
 import { userRoles } from "@/constants/roles";
 import { SelectItem } from "@/components/ui/select";
+import { z } from "zod";
+import type { FieldValues } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type User = {
   id: number;
@@ -149,65 +150,96 @@ const UserViewForOwner = () => {
 
 
 const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
-  const onSubmit = (data: any) => {
+  const [open, setOpen] = useState(false);
+  const validData = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    phone: z.string().min(1, { message: "Phone is required" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
+  });
+  const onSubmit = (data: FieldValues) => {
     console.log("Form data:", data);
+    setOpen(false);
   }
+  const closeModal = () => {
+    setOpen(false);
+  }
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button>{ButtonText}</Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <div className="space-y-2">
-            <h4 className="font-medium leading-none">Create New Sub User Account</h4>
-            <p className="text-sm text-muted-foreground">
-              Fill in the details below to create a new sub user account
-            </p>
-          </div>
-          <SuppleForm onSubmit={onSubmit} className="grid gap-2">
-            <div className="">
-              <SuppleInput
-                name="name"
-                label="Name"
-                placeholder="Name"
-              />
+      {open && (
+        <>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0 z-[50]" />
+          <PopoverContent
+            className="w-[500px] p-4 -translate-x-[100%] popoverContent shadow-lg border rounded-lg"
+            side="top"
+            align="end"
+            sideOffset={5}
+          >
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <h4 className="font-medium leading-none">Create New Sub User Account</h4>
+                <p className="text-sm text-muted-foreground">
+                  Fill in the details below to create a new sub user account
+                </p>
+              </div>
+              <SuppleForm resolver={zodResolver(validData)} onSubmit={onSubmit} className="grid gap-2">
+                <div className="">
+                  <SuppleInput
+                    name="name"
+                    label="Name"
+                    placeholder="Name"
+                    type="text"
+                  />
+                </div>
+                <div className="">
+                  <SuppleInput
+                    name="phone"
+                    label="Phone"
+                    placeholder="Phone"
+                    type="tel"
+                  />
+                </div>
+                <div className="">
+                  <SuppleInput
+                    name="email"
+                    label="Email"
+                    placeholder="Email"
+                    type="email"
+                  />
+                </div>
+                <div className="">
+                  <SuppleInput
+                    name="password"
+                    label="Password"
+                    placeholder="Password"
+                    type="password"
+                  />
+                </div>
+                <div className="">
+                  <SuppleSelect name="role" label="Role">
+                    {
+                      userRoles.map((role) => (
+                        <SelectItem key={role.value} value={role.value}>
+                          {role.label}
+                        </SelectItem>
+                      ))
+                    }
+                  </SuppleSelect>
+                </div>
+                <div className="flex items-center space-x-2  justify-end">
+                <Button onClick={closeModal} type="button" variant={"outline"} className="mt-4">Cancel</Button>
+                <Button type="submit" className="mt-4">Create User</Button>
+                </div>
+              </SuppleForm>
             </div>
-            <div className="">
-              <SuppleInput
-                name="phone"
-                label="Phone"
-                placeholder="Phone"
-              />
-            </div>
-            <div className="">
-              <SuppleInput
-                name="email"
-                label="Email"
-                placeholder="Email"
-              />
-            </div>
-            <div className="">
-              <SuppleInput
-                name="password"
-                label="Password"
-                placeholder="Password"
-              />
-            </div>
-            <div className="">
-              <SuppleSelect name="role" label="Role">
-                {
-                  userRoles.map((role) => (
-                    <SelectItem key={role.value} value={role.value}>
-                      {role.label}
-                    </SelectItem>
-                  ))
-                }
-              </SuppleSelect>
-            </div>
-          </SuppleForm>
-        </div>
-      </PopoverContent>
+          </PopoverContent>
+        </>
+      )}
     </Popover>
   )
 }

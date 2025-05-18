@@ -147,7 +147,7 @@ const MenuViewForOwner = () => {
     }
   };
   return <>
-    <SectionHeader className="mb-4" title="Menu Management"/>
+    <SectionHeader className="mb-4 px-2" title="Menu Management"/>
     <div className="flex flex-col">
       {menuSections.map((section: MenuSection, index: number) => (
         <div key={index} className="mb-8">
