@@ -60,7 +60,7 @@ export const QRCodeDesigner: React.FC = () => {
             </div>
           ) : (
             <button
-              className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center"
+              className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center md:text-base text-sm "
               onClick={() => setShowNewDesignForm(true)}
             >
               <span className="mr-2">+</span> Add New Design
