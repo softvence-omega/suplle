@@ -11,6 +11,8 @@ interface SuppleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     containerClassName?: string;
     labelClassName?: string;
     helperText?: string;
+    startIcon?: React.ReactNode;
+    endIcon?: React.ReactNode;
 }
 
 const SuppleInput = ({
@@ -24,6 +26,8 @@ const SuppleInput = ({
     helperText,
     type = "text",
     required,
+    startIcon,
+    endIcon,
     ...props
 }: SuppleInputProps) => {
     const { control } = useFormContext();
@@ -48,18 +52,32 @@ const SuppleInput = ({
                 name={name}
                 render={({ field, fieldState: { error: fieldError } }) => (
                     <div className="space-y-1">
-                        <Input
-                            {...field}
-                            {...props}
-                            id={name}
-                            type={type}
-                            className={cn(
-                                fullWidth && "w-full",
-                                (error || fieldError) && "border-destructive focus-visible:ring-destructive/50",
-                                className
+                        <div className="relative">
+                            {startIcon && (
+                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                    {startIcon}
+                                </div>
                             )}
-                            aria-invalid={!!error || !!fieldError}
-                        />
+                            <Input
+                                {...field}
+                                {...props}
+                                id={name}
+                                type={type}
+                                className={cn(
+                                    fullWidth && "w-full",
+                                    startIcon && "pl-10",
+                                    endIcon && "pr-10",
+                                    (error || fieldError) && "border-destructive focus-visible:ring-destructive/50",
+                                    className
+                                )}
+                                aria-invalid={!!error || !!fieldError}
+                            />
+                            {endIcon && (
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                    {endIcon}
+                                </div>
+                            )}
+                        </div>
                         {(error || fieldError) && (
                             <p className="text-sm text-destructive">
                                 {error || fieldError?.message}
