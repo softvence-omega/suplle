@@ -1,52 +1,53 @@
 import { Button } from "@/components/ui/button";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
 import { useState } from "react";
-import { Modal } from "@/components/ui/modal";
-import SuppleForm from "@/components/Forms/SuplleForm";
+// import type { FieldValues } from "react-hook-form";
+// import EditUserModal from "./EditUserModal";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import { Button } from "@/components/ui/button";
 import SuppleInput from "@/components/Forms/SuppleInput";
+import SuppleForm from "@/components/Forms/SuplleForm";
 import SuppleSelect from "@/components/Forms/SuppleDropdown";
-import { SelectItem } from "@/components/ui/select";
 import { userRoles } from "@/constants/roles";
+import { SelectItem } from "@/components/ui/select";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { FieldValues } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal } from "@/components/ui/modal";
 
+type EditUserModalProps = {
+  trigger: React.ReactNode;
+  onEdit: (data: FieldValues) => void;
+  selectedUser: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
 interface UserTableProps {
   users: User[];
   onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
 }
 
-export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
+export default function UserTable({ users, onEdit }: UserTableProps) {
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  const validData = z.object({
-    name: z.string().min(1, { message: "Name is required" }),
-    phone: z.string().min(1, { message: "Phone is required" }),
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
-  });
+  const [editModalOpen, setEditModalOpen] = useState(false);
+ 
 
   const handleView = (user: User) => {
     setSelectedUser(user);
     setViewModalOpen(true);
   };
-
-  const handleEdit = (user: User) => {
-    setSelectedUser(user);
-    setEditModalOpen(true);
+  const handleClose = () => {
+    setViewModalOpen(false);
+    setSelectedUser(null);
   };
 
   const handleEditSubmit = (data: FieldValues) => {
-    if (selectedUser) {
-      onEdit({ ...selectedUser, ...data });
-      setEditModalOpen(false);
-    }
+    onEdit(data);
   };
+
+  console.log(editModalOpen);
 
   return (
     <div className="relative overflow-x-auto">
@@ -69,9 +70,8 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">{user.role}</td>
               <td className="px-6 py-4">
-                <span className={`px-2 py-1 rounded-full text-xs ${
-                  user.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                }`}>
+                <span className={`px-2 py-1 rounded-full text-xs ${user.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                  }`}>
                   {user.status}
                 </span>
               </td>
@@ -87,16 +87,18 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleEdit(user)}
+                    onClick={() => {
+                      setEditModalOpen(true);
+                    }}
                   >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onDelete(user)}
-                  >
-                    <Trash2 className="h-4 w-4" />
+
+                    <EditUserModal
+                      open={editModalOpen}
+                      setOpen={setEditModalOpen}
+                      selectedUser={user}
+                      onEdit={handleEditSubmit}
+                      trigger={<Pencil className="h-4 w-4" />}
+                    />
                   </Button>
                 </div>
               </td>
@@ -105,15 +107,10 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
         </tbody>
       </table>
 
-      {/* View Modal */}
-      <Modal
-        open={viewModalOpen}
-        onOpenChange={setViewModalOpen}
-        trigger={<></>}
-        title="User Details"
-      >
-        {selectedUser && (
-          <div className="space-y-4">
+
+      {selectedUser &&  (
+        <div className="space-y-4 fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium">Name</label>
@@ -130,77 +127,27 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
               <div>
                 <label className="text-sm font-medium">Status</label>
                 <p className="mt-1">
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    selectedUser.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                  }`}>
+                  <span className={`px-2 py-1 rounded-full text-xs ${selectedUser.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                    }`}>
                     {selectedUser.status}
                   </span>
                 </p>
               </div>
             </div>
             <div className="flex justify-end">
-              <Button onClick={() => setViewModalOpen(false)} type="button">Close</Button>
+              <Button className="cursor-pointer" onClick={handleClose} type="button">Close</Button>
             </div>
           </div>
-        )}
-      </Modal>
-
-     
-        {selectedUser && (
-          <SuppleForm 
-            resolver={zodResolver(validData)} 
-            onSubmit={handleEditSubmit} 
-            className="grid gap-2"
-            defaultValues={{
-              name: selectedUser.userName,
-              email: selectedUser.email,
-              role: selectedUser.role,
-            }}
-          >
-            <div className="">
-              <SuppleInput
-                name="name"
-                label="Name"
-                placeholder="Name"
-                type="text"
-              />
-            </div>
-            <div className="">
-              <SuppleInput
-                name="email"
-                label="Email"
-                placeholder="Email"
-                type="email"
-              />
-            </div>
-            <div className="">
-              <SuppleSelect name="role" label="Role">
-                {userRoles.map((role) => (
-                  <SelectItem key={role.value} value={role.value}>
-                    {role.label}
-                  </SelectItem>
-                ))}
-              </SuppleSelect>
-            </div>
-            <div className="flex items-center space-x-2 justify-end">
-              <Button onClick={() => setEditModalOpen(false)} type="button" variant="outline">
-                Cancel
-              </Button>
-              <Button type="submit">
-                Save Changes
-              </Button>
-            </div>
-          </SuppleForm>
-        )}
-
+        </div>
+      )}
 
     </div>
   );
-} 
+}
 
 
-const EditUser = ({ ButtonText }: { ButtonText: string }) => {
-  const [open, setOpen] = useState(false);
+const EditUserModal = ({ trigger, onEdit, selectedUser , open, setOpen }: EditUserModalProps) => {
+  
   const validData = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     phone: z.string().min(1, { message: "Phone is required" }),
@@ -209,8 +156,17 @@ const EditUser = ({ ButtonText }: { ButtonText: string }) => {
     role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
   });
 
+  const defaultValues = {
+    name: selectedUser?.name || "",
+    phone: selectedUser?.phone || "",
+    email: selectedUser?.email || "",
+    password: selectedUser?.password || "",
+    role: selectedUser?.role || "manager",
+  };
+
   const onSubmit = (data: FieldValues) => {
     console.log("Form data:", data);
+    onEdit(data);
     setOpen(false);
   }
 
@@ -222,11 +178,11 @@ const EditUser = ({ ButtonText }: { ButtonText: string }) => {
     <Modal
       open={open}
       onOpenChange={setOpen}
-      trigger={<Button>{ButtonText}</Button>}
+      trigger={trigger}
       title="Create New Sub User Account"
       description="Fill in the details below to create a new sub user account"
     >
-      <SuppleForm resolver={zodResolver(validData)} onSubmit={onSubmit} className="grid gap-2">
+      <SuppleForm defaultValues={defaultValues} resolver={zodResolver(validData)} onSubmit={onSubmit} className="grid gap-2">
         <div className="">
           <SuppleInput
             name="name"
@@ -271,7 +227,7 @@ const EditUser = ({ ButtonText }: { ButtonText: string }) => {
           </SuppleSelect>
         </div>
         <div className="flex items-center space-x-2 justify-end">
-          <Button onClick={closeModal} type="button" variant={"outline"} className="mt-4">Cancel</Button>
+          <Button  type="button" onClick={closeModal} variant={"outline"} className="mt-4">Cancel</Button>
           <Button type="submit" className="mt-4">Create User</Button>
         </div>
       </SuppleForm>
