@@ -1,6 +1,7 @@
 import Banner from "@/components/home/Banner/Banner";
 import FAQ from "@/components/home/FAQ/FAQ";
 import HowSuplleHelps from "@/components/home/HowSuplleHelps/HowSuplleHelps";
+import SignInBox from "@/components/home/SignInBox/SignInBox";
 import Story from "@/components/home/Story/Story";
 import Testimonial from "@/components/home/Testimonial/Testimonial";
 import WhatIsSuplle from "@/components/home/WhatIsSuplle/WhatIsSuplle";
@@ -16,6 +17,7 @@ const Home = () => {
       <HowSuplleHelps />
       <FAQ />
       <Testimonial />
+      <SignInBox />
     </div>
   );
 };
