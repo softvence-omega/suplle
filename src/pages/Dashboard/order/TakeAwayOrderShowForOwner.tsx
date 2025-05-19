@@ -89,12 +89,12 @@ function TakeAwayOrderShowForOwner() {
   return (
     <div>
       <div className='flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between'>
-        <h5 className='text-[#333333] text-xl font-medium'>Dine-in Orders</h5>
+        <h5 className='text-[#333333] text-xl font-medium'>Takeaway Orders</h5>
         <Button>+ Add Order</Button>
       </div>
 
       <div className='flex flex-col md:flex-row gap-5 mt-5 items-start md:items-center justify-between '>
-        <div className='flex  w-[70%]' >
+        <div className='flex flex-col md:flex-row w-[70%]' >
           <div className='w-1/2'>
           <p className='text-base font-normal text-[#203849]'>Order Status</p>
 
@@ -125,7 +125,7 @@ function TakeAwayOrderShowForOwner() {
         </div>
         
 
-        <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-4 w-[30%]'>
+        <div className='gap-5'>
           <button onClick={() => setViewMode('grid')}>
             <GridIcon className={`${viewMode === 'grid' ? 'text-primary' : 'text-gray-400'}`} />
           </button>
