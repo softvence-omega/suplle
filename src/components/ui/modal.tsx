@@ -8,7 +8,7 @@ interface ModalProps {
   trigger: ReactNode;
   children: ReactNode;
   title?: string;
-  description?: string;
+  description?: string;  
 }
 
 export const Modal = ({ 
