@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ChevronsRight } from 'lucide-react';
 import type { OrderStatus } from './order';
 
@@ -16,7 +16,26 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   const hiddenTabs = allTabs.slice(3);     // for mobile dropdown
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const handleDropdownToggle = () => setDropdownOpen((prev) => !prev);
+
+  // Close dropdown when clicking outsidee
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   return (
     <div className="border-b border-[#DDDDDD] dark:border-gray-800">
@@ -28,14 +47,11 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
             <button
               key={tab}
               onClick={() => onTabChange(tab)}
-              className={`
-                pb-2 px-1 text-sm font-light border-b-2 
-                ${
-                  activeTab === tab
-                    ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }
-              `}
+              className={`pb-2 px-1 text-sm font-light border-b-2 ${
+                activeTab === tab
+                  ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
             >
               {tab}
             </button>
@@ -44,12 +60,11 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
 
         {/* Right: More Dropdown */}
         {hiddenTabs.length > 0 && (
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={handleDropdownToggle}
               className="pb-2 px-1 text-sm font-light border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center"
             >
-           
               <ChevronsRight className="w-4 h-4 ml-1 dark:text-[#FFFFFF]" />
             </button>
 
@@ -85,14 +100,11 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
           <button
             key={tab}
             onClick={() => onTabChange(tab)}
-            className={`
-              pb-2 px-1 text-sm font-light border-b-2 transition-colors duration-200
-              ${
-                activeTab === tab
-                  ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 '
-              }
-            `}
+            className={`pb-2 px-1 text-sm font-light border-b-2 transition-colors duration-200 ${
+              activeTab === tab
+                ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
           >
             {tab}
           </button>

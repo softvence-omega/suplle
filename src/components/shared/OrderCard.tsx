@@ -28,7 +28,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
   total,
 }) => {
   return (
-    <div className="bg-white dark:bg-[#161616] w-[260px] rounded-xl shadow-md p-4 space-y-3">
+    <div className="bg-white dark:bg-[#161616] rounded-xl shadow-md p-4 space-y-3">
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
