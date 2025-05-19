@@ -1,5 +1,12 @@
-const AdminSubscription = () => {
-  return <div>AdminSubscription</div>;
-};
+import PricingSection from "@/components/admin-panel/subcription/PricingSection"
 
-export default AdminSubscription;
+
+const AdminSubscription = () => {
+  return (
+    <div>
+      <PricingSection/>
+    </div>
+  )
+}
+
+export default AdminSubscription
