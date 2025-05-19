@@ -1,6 +1,6 @@
 // user.ts
-export type UserStatus = "Staff" | "Owner";
-
+export type UserStatus = "Staff" | "Owner" | "Manager" | "Dine In" | "Waiter";
+export type UserActivity = "Active" | "Inactive" | "Takeaway";
 export interface User {
   id: string;
   vendor: string;
@@ -8,7 +8,7 @@ export interface User {
   time: string;
   name?: string;
   mail?: string;
-  status?: string;
+  status?: UserActivity;
   image?: string;
   paymentStatus?: string;
   totalAmount?: string;

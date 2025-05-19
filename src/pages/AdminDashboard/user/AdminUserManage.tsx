@@ -1,4 +1,4 @@
-import UserComponent from "@/components/admin-panel/user-management/um-management/UserComponent";
+import UserComponent from "@/components/admin-panel/user-management/UserComponent";
 
 const AdminUserManage = () => {
   return (
