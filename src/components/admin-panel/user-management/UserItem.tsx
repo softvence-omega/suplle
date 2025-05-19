@@ -7,9 +7,10 @@ import type { User } from "./user";
 interface UserItemProps {
   users: User[];
   onClick: (userId: string) => void;
+  onEditClick: (userId: string) => void;
 }
 
-const UserItem: React.FC<UserItemProps> = ({ users, onClick }) => {
+const UserItem: React.FC<UserItemProps> = ({ users, onClick, onEditClick }) => {
   return (
     <Table>
       <TableBody>
@@ -35,8 +36,11 @@ const UserItem: React.FC<UserItemProps> = ({ users, onClick }) => {
                   className="w-6 h-6 cursor-pointer"
                   onClick={() => onClick(user.id)}
                 />
-                <div className="w-[18.81px] border border-[#B6B6B6] rotate-[-90deg]" />
-                <SquarePen className="w-6 h-6 cursor-pointer" />
+                <div className="w-[18.81px] border border-[#B6B6B6] rotate-[-90deg] mb-2" />
+                <SquarePen
+                  className="w-6 h-6 cursor-pointer"
+                  onClick={() => onEditClick(user.id)}
+                />
               </div>
             </TableCell>
           </TableRow>

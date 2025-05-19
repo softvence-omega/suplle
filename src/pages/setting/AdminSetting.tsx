@@ -1,8 +1,11 @@
+import ProfileSetting from "@/components/Setting/ProfileSetting"
 
 
 const AdminSetting = () => {
   return (
-    <div>AdminSetting</div>
+    <div>
+      <ProfileSetting/>
+    </div>
   )
 }
 
