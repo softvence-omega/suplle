@@ -78,7 +78,7 @@ const AllMenu = () => {
     <div className="space-y-4 mt-7">
       <h1 className="font-rubik text-sm sm:text-[18px] ">All Menu</h1>
       {/* MAIN TABLE */}
-      <div>
+      <div className="">
         <Table>
           <TableBody>
             {restaurants.map((res) => (

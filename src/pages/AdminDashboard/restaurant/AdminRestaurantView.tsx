@@ -54,7 +54,7 @@ const AdminRestaurantView = () => {
           <button
             onClick={() => setTabs("RESTAURANT")}
             className={cn(
-              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px] font-light cursor-pointer",
+              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-[10px] sm:text-[15px] font-light cursor-pointer",
               tabs === "RESTAURANT" &&
                 "border-b-[2px] font-normal border-green-600"
             )}
