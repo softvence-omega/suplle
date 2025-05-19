@@ -1,12 +1,11 @@
-import ProfileSetting from "@/components/Setting/ProfileSetting"
-
+import ProfileSetting from "@/components/admin-panel/Setting/ProfileSetting";
 
 const AdminSetting = () => {
   return (
     <div>
-      <ProfileSetting/>
+      <ProfileSetting />
     </div>
-  )
-}
+  );
+};
 
-export default AdminSetting
+export default AdminSetting;
