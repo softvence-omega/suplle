@@ -43,7 +43,7 @@ const AdminMenuManagement = () => {
         </h1>
       </div>
       {/*  TABS */}
-      <div className={cn(restaurantForm && "hidden", "")}>
+      <div className={cn(restaurantForm && "hidden", "mt-5")}>
         <div className="flex items-center space-x-5 border-b-[2px]">
           <button
             onClick={() => setTabs("ALL_MENU")}
