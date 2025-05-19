@@ -56,7 +56,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
       {/* Time and Total */}
       <div className="flex justify-between items-center text-sm text-gray-700 border-t pt-3">
         <span className="text-xs dark:text-[#FFFFFF]">{time}</span>
-        <span className="text-base font-medium text-gray-900 dark:text-[#FFFFFF]">${total}</span>
+        <span className="text-base font-medium text-gray-900 dark:text-[#FFFFFF]">{total}</span>
       </div>
 
       {/* Actions */}
