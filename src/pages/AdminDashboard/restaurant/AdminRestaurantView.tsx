@@ -1,7 +1,7 @@
-import Activity from "@/components/shared/restaurant/Activity";
-import AllRestaurant from "@/components/shared/restaurant/AllRestaurant";
-import Pending from "@/components/shared/restaurant/Pending";
-import RestaurantForm from "@/components/shared/restaurant/RestaurantForm";
+import Activity from "@/components/restaurant/Activity";
+import AllRestaurant from "@/components/restaurant/AllRestaurant";
+import Pending from "@/components/restaurant/Pending";
+import RestaurantForm from "@/components/restaurant/RestaurantForm";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -40,7 +40,7 @@ const AdminRestaurantView = () => {
           <Button
             onClick={() => setRestaurantForm(!restaurantForm)}
             className={cn(
-              "bg-gradient-to-br from-green-400 to-green-800 font-normal sm:py-5 sm:px-5 cursor-pointer tracking-wide",
+              "bg-gradient-to-br from-green-400 font-light to-green-800 rounded sm:py-5 sm:px-5 cursor-pointer tracking-wide",
               restaurantForm && "hidden"
             )}
           >
@@ -54,8 +54,9 @@ const AdminRestaurantView = () => {
           <button
             onClick={() => setTabs("RESTAURANT")}
             className={cn(
-              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px]  cursor-pointer",
-              tabs === "RESTAURANT" && "border-b-[2px] border-green-600"
+              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px] font-light cursor-pointer",
+              tabs === "RESTAURANT" &&
+                "border-b-[2px] font-normal border-green-600"
             )}
           >
             All Restaurants
@@ -63,8 +64,8 @@ const AdminRestaurantView = () => {
           <button
             onClick={() => setTabs("ACTIVE")}
             className={cn(
-              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px]  cursor-pointer",
-              tabs === "ACTIVE" && "border-b-[2px] border-green-600"
+              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px] font-light cursor-pointer",
+              tabs === "ACTIVE" && "border-b-[2px] border-green-600 font-normal"
             )}
           >
             Active
@@ -72,8 +73,9 @@ const AdminRestaurantView = () => {
           <button
             onClick={() => setTabs("PENDING")}
             className={cn(
-              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px]  cursor-pointer",
-              tabs === "PENDING" && "border-b-[2px] border-green-600"
+              "py-[8px] sm:py-[12px] pr-[15px] sm:pr-[25px] text-sm sm:text-[15px] font-light cursor-pointer",
+              tabs === "PENDING" &&
+                "border-b-[2px] border-green-600 font-normal"
             )}
           >
             Pending
