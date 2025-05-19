@@ -1,5 +1,6 @@
 import Banner from "@/components/home/Banner/Banner";
 import FAQ from "@/components/home/FAQ/FAQ";
+import Footer from "@/components/home/Footer/Footer";
 import HowSuplleHelps from "@/components/home/HowSuplleHelps/HowSuplleHelps";
 import SignInBox from "@/components/home/SignInBox/SignInBox";
 import Story from "@/components/home/Story/Story";
@@ -18,6 +19,7 @@ const Home = () => {
       <FAQ />
       <Testimonial />
       <SignInBox />
+      <Footer />
     </div>
   );
 };
