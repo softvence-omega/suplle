@@ -11,6 +11,7 @@ import CreateUserModal from "@/components/dashboard/UserViewForOwner/user/Create
 export type User = {
   id: number;
   userName: string;
+  phone?: string;
   email: string;
   role: "manager" | "dine-in" | "waiter" | "takeaway" | "chef" | "cashier" | "maintenance";
   status: "Active" | "Inactive";

@@ -94,7 +94,7 @@ function DineInOrderShowForOwner() {
       </div>
 
       <div className='flex flex-col md:flex-row gap-5 mt-5 items-start md:items-center justify-between '>
-        <div className='flex  w-[70%]' >
+        <div className='flex flex-col md:flex-row  w-[70%]' >
           <div className='w-1/2'>
           <p className='text-base font-normal text-[#203849]'>Order Status</p>
 

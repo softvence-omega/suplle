@@ -1,3 +1,6 @@
+import AddMenu from "@/components/menu_management/AddMenu";
+import AllMenu from "@/components/menu_management/AllMenu";
+import Categories from "@/components/menu_management/Categories";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,13 +9,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 type Status = "ALL_MENU" | "ADD_MENU" | "CATEGORIES";
 const AdminMenuManagement = () => {
   const [tabs, setTabs] = useState<Status>("ALL_MENU");
   const [restaurantForm, setRestaurantForm] = useState(false);
+  
+
   return (
     <div className="font-rubik">
       <div className="space-y-4">
@@ -33,23 +37,13 @@ const AdminMenuManagement = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="inline-flex sm:flex flex-col sm:flex-row sm:items-center space-y-4 justify-between mt-7">
-          <h1 className="font-rubik text-sm sm:text-[18px] ">
-            {!restaurantForm ? "Menu Management" : "Add Restaurants"}
-          </h1>
-          <Button
-            onClick={() => setRestaurantForm(!restaurantForm)}
-            className={cn(
-              "bg-gradient-to-br from-green-400 font-light to-green-800 rounded sm:py-5 sm:px-5 cursor-pointer tracking-wide",
-              restaurantForm && "hidden"
-            )}
-          >
-            Add Restaurant
-          </Button>
-        </div>
+
+        <h1 className="font-rubik text-sm sm:text-[18px] mt-7">
+          {!restaurantForm ? "Menu Management" : "Add Restaurants"}
+        </h1>
       </div>
       {/*  TABS */}
-      <div className={cn(restaurantForm && "hidden", "")}>
+      <div className={cn(restaurantForm && "hidden", "mt-5")}>
         <div className="flex items-center space-x-5 border-b-[2px]">
           <button
             onClick={() => setTabs("ALL_MENU")}
@@ -92,7 +86,14 @@ const AdminMenuManagement = () => {
         )}{" "} */}
       </div>
       {/* ADD RESTAURANT FORM HERE */}
-      
+      {/* TABLE */}
+      {tabs === "ALL_MENU" ? (
+        <AllMenu />
+      ) : tabs === "ADD_MENU" ? (
+        <AddMenu />
+      ) : (
+        tabs === "CATEGORIES" && <Categories />
+      )}{" "}
     </div>
   );
 };

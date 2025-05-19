@@ -1,6 +1,6 @@
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { ReactNode } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
 
 interface ModalProps {
   open: boolean;
@@ -8,7 +8,7 @@ interface ModalProps {
   trigger: ReactNode;
   children: ReactNode;
   title?: string;
-  description?: string;
+  description?: string;  
 }
 
 export const Modal = ({ 
@@ -20,35 +20,32 @@ export const Modal = ({
   description 
 }: ModalProps) => {
   return (
-    <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
         {trigger}
-      </PopoverTrigger>
+      </DialogTrigger>
       {open && (
         <>
           <div className="fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0 z-[50]" />
-          <PopoverContent
-            className="w-[500px] p-4 -translate-x-[100%] popoverContent shadow-lg border rounded-lg"
-            side="top"
-            align="end"
-            sideOffset={5}
+          <DialogContent
+            className="w-[500px] p-4  popoverContent shadow-lg border rounded-lg"
           >
             <div className="grid gap-4">
               {(title || description) && (
-                <div className="space-y-2">
-                  {title && <h4 className="font-medium leading-none">{title}</h4>}
+                <DialogHeader className="space-y-2">
+                  {title && <DialogTitle className="font-medium leading-none">{title}</DialogTitle>}
                   {description && (
-                    <p className="text-sm text-muted-foreground">
+                    <DialogDescription className="text-sm text-muted-foreground">
                       {description}
-                    </p>
+                    </DialogDescription>
                   )}
-                </div>
+                </DialogHeader>
               )}
               {children}
             </div>
-          </PopoverContent>
+          </DialogContent>
         </>
       )}
-    </Popover>
+    </Dialog>
   );
 } 
