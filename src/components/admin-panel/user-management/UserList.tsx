@@ -7,9 +7,15 @@ interface UserListProps {
   users: User[];
   filter: "All" | UserStatus;
   onUserClick: (userId: string) => void;
+  onEditClick: (userId: string) => void;
 }
 
-const UserList: React.FC<UserListProps> = ({ users, filter, onUserClick }) => {
+const UserList: React.FC<UserListProps> = ({
+  users,
+  filter,
+  onUserClick,
+  onEditClick,
+}) => {
   const filteredUsers =
     filter === "All" ? users : users.filter((user) => user.role === filter);
 
@@ -23,7 +29,11 @@ const UserList: React.FC<UserListProps> = ({ users, filter, onUserClick }) => {
 
       <div className="divide-y divide-gray-200">
         {filteredUsers.length > 0 ? (
-          <UserItem users={filteredUsers} onClick={onUserClick} />
+          <UserItem
+            users={filteredUsers}
+            onClick={onUserClick}
+            onEditClick={onEditClick}
+          />
         ) : (
           <div className="p-6 text-center text-gray-500">
             No Users found in this category.

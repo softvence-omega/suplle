@@ -36,6 +36,11 @@ import ForgetPasword from "@/pages/auth/ForgetPasword";
 // import UserStaff from "@/components/admin-panel/user-management/UserStaff";
 // import UserStaff from "@/components/admin-panel/user-management/UserStaff";
 import AdminUserManage from "@/pages/AdminDashboard/user/AdminUserManage";
+import CreateOrderForOwner from "@/pages/Dashboard/order/CreateOrderForOwner";
+import EditOrderForOwner from "@/pages/Dashboard/order/EditOrderForOwner";
+import OrderDetailsForOwner from "@/pages/Dashboard/order/OrderDetailsForOwner";
+import AdminNotification from "@/pages/AdminDashboard/notification/AdminNotification";
+import AdminSetting from "@/pages/setting/AdminSetting";
 
 const AppRoutes = () => {
   return (
@@ -62,6 +67,9 @@ const AppRoutes = () => {
         {/* order routes */}
         <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />
         <Route path="order/take-away" element={<TakeAwayOrderShowForOwner />} />
+        <Route path="order/create" element={<CreateOrderForOwner />} />
+        <Route path="order/Edit/:id" element={<EditOrderForOwner />} />
+        <Route path="order/details/:id" element={<OrderDetailsForOwner />} />
         {/* menu routes */}
         <Route path="menu/view" element={<MenuViewForOwner />} />
         <Route path="menu/add" element={<MenuAddForOwner />} />
@@ -108,6 +116,8 @@ const AppRoutes = () => {
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscription />} />
+        <Route path="notification" element={<AdminNotification />} />
+        <Route path="setting" element={<AdminSetting />} />
       </Route>
     </Routes>
   );

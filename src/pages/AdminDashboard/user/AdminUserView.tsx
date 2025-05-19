@@ -1,4 +1,3 @@
-import UserMenu from "@/components/admin-panel/user-management/UserMenu";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -65,7 +64,6 @@ const AdminUserView = () => {
         </div>
       </div>
       {/* TABLE */}
-      <UserMenu />
     </div>
   );
 };
