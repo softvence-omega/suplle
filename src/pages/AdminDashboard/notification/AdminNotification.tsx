@@ -2,9 +2,7 @@
 
 const AdminNotification = () => {
   return (
-    <div>
-      AdminNotification
-    </div>
+    <div>AdminNotification</div>
   )
 }
 
