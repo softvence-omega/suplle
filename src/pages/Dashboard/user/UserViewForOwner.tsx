@@ -102,9 +102,7 @@ const UserViewForOwner = () => {
     console.log("Edit user:", user);
   }, []);
 
-  const handleDelete = useCallback((user: User) => {
-    console.log("Delete user:", user);
-  }, []);
+
 
   return (
     <>
@@ -125,7 +123,6 @@ const UserViewForOwner = () => {
       <UserTable
         users={currentUsers}
         onEdit={handleEdit}
-        onDelete={handleDelete}
       />
 
       <Pagination

@@ -1,49 +1,53 @@
 import { Button } from "@/components/ui/button";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
 import { useState } from "react";
-import { Modal } from "@/components/ui/modal";
+// import type { FieldValues } from "react-hook-form";
+// import EditUserModal from "./EditUserModal";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import { Button } from "@/components/ui/button";
+import SuppleInput from "@/components/Forms/SuppleInput";
+import SuppleForm from "@/components/Forms/SuplleForm";
+import SuppleSelect from "@/components/Forms/SuppleDropdown";
+import { userRoles } from "@/constants/roles";
+import { SelectItem } from "@/components/ui/select";
 import { z } from "zod";
 import type { FieldValues } from "react-hook-form";
-import EditUserModal from "./EditUserModal";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal } from "@/components/ui/modal";
 
+type EditUserModalProps = {
+  trigger: React.ReactNode;
+  onEdit: (data: FieldValues) => void;
+  selectedUser: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
 interface UserTableProps {
   users: User[];
   onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
 }
 
-export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
+export default function UserTable({ users, onEdit }: UserTableProps) {
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  const validData = z.object({
-    name: z.string().min(1, { message: "Name is required" }),
-    phone: z.string().min(1, { message: "Phone is required" }),
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
-  });
-
+  const [editModalOpen, setEditModalOpen] = useState(false);
  
 
   const handleView = (user: User) => {
     setSelectedUser(user);
     setViewModalOpen(true);
   };
-
-  const handleEdit = (user: User) => {
-    setSelectedUser(user);
-    setEditModalOpen(true);
+  const handleClose = () => {
+    setViewModalOpen(false);
+    setSelectedUser(null);
   };
 
   const handleEditSubmit = (data: FieldValues) => {
-    if (selectedUser) {
-      onEdit({ ...selectedUser, ...data });
-      setEditModalOpen(false);
-    }
+    onEdit(data);
   };
+
+  console.log(editModalOpen);
 
   return (
     <div className="relative overflow-x-auto">
@@ -83,10 +87,14 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleEdit(user)}
+                    onClick={() => {
+                      setEditModalOpen(true);
+                    }}
                   >
 
                     <EditUserModal
+                      open={editModalOpen}
+                      setOpen={setEditModalOpen}
                       selectedUser={user}
                       onEdit={handleEditSubmit}
                       trigger={<Pencil className="h-4 w-4" />}
@@ -99,15 +107,10 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
         </tbody>
       </table>
 
-      {/* View Modal */}
-      <Modal
-        open={viewModalOpen}
-        onOpenChange={setViewModalOpen}
-        trigger={<></>}
-        title="User Details"
-      >
-        {selectedUser && (
-          <div className="space-y-4">
+
+      {selectedUser &&  (
+        <div className="space-y-4 fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium">Name</label>
@@ -132,14 +135,102 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
               </div>
             </div>
             <div className="flex justify-end">
-              <Button onClick={() => setViewModalOpen(false)} type="button">Close</Button>
+              <Button className="cursor-pointer" onClick={handleClose} type="button">Close</Button>
             </div>
           </div>
-        )}
-      </Modal>
+        </div>
+      )}
 
     </div>
   );
 }
 
 
+const EditUserModal = ({ trigger, onEdit, selectedUser , open, setOpen }: EditUserModalProps) => {
+  
+  const validData = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    phone: z.string().min(1, { message: "Phone is required" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
+  });
+
+  const defaultValues = {
+    name: selectedUser?.name || "",
+    phone: selectedUser?.phone || "",
+    email: selectedUser?.email || "",
+    password: selectedUser?.password || "",
+    role: selectedUser?.role || "manager",
+  };
+
+  const onSubmit = (data: FieldValues) => {
+    console.log("Form data:", data);
+    onEdit(data);
+    setOpen(false);
+  }
+
+  const closeModal = () => {
+    setOpen(false);
+  }
+
+  return (
+    <Modal
+      open={open}
+      onOpenChange={setOpen}
+      trigger={trigger}
+      title="Create New Sub User Account"
+      description="Fill in the details below to create a new sub user account"
+    >
+      <SuppleForm defaultValues={defaultValues} resolver={zodResolver(validData)} onSubmit={onSubmit} className="grid gap-2">
+        <div className="">
+          <SuppleInput
+            name="name"
+            label="Name"
+            placeholder="Name"
+            type="text"
+          />
+        </div>
+        <div className="">
+          <SuppleInput
+            name="phone"
+            label="Phone"
+            placeholder="Phone"
+            type="tel"
+          />
+        </div>
+        <div className="">
+          <SuppleInput
+            name="email"
+            label="Email"
+            placeholder="Email"
+            type="email"
+          />
+        </div>
+        <div className="">
+          <SuppleInput
+            name="password"
+            label="Password"
+            placeholder="Password"
+            type="password"
+          />
+        </div>
+        <div className="">
+          <SuppleSelect name="role" label="Role">
+            {
+              userRoles.map((role) => (
+                <SelectItem key={role.value} value={role.value}>
+                  {role.label}
+                </SelectItem>
+              ))
+            }
+          </SuppleSelect>
+        </div>
+        <div className="flex items-center space-x-2 justify-end">
+          <Button  type="button" onClick={closeModal} variant={"outline"} className="mt-4">Cancel</Button>
+          <Button type="submit" className="mt-4">Create User</Button>
+        </div>
+      </SuppleForm>
+    </Modal>
+  )
+}
