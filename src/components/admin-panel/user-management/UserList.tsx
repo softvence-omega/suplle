@@ -23,7 +23,7 @@ const UserList: React.FC<UserListProps> = ({
     <div className="overflow-hidden">
       <div className="mb-4">
         <h2 className="md:text-2xl text-xl text-[#333333] dark:text-[#FFFFFF]">
-          User List{}
+          All Users
         </h2>
       </div>
 

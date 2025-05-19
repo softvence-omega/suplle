@@ -23,41 +23,41 @@ import {
 const mockUsers: User[] = [
   {
     id: "INV001",
-    vendor: "John Doe",
-    role: "Dine In",
+    vendor: "Esther Howard",
+    role: "Manager",
     time: "10:30 AM",
     name: "John Doe",
-    mail: "john@example.com",
+    mail: "esther.howard@example.com",
     status: "Inactive",
     image: "https://randomuser.me/api/portraits/men/11.jpg",
   },
   {
     id: "INV002",
-    vendor: "Jane Smith",
+    vendor: "Wade Warren",
     role: "Waiter",
     time: "11:45 AM",
     name: "Jane Smith",
-    mail: "jane@example.com",
+    mail: "wade.warren@example.com",
     status: "Active",
     image: "https://randomuser.me/api/portraits/women/21.jpg",
   },
   {
     id: "INV003",
-    vendor: "Alice Johnson",
+    vendor: "Cameron Williamson",
     role: "Manager",
     time: "12:15 PM",
-    name: "Alice Johnson",
-    mail: "alice@example.com",
+    name: "Jenny Wilson",
+    mail: "esther.howard@example.com",
     status: "Takeaway",
     image: "https://randomuser.me/api/portraits/women/31.jpg",
   },
   {
     id: "INV004",
-    vendor: "Bob Williams",
+    vendor: "Wade Warren",
     role: "Dine In",
     time: "1:30 PM",
-    name: "Bob Williams",
-    mail: "bob@example.com",
+    name: "Wade Warren",
+    mail: "wade.warren@example.com",
     status: "Inactive",
     image: "https://randomuser.me/api/portraits/men/41.jpg",
   },
@@ -77,7 +77,7 @@ const mockUsers: User[] = [
     role: "Manager",
     time: "10:30 AM",
     name: "John Doe",
-    mail: "john@example.com",
+    mail: "jesther.howard@example.com",
     status: "Inactive",
     image: "https://randomuser.me/api/portraits/men/11.jpg",
   },
@@ -236,7 +236,9 @@ const UserComponent: React.FC = () => {
       <Dialog open={isViewOpen} onOpenChange={setIsViewOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>User Details</DialogTitle>
+            <DialogTitle className="text-[24px] font-normal leading-normal font-[Rubik] bg-gradient-to-b from-[#56DAAB] via-[#31B8A0] to-[#0F9996] bg-clip-text text-transparent">
+              User Details
+            </DialogTitle>
           </DialogHeader>
           {selectedUser && (
             <div className="grid gap-4 py-4">
@@ -250,7 +252,9 @@ const UserComponent: React.FC = () => {
                     {selectedUser.name?.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <h2 className="text-xl font-semibold">{selectedUser.name}</h2>
+                <h2 className="text-xl text-[24px] font-normal leading-normal font-[Rubik] bg-gradient-to-b from-[#56DAAB] via-[#31B8A0] to-[#0F9996] bg-clip-text text-transparent">
+                  {selectedUser.name}
+                </h2>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -284,7 +288,9 @@ const UserComponent: React.FC = () => {
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit User</DialogTitle>
+            <DialogTitle className="text-[24px] font-normal leading-normal font-[Rubik] bg-gradient-to-b from-[#56DAAB] via-[#31B8A0] to-[#0F9996] bg-clip-text text-transparent">
+              Edit User
+            </DialogTitle>
           </DialogHeader>
           {editUser && (
             <form
@@ -355,7 +361,7 @@ const UserComponent: React.FC = () => {
                   </Select>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="status" className="text-right">
+                  <Label htmlFor="status" className="text-right font-rubik">
                     Status
                   </Label>
                   <Select
@@ -383,10 +389,16 @@ const UserComponent: React.FC = () => {
                   type="button"
                   variant="outline"
                   onClick={() => setIsEditOpen(false)}
+                  className="h-[38px] rounded-[6px]"
                 >
                   Cancel
                 </Button>
-                <Button type="submit">Save changes</Button>
+                <Button
+                  className="h-[38.44px] rounded-[6.989px] text-white bg-[linear-gradient(176deg,_#56DAAB_-18.78%,_#0F9996_111.3%)]"
+                  type="submit"
+                >
+                  Save changes
+                </Button>
               </div>
             </form>
           )}
