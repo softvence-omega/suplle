@@ -125,7 +125,10 @@ const AllRestaurant = () => {
               <TableCell className="text-center">{invoice.order}</TableCell>
               <TableCell colSpan={3} className="">
                 <div className="flex items-center justify-end space-x-4">
-                  <button className="cursor-pointer">
+                  <button
+                    onClick={() => handleShowDetailsData(invoice)}
+                    className="cursor-pointer"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -174,10 +177,7 @@ const AllRestaurant = () => {
                     </svg>
                   </button>
                   <div className="w-[1.5px] h-[15px] bg-gray-300" />
-                  <button
-                    onClick={() => handleShowDetailsData(invoice)}
-                    className="cursor-pointer"
-                  >
+                  <button className="cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -211,22 +211,28 @@ const AllRestaurant = () => {
         </TableBody>
       </Table>
       {/* MODAL */}
-      {showModal && (
-        <Modal
-          open={showModal}
-          onOpenChange={handelCloseModal}
-          trigger={<Button>Close</Button>}
-          title="All Restaurants"
-        >
-          {showDetailsData && (
-            <div>
-              {" "}
-              <img src={showDetailsData?.image} alt="l" />
-              ddd
-            </div>
-          )}
-        </Modal>
-      )}
+
+      <Modal
+        open={showModal}
+        onOpenChange={handelCloseModal}
+        trigger="Close"
+        title="Restaurants Details Data"
+      >
+        {showDetailsData && (
+          <div className="text-center">
+            {" "}
+            <img
+              src={showDetailsData?.image}
+              alt="l"
+              className="w-16 rounded mx-auto"
+            />
+            <h1>{showDetailsData?.name}</h1>
+            <p>Status : {showDetailsData?.status}</p>
+            <p>Email {showDetailsData?.mail}</p>
+            <p>Order No: {showDetailsData?.order}</p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
