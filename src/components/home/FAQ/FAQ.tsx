@@ -1,11 +1,14 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
+import { AnimatePresence, motion } from "framer-motion";
 
-const accordionData = [
+interface AccordionItem {
+  id: number;
+  trigger: string;
+  content: string;
+}
+
+const accordionData: AccordionItem[] = [
   {
     id: 1,
     trigger: "Is there a free trial available?",
@@ -44,32 +47,70 @@ const accordionData = [
 ];
 
 const FAQ = () => {
+  const [openItem, setOpenItem] = useState<number | null>(null);
+
+  const toggleItem = (id: number) => {
+    setOpenItem(openItem === id ? null : id);
+  };
+
   return (
-    <div className="">
-      <h1 className="text-center text-6xl mt- mb-7">
+    <div className="mt-44">
+      <h1 className="text-center text-6xl mb-7">
         Frequently asked <span className="text-primary">questions</span>
       </h1>
       <p className="text-center text-xl">
         Everything you need to know about the product and billing.
       </p>
-      {/* accordion  */}
-      <div className="mt-5 lg:w-[1280px] mb-24  mx-auto">
-        <Accordion type="single" collapsible>
-          {accordionData.map((item) => (
-            <AccordionItem
-              key={item.id}
-              value={`item-${item.id}`}
-              className="border-b-1"
+
+      <div className="mt-24 lg:w-[1280px] mb-24 mx-auto">
+        {accordionData.map((item) => (
+          <div key={item.id} className="mb-5 border-b">
+            <motion.button
+              initial={false}
+              className="flex justify-between items-center w-full text-xl py-4"
+              onClick={() => toggleItem(item.id)}
             >
-              <AccordionTrigger className="text-xl">
-                {item.trigger}
-              </AccordionTrigger>
-              <AccordionContent className="text-lg">
-                {item.content}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+              {item.trigger}
+              <motion.div
+                key={`icon-${item.id}`}
+                initial={false}
+                animate={{ rotate: openItem === item.id ? 0 : 0 }} // You can add rotation here if desired
+              >
+                {openItem === item.id ? (
+                  <CiCircleMinus className="h-8 w-8 text-primary" />
+                ) : (
+                  <CiCirclePlus className="h-8 w-8 text-primary" />
+                )}
+              </motion.div>
+            </motion.button>
+            <AnimatePresence>
+              {openItem === item.id && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{
+                    opacity: 1,
+                    height: "auto",
+                    transition: {
+                      opacity: { duration: 0.3 },
+                      height: { duration: 0.4 },
+                    },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    height: 0,
+                    transition: {
+                      opacity: { duration: 0.2 },
+                      height: { duration: 0.3 },
+                    },
+                  }}
+                  className="overflow-hidden"
+                >
+                  <div className="pb-4 text-lg">{item.content}</div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
       </div>
     </div>
   );
