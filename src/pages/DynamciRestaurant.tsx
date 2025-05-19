@@ -6,7 +6,8 @@ import FoodCategory from "@/components/dynamicResturants/FoodCategory";
 import OfferItem from "@/components/dynamicResturants/OfferItem";
 import FoodCategory1 from "@/components/dynamicResturants/FoodCategory1";
 import FoodList from "@/components/dynamicResturants/FoodList";
-
+import GoogleMap from "@/components/dynamicResturants/GoogleMap";
+import Wrapper from "@/components/shared/Wrapper";
 const DynamicRestaurant = () => {
   const { id } = useParams();
   console.log(id);
@@ -14,7 +15,8 @@ const DynamicRestaurant = () => {
     <div>
       <Navbar />
       <RestaurantBanner />
-      <div className="p-5 md:p-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white w-full">
+      <Wrapper>
+        <div className="p-5 md:p-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white w-full">
         <p className="text-2xl md:text-3xl font-bold">
           All Offers from McDonald’s East London
         </p>
@@ -28,10 +30,12 @@ const DynamicRestaurant = () => {
         />
         </div>
       </div>
+      </Wrapper>
       <FoodCategory />
       <OfferItem/>
       <FoodCategory1 />
       <FoodList />
+      <GoogleMap/>
     </div>
   );
 };

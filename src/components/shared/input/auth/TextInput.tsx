@@ -10,40 +10,51 @@ interface InputComponentProps {
   name: string; // Name of the input field
   label: string; // Label for the input field
   className?: string; // Optional additional class names
-  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>; // Optional icon component
   register: UseFormRegister<FieldValues>; // React Hook Form's register function
   rules?: RegisterOptions; // Optional validation rules
   errors?: FieldErrors<FieldValues>; // Full errors object from React Hook Form
+  placeholder?: string;
+  type?: string;
+  labelClassName?: string;
+  inputClassName?:string // Optional class name for the label
 }
 
 const InputComponent: React.FC<InputComponentProps> = ({
   name,
   label,
   className = "",
-  icon: Icon,
+  labelClassName = "",
+  inputClassName="",
   register,
   rules = {},
   errors,
+  placeholder,
+  type,
   ...props
 }) => {
   const error = errors ? errors[name] : undefined;
-
   return (
-    <div
-      className={`p-4 border border-[#EDF1F3] bg-white rounded-lg shadow-sm ${className}`}
-    >
-      <label htmlFor={name} className="text-sm font-medium text-gray-700">
+    <div className={`w-full ${className}`}>
+      <label
+        htmlFor={name}
+        className={`text-[#484B52] dark:text-white text-sm font-medium ${labelClassName}`}
+      >
         {label}
       </label>
-      {Icon && <Icon className="w-5 h-5 text-gray-500" />}{" "}
-      {/* Display Icon if provided */}
-      <input
-        {...props} // Spread other props like placeholder, type, etc.
-        {...register(name, rules)} // Register the input field with React Hook Form, with optional rules
-        className={`flex-1 h-12 px-4 py-2 text-base text-gray-700 border-none focus:outline-none focus:ring-2 focus:ring-indigo-600 rounded-md ${
-          error ? "border-red-500" : ""
-        }`}
-      />
+      <div className="relative w-full">
+        {/* Display Icon if provided */}
+        <input
+          {...props} // Spread other props like placeholder, type, etc.
+          {...register(name, rules)} // Register the input field with React Hook Form, with optional rules
+          id={name}
+          name={name}
+          className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
+            error ? "border-red-500" : ""
+          }`}
+          placeholder={placeholder || "Type here"}
+          type={type || "text"}
+        />
+      </div>
       {error?.message && (
         <p className="text-red-500 text-sm">{String(error.message)}</p>
       )}

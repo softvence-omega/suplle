@@ -4,6 +4,7 @@ import food1 from '@/assets/offerItem/offer1.jpg'
 import food2 from '@/assets/offerItem/offer2.jpg'
 import food3 from '@/assets/offerItem/offer3.jpg'
 import { Plus } from 'lucide-react'
+import Wrapper from '../shared/Wrapper'
 
 
 const offerdata = [
@@ -35,6 +36,7 @@ const offerdata = [
 
 const OfferItem = () => {
   return (
+    <Wrapper>
     <div className="flex flex-wrap gap-4 justify-center items-center p-5 md:p-12">
         {offerdata.map((item) => (
             <div
@@ -66,6 +68,7 @@ const OfferItem = () => {
 
          ))}
     </div>
+    </Wrapper>
   )
 }
 

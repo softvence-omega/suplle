@@ -30,8 +30,12 @@ import AdminRestaurantCreate from "@/pages/AdminDashboard/restaurant/AdminRestau
 import AdminMenuManagement from "@/pages/AdminDashboard/menu/AdminMenuManagement";
 import AdminQrDesignsView from "@/pages/AdminDashboard/QR/AdminQrDesignsView";
 import AdminQrDesignCreate from "@/pages/AdminDashboard/QR/AdminQrDesignCreate";
-import AdminUserView from "@/pages/AdminDashboard/user/AdminUserView";
 import Welcome from "@/pages/Welcome";
+import OTP from "@/pages/auth/OTP";
+import ForgetPasword from "@/pages/auth/ForgetPasword";
+// import UserStaff from "@/components/admin-panel/user-management/UserStaff";
+// import UserStaff from "@/components/admin-panel/user-management/UserStaff";
+import AdminUserManage from "@/pages/AdminDashboard/user/AdminUserManage";
 
 const AppRoutes = () => {
   return (
@@ -41,6 +45,8 @@ const AppRoutes = () => {
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/otp" element={<OTP />} />
+      <Route path="/forget-password" element={<ForgetPasword />} />
       {/* dahboard routes for owner ************************************************************* */}
       <Route
         path="dashboard"
@@ -96,7 +102,9 @@ const AppRoutes = () => {
         <Route path="qr-designs/view" element={<AdminQrDesignsView />} />
         <Route path="qr-designs/create" element={<AdminQrDesignCreate />} />
         {/* user routes */}
-        <Route path="user/view" element={<AdminUserView />} />
+        <Route path="user/view" element={<AdminUserManage />} />
+        {/* <Route path="user/view/staff" element={<UserStaff />} /> */}
+        {/* <Route path="user/view/staff" element={<UserStaff />} /> */}
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscription />} />

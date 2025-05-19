@@ -1,7 +1,10 @@
 import { Clock3, Bike, ClipboardList } from 'lucide-react' // Or your own icons
+import Wrapper from '../shared/Wrapper'
 
 const RestaurantBanner = () => {
+  
   return (
+    <Wrapper>
     <div className='px-5'>
       <div
       className="w-full bg-cover rounded-2xl relative bg-no-repeat bg-center  bg-[url(/dynamicResturents/Rectangle-44.png)]"
@@ -54,6 +57,8 @@ const RestaurantBanner = () => {
       </div>
     </div>
     </div>
+    </Wrapper>
+    
   )
 }
 
