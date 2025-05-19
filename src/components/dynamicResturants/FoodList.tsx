@@ -1,8 +1,10 @@
+import { generateRandomId } from '@/utils/utils';
 import React from 'react';
+import Wrapper from '../shared/Wrapper';
 
 // Food type definition
 type Food = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   variant: string;
@@ -15,7 +17,7 @@ type Food = {
 // Food data array
 const foodItems: Food[] = [
   {
-    id: 1,
+    id: generateRandomId(),
     name: "Bacon Burger",
     description: "Satisfy your cravings with our best-selling",
     variant: "Cheeseburger",
@@ -25,7 +27,7 @@ const foodItems: Food[] = [
     image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop"
   },
   {
-    id: 2,
+    id: generateRandomId(),
     name: "Veggie Delight",
     description: "A healthy vegetarian option packed with flavor",
     variant: "Vegetarian",
@@ -74,10 +76,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
         {food.description}
       </p>
       
-      {/* Variant */}
-      <div className="pt-3 border-t border-dashed border-gray-200 text-gray-700 px-5">
-        {food.variant}
-      </div>
     </div>
   );
 };
@@ -85,14 +83,16 @@ const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
 // Food List Component
 const FoodList = () => {
   return (
-    <div className="p-6">
+    <Wrapper>
+    <div className="p-6 items-center justify-center">
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {foodItems.map(food => (
           <FoodCard key={food.id} food={food} />
         ))}
       </div>
     </div>
+    </Wrapper>
   );
 };
 

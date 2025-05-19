@@ -30,10 +30,14 @@ import AdminRestaurantCreate from "@/pages/AdminDashboard/restaurant/AdminRestau
 import AdminMenuManagement from "@/pages/AdminDashboard/menu/AdminMenuManagement";
 import AdminQrDesignsView from "@/pages/AdminDashboard/QR/AdminQrDesignsView";
 import AdminQrDesignCreate from "@/pages/AdminDashboard/QR/AdminQrDesignCreate";
-import AdminUserView from "@/pages/AdminDashboard/user/AdminUserView";
 import Welcome from "@/pages/Welcome";
 import OTP from "@/pages/auth/OTP";
 import ForgetPasword from "@/pages/auth/ForgetPasword";
+// import UserStaff from "@/components/admin-panel/user-management/UserStaff";
+import AdminUserManage from "@/pages/AdminDashboard/user/AdminUserManage";
+import CreateOrderForOwner from "@/pages/Dashboard/order/CreateOrderForOwner";
+import EditOrderForOwner from "@/pages/Dashboard/order/EditOrderForOwner";
+import OrderDetailsForOwner from "@/pages/Dashboard/order/OrderDetailsForOwner";
 
 const AppRoutes = () => {
   return (
@@ -60,6 +64,9 @@ const AppRoutes = () => {
         {/* order routes */}
         <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />
         <Route path="order/take-away" element={<TakeAwayOrderShowForOwner />} />
+        <Route path="order/create" element={<CreateOrderForOwner />} />
+        <Route path="order/Edit/:id" element={<EditOrderForOwner />} />
+        <Route path="order/details/:id" element={<OrderDetailsForOwner />} />
         {/* menu routes */}
         <Route path="menu/view" element={<MenuViewForOwner />} />
         <Route path="menu/add" element={<MenuAddForOwner />} />
@@ -100,7 +107,8 @@ const AppRoutes = () => {
         <Route path="qr-designs/view" element={<AdminQrDesignsView />} />
         <Route path="qr-designs/create" element={<AdminQrDesignCreate />} />
         {/* user routes */}
-        <Route path="user/view" element={<AdminUserView />} />
+        <Route path="user/view" element={<AdminUserManage />} />
+        {/* <Route path="user/view/staff" element={<UserStaff />} /> */}
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscription />} />
