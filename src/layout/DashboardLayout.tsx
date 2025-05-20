@@ -96,7 +96,7 @@ const DashboardLayout = () => {
         <main
           className={`content ${
             sidebarOpen ? "ml-12 md:ml-60" : "ml-12"
-          } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 bg-white dark:bg-secondary-dark`}
+          } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 bg-[#F6F8FB] dark:bg-secondary-dark min-h-screen`}
         >
           {/* Page Content Placeholder */}
           <div className="md:p-8">
