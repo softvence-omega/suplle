@@ -95,9 +95,9 @@ const DashboardLayout = () => {
 
         {/* Main Content */}
         <main
-          className={`pt-16 min-h-screen transition-all duration-300 ${
-            sidebarOpen ? "ml-60" : "ml-12"
-          }`}
+          className={`content ${
+            sidebarOpen ? "ml-12 md:ml-60" : "ml-12"
+          } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 bg-[#F6F8FB] dark:bg-secondary-dark min-h-screen`}
         >
           <div className="p-8">
             <Outlet />

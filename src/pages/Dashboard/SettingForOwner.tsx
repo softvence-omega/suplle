@@ -1,5 +1,12 @@
-const SettingForOwner = () => {
-  return <div>SettingForOwner</div>;
-};
+import RestaurantProfileForm from "@/components/dashboard/ownerSetting/RestaurantProfileForm"
 
-export default SettingForOwner;
+
+const SettingForOwner = () => {
+  return (
+    <div>
+      < RestaurantProfileForm/>
+    </div>
+  )
+}
+
+export default SettingForOwner

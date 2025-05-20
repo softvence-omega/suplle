@@ -12,7 +12,7 @@ const FoodCategory1 = () => {
     const [selectFilteredValue, setselectFilteredValue] = useState('Starters')
   return (
     <Wrapper>
-    <div className='bg-[#F3F3F3] border-1 border-solid w-full'>
+    <div className='bg-[#F3F3F3] border-1 border-solid w-full rounded-xl'>
         <div className="flex flex-col md:flex-row items-center justify-start space-x-4 items-center gap-5">
           {
             foodCategoryData1.map((item) => (

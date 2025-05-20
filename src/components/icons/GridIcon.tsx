@@ -9,7 +9,7 @@ interface GridIconProps {
 const GridIcon: React.FC<GridIconProps> = ({
   size = 25,
   color = "#1C1B1F",
-  className = "",
+  className = "dark:text-white text-[#1C1B1F]",
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@ const GridIcon: React.FC<GridIconProps> = ({
     height={size}
     viewBox="0 0 25 25"
     fill="none"
-    className={className}
+    className={`text-[#1C1B1F] dark:text-white ${className}`}
     style={{
       width: `${size}px`,
       height: `${size}px`,
@@ -38,7 +38,7 @@ const GridIcon: React.FC<GridIconProps> = ({
     <g mask="url(#mask0)">
       <path
         d="M4.1665 21V4H21.1665V21H4.1665ZM19.6665 19.5V13.25H13.4165V19.5H19.6665ZM19.6665 5.5H13.4165V11.75H19.6665V5.5ZM5.6665 5.5V11.75H11.9165V5.5H5.6665ZM5.6665 19.5H11.9165V13.25H5.6665V19.5Z"
-        fill={color}
+    fill="currentColor"
       />
     </g>
   </svg>

@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
-import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
+
 import { useState } from "react";
-import ViewUserModal from "./ViewUserModal";
+/* import ViewUserModal from "./ViewUserModal"; */
 import EditUserModal from "./EditUserModal";
-import EditIcon from "@/components/ui/EditIcon";
+import type { User } from "@/pages/Dashboard/staff/StaffViewForOwner";
+
+import { useNavigate } from "react-router-dom";
+import eye from "@/assets/admin/eye.png";
+import edit from "@/assets/admin/edit.png";
 
 // Types
 interface UserTableProps {
@@ -38,34 +42,50 @@ const useUserTable = (onEdit: (user: User) => void) => {
 };
 
 // Table Row Component
-const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
+const UserTableRow = ({
+  user,
+  index,
+  /* onView, */ onEdit,
+}: UserTableRowProps) => {
+  const navigate = useNavigate();
   return (
-    <tr className="bg-white border-b dark:bg-primary-dark dark:text-white">
+    <tr className="dark:bg-[#161616] border-b">
       <td className="px-6 py-4">{index + 1}</td>
       <td className="px-6 py-4">{user.userName}</td>
       <td className="px-6 py-4">{user.email}</td>
       <td className="px-6 py-4">{user.role}</td>
       <td className="px-6 py-4">
         <span
-          className={`px-2 py-1 rounded-full text-xs ${
+          className={`flex w-[160px] px-[10px] py-[10px] justify-center items-center gap-[10px] rounded-[8px] text-xs ${
             user.status === "Active"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-green-100 text-black"
+              : "bg-red-100 text-black"
           }`}
         >
           {user.status}
         </span>
       </td>
+
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={() => onView(user)}>
+          {/* <Button variant="ghost" size="icon" onClick={() => onView(user)}>
             <ViewUserModal selectedUser={user} />
+          </Button> */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(`/dashboard/staff/details/${user.id}`)}
+            aria-label="View user details"
+          >
+            {/* <EyeIcon className="h-4 w-4" /> */}
+            <img src={eye} alt="" className="h-6 w-6" />
           </Button>
+
           <Button variant="ghost" size="icon">
             <EditUserModal
               onEdit={onEdit}
               selectedUser={user}
-              ButtonText={<EditIcon className="h-4 w-4" />}
+              ButtonText={<img src={edit} alt="" className="h-6 w-6" />}
             />
           </Button>
         </div>
@@ -79,16 +99,28 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
   const { handleView, handleEdit } = useUserTable(onEdit);
 
   return (
-    <div className="relative overflow-x-auto my-4 ">
-      <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-white dark:bg-primary-dark">
+    <div className="relative overflow-x-auto my-4 dark:bg-[#161616]">
+      <table className="w-full text-sm text-left ">
+        <thead className="text-xs  uppercase">
           <tr>
-            <th scope="col" className="px-6 py-3">Sl.</th>
-            <th scope="col" className="px-6 py-3">User Name</th>
-            <th scope="col" className="px-6 py-3">Email</th>
-            <th scope="col" className="px-6 py-3">Role</th>
-            <th scope="col" className="px-6 py-3">Status</th>
-            <th scope="col" className="px-6 py-3">Action</th>
+            <th scope="col" className="px-6 py-3">
+              Sl.
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Staff Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Email
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Role
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -106,6 +138,3 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
     </div>
   );
 }
-
-
-

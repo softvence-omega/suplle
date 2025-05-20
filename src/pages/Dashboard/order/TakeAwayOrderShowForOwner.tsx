@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 const orders = [
   {
@@ -84,19 +85,22 @@ const orders = [
 
 function TakeAwayOrderShowForOwner() {
   const { register } = useForm();
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-
+  const handleCreateOrder = () => {
+    navigate('/dashboard/order/create')
+  }
   return (
     <div>
       <div className='flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between'>
-        <h5 className='text-[#333333] text-xl font-medium'>Takeaway Orders</h5>
-        <Button>+ Add Order</Button>
+        <h5 className='text-[#333333] dark:text-white text-xl font-medium'>Takeaway Orders</h5>
+        <Button onClick={handleCreateOrder}>+ Add Order</Button>
       </div>
 
       <div className='flex flex-col md:flex-row gap-5 mt-5 items-start md:items-center justify-between '>
         <div className='flex flex-col md:flex-row w-[70%]' >
           <div className='w-1/2'>
-          <p className='text-base font-normal text-[#203849]'>Order Status</p>
+          <p className='text-base dark:text-white font-normal text-[#203849]'>Order Status</p>
 
           <Select>
             <SelectTrigger className=" h-[42px]">
