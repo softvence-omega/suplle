@@ -140,6 +140,7 @@ const AdminDashboardSideBar = ({
                 <div>
                   {/* Parent with arrow icon */}
                   <div
+                    id={item.id}
                     className={`w-full px-2 py-3 pl-8 flex items-center justify-between cursor-pointer`}
                     onClick={() => handleToggle(item.id)}
                   >

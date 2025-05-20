@@ -31,18 +31,10 @@ const TourGuide = ({ isAdmin = false }: TourGuideProps) => {
         }
       },
       {
-        element: 'aside a[href="/admin/restaurant/view"]',
+        element: '#resturant-management',
         popover: {
           title: 'Restaurant Management',
           description: 'Manage all restaurants in the system.',
-          side: 'right'
-        }
-      },
-      {
-        element: 'aside a[href="/admin/menu/management"]',
-        popover: {
-          title: 'Menu Management',
-          description: 'Create and manage menus for restaurants.',
           side: 'right'
         }
       },
@@ -55,10 +47,34 @@ const TourGuide = ({ isAdmin = false }: TourGuideProps) => {
         }
       },
       {
+        element: 'aside a[href="/admin/qr-designs/view"]',
+        popover: {
+          title: 'QR Designs',
+          description: 'Create and manage QR code designs for restaurants.',
+          side: 'right'
+        }
+      },
+      {
+        element: 'aside a[href="/admin/user/view"]',
+        popover: {
+          title: 'User Management',
+          description: 'Manage users and their permissions.',
+          side: 'right'
+        }
+      },
+      {
         element: 'aside a[href="/admin/analytics"]',
         popover: {
           title: 'Analytics',
           description: 'View detailed analytics and reports.',
+          side: 'right'
+        }
+      },
+      {
+        element: 'aside a[href="/admin/subscriptions"]',
+        popover: {
+          title: 'Subscriptions',
+          description: 'Manage your subscription plans and billing.',
           side: 'right'
         }
       }
