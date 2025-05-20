@@ -83,9 +83,8 @@ const MenuAddForOwner = () => {
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">{category.name}</span>
             <Button
-              variant="ghost"
               size="sm"
-              className="text-red-500 hover:text-red-700"
+              className="text-white hover:text-white"
               onClick={() => handleDeleteCategory(category.id)}
             >
               Delete

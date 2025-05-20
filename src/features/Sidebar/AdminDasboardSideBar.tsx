@@ -44,6 +44,7 @@ const AdminDashboardSideBar = ({
     >
       {/* Open sidebar button */}
       <div
+        id="sidebarLogo"
         className={`max-toolbar ${
           sidebarOpen ? "translate-x-0" : "translate-x-24 scale-x-0"
         } w-full -right-6 transition transform ease-in duration-300 flex items-center justify-between border-4 border-white bg-primary dark:bg-primary-dark  absolute top-2 rounded-full h-12`}
@@ -139,6 +140,7 @@ const AdminDashboardSideBar = ({
                 <div>
                   {/* Parent with arrow icon */}
                   <div
+                    id={item.id}
                     className={`w-full px-2 py-3 pl-8 flex items-center justify-between cursor-pointer`}
                     onClick={() => handleToggle(item.id)}
                   >

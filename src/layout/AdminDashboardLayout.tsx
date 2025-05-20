@@ -6,6 +6,7 @@ import NotificationIcon from "@/components/icons/NotificationIcon";
 import MessageIcon from "@/components/icons/MessageIcon";
 import { useState } from "react";
 import AdminDashboardSideBar from "@/features/Sidebar/AdminDasboardSideBar";
+import TourGuide from "@/components/tour/TourGuide";
 
 const AdminDashboardLayout = () => {
   const { theme, toggleTheme } = useThemeStore();
@@ -94,15 +95,17 @@ const AdminDashboardLayout = () => {
 
         {/* Main Content */}
         <main
-          className={`content ${
-            sidebarOpen ? "ml-12 md:ml-60" : "ml-12"
-          } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 bg-[#F6F8FB] dark:bg-secondary-dark min-h-screen`}
+          className={`pt-16 min-h-screen transition-all duration-300 ${
+            sidebarOpen ? "ml-60" : "ml-12"
+          }`}
         >
-          {/* Page Content Placeholder */}
           <div className="p-8">
             <Outlet />
           </div>
         </main>
+
+        {/* Tour Guide */}
+        <TourGuide isAdmin={true} />
       </div>
     </div>
   );
