@@ -1,12 +1,28 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Modal } from "../ui/modal";
 import { Button } from "../ui/button";
 
 const AllRestaurant = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailsData, setShowDetailsData] = useState({});
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [formModalData, setFormModalData] = useState({});
+
+  // DATA SET FUNCTIONS
+  const handleCloseModal = () => {
+    setShowFormModal(false);
+  };
+
+  const handleFormModal = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // const name = e.target.name.value;
+    // const email = e.target.email.value;
+    // const 
+  };
+
+  // DATA VIEW FUNCTIONS
   const handelCloseModal = () => {
     setShowModal(false);
   };
@@ -219,20 +235,22 @@ const AllRestaurant = () => {
         title="Restaurants Details Data"
       >
         {showDetailsData && (
-          <div className="text-center">
+          <div className="text-center space-y-4">
             {" "}
             <img
               src={showDetailsData?.image}
               alt="l"
               className="w-16 rounded mx-auto"
             />
-            <h1>{showDetailsData?.name}</h1>
+            <h1 className="text-green-600">{showDetailsData?.name}</h1>
             <p>Status : {showDetailsData?.status}</p>
             <p>Email {showDetailsData?.mail}</p>
             <p>Order No: {showDetailsData?.order}</p>
           </div>
         )}
       </Modal>
+
+      {/* <Modal title=""  onOpenChange={} open={} trigger>d</Modal> */}
     </div>
   );
 };
