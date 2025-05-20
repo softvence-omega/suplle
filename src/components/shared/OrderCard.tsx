@@ -1,5 +1,6 @@
 import React from "react";
 import { FaUserFriends, FaEye, FaPen } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 interface OrderItem {
   name: string;
@@ -27,6 +28,16 @@ const OrderCard: React.FC<OrderCardProps> = ({
   time,
   total,
 }) => {
+  const navigate = useNavigate()
+  const handleOrderDetails = () =>{
+    // Handle order details logic here
+    navigate(`/dashboard/order/details/${orderId}`)
+  }
+  const handleOrderEdit = () =>{
+    // Handle order edit logic here
+    navigate(`/dashboard/order/edit/${orderId}`)
+  
+  }
   return (
     <div className="bg-white dark:bg-[#161616] rounded-xl shadow-md p-4 space-y-3">
       {/* Header */}
@@ -34,7 +45,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
         <div>
             <div className="flex items-center gap-2">
           <p className="font-medium text-base text-[#465049] dark:text-[#FFFFFF]">{orderId}</p>
-          <div className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-[2px] rounded">
+          <div className="flex items-center gap-1 text-xs dark:bg-secondary-dark bg-green-100 text-green-700 px-2 py-[2px] rounded">
               <FaUserFriends className="text-xs" />
               <span className="text-[12px] font-medium dark:text-[#FFFFFF]">{people}</span>
             </div>
@@ -61,8 +72,8 @@ const OrderCard: React.FC<OrderCardProps> = ({
 
       {/* Actions */}
       <div className="flex justify-end gap-4 text-teal-600 text-lg border-t pt-3">
-        <FaEye className="cursor-pointer" />
-        <FaPen className="cursor-pointer" />
+        <FaEye onClick={handleOrderDetails} className="cursor-pointer" />
+        <FaPen onClick={handleOrderEdit} className="cursor-pointer" />
       </div>
     </div>
   );

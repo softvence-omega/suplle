@@ -68,7 +68,7 @@ const AppRoutes = () => {
         <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />
         <Route path="order/take-away" element={<TakeAwayOrderShowForOwner />} />
         <Route path="order/create" element={<CreateOrderForOwner />} />
-        <Route path="order/Edit/:id" element={<EditOrderForOwner />} />
+        <Route path="order/edit/:id" element={<EditOrderForOwner />} />
         <Route path="order/details/:id" element={<OrderDetailsForOwner />} />
         {/* menu routes */}
         <Route path="menu/view" element={<MenuViewForOwner />} />
