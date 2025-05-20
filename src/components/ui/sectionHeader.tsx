@@ -26,8 +26,9 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     <>
       <div
         className={cn(
-          "flex items-center justify-between py-2 md:py-4 rounded-[8px] ",
-          showBackground && "bg-[#E7F6F6] dark:bg-[#1A1C1E] border dark:border-[#818486] border-[#E3E9ED]",
+          "flex items-center justify-between p2 md:p-4 rounded-[8px] ",
+          showBackground &&
+            "bg-[#E7F6F6] dark:bg-[#1A1C1E] border dark:border-[#818486] border-[#E3E9ED]",
           className && className
         )}
       >
@@ -40,7 +41,9 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
               <ArrowLeft size={20} />
             </button>
           )}
-          <h2 className={cn("text-lg", "font-semibold", titleClassName)}>{title}</h2>
+          <h2 className={cn("text-lg", "font-semibold", titleClassName)}>
+            {title}
+          </h2>
         </div>
         {rightContent && <div>{rightContent}</div>}
       </div>

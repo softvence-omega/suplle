@@ -1,4 +1,4 @@
-import MultiStep from "@/components/DashboardSubscription/Multistep";
+import MultiStep from "@/components/DashboardSubscription/MultiStep";
 
 const SubscriptionsForOwner = () => {
   return (
