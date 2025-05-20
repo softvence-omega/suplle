@@ -10,16 +10,17 @@ const TourGuide = ({ isAdmin = false }: TourGuideProps) => {
   const [driverObj] = useState(() => driver({
     showProgress: true,
     animate: true,
+    nextBtnText: "<span class='text-sm text-[#11A8A5]'> >> </span>",
+    prevBtnText: "<span class='text-sm text-[#11A8A5]'> << </span>",
     showButtons: ['next', 'previous', 'close'],
     stagePadding: 10,
     smoothScroll: true,
     steps: isAdmin ? [
       {
-        element: ' div#sidebarLogo',
         popover: {
-          title: 'Welcome to Admin Dashboard',
-          description: 'This is your admin dashboard where you can manage all aspects of the system.',
-          side: "right"
+          title: 'Welcome to Suplle',
+          description: "Your restaurant profile has been approved. You're now ready to manage your menu, layout, and start serving customers!",
+          
         }
       },
       {

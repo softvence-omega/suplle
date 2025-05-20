@@ -31,7 +31,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
           className && className
         )}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-2">
           {showBackButton && (
             <button
               onClick={() => navigate(-1)}
@@ -40,7 +40,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
               <ArrowLeft size={20} />
             </button>
           )}
-          <h2 className={cn("text-lg", "font-semibold", titleClassName)}>{title}</h2>
+          <h2 className={cn("text-lg", "font-semibold",   titleClassName)}>{title}</h2>
         </div>
         {rightContent && <div>{rightContent}</div>}
       </div>
