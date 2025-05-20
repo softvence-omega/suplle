@@ -36,6 +36,8 @@ import ForgetPasword from "@/pages/auth/ForgetPasword";
 // import UserStaff from "@/components/admin-panel/user-management/UserStaff";
 // import UserStaff from "@/components/admin-panel/user-management/UserStaff";
 import AdminUserManage from "@/pages/AdminDashboard/user/AdminUserManage";
+import Settings from "@/pages/AdminDashboard/settings/Settings";
+import Notification from "@/pages/AdminDashboard/notification/Notification";
 
 const AppRoutes = () => {
   return (
@@ -108,6 +110,8 @@ const AppRoutes = () => {
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscription />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="notification" element={<Notification />} />
       </Route>
     </Routes>
   );
