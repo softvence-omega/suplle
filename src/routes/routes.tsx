@@ -41,6 +41,7 @@ import EditOrderForOwner from "@/pages/Dashboard/order/EditOrderForOwner";
 import OrderDetailsForOwner from "@/pages/Dashboard/order/OrderDetailsForOwner";
 import AdminNotification from "@/pages/AdminDashboard/notification/AdminNotification";
 import AdminSetting from "@/pages/setting/AdminSetting";
+import QrDesign from "@/components/DashboardSubscription/QrDesign";
 
 const AppRoutes = () => {
   return (
@@ -86,6 +87,7 @@ const AppRoutes = () => {
         {/* other parent routes */}
         <Route path="analytics" element={<AnalyticsAndReport />} />
         <Route path="subscriptions" element={<SubscriptionsForOwner />} />
+        <Route path="subscriptions/choose-design" element={<QrDesign />} />
         <Route path="settings" element={<SettingForOwner />} />
       </Route>
       {/* dahboard routes for admin ************************************************************* */}
