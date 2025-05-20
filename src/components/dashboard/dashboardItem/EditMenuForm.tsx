@@ -10,7 +10,7 @@ import { SelectItem } from "@radix-ui/react-select";
 import { Upload } from "lucide-react";
 
 
-interface AddMenuItemFormProps {
+interface EditMenuFormProps {
   categories: MenuCategory[];
   onAddItem: (item: Omit<MenuItem, "id">) => void;
   onClose: () => void;
@@ -38,7 +38,7 @@ const CategorySelect = ({ categories }: { categories: MenuCategory[] }) => {
 
 
 
-const AddMenuItemForm: React.FC<AddMenuItemFormProps> = ({
+const EditMenuForm: React.FC<EditMenuFormProps> = ({
   categories,
   onAddItem,
   onClose,
@@ -184,4 +184,4 @@ const AddMenuItemForm: React.FC<AddMenuItemFormProps> = ({
   );
 };
 
-export default AddMenuItemForm;
+export default EditMenuForm;

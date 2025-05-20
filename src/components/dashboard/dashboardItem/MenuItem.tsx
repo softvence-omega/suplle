@@ -1,12 +1,17 @@
 import React from 'react';
 import { PlusCircle } from 'lucide-react';
 import type { MenuItem as MenuItemType } from './data/Type';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuItemProps {
   item: MenuItemType;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
+  const navigate = useNavigate()
+  const handleEditMenu = () => {
+    navigate("menu/edit")
+  }
   return (
     <div className="bg-[#FDFDFD] dark:bg-[#161616] rounded-lg shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] overflow-hidden ">
       <div className="flex justify-between p-4">
@@ -29,6 +34,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
             <button
             className=" bg-black rounded-full p-1 shadow-md hover:bg-amber-600 transition-colors duration-200"
             aria-label="Add to order"
+            onClick={handleEditMenu}
           >
             <PlusCircle size={20} className="text-white" />
           </button>

@@ -74,7 +74,7 @@ export const ownerSeiderBarData = [
     id: generateRandomId(),
     label: "Dashboard",
     icon: WindowIcon,
-    url: "/dashboard/info",
+    url: "/dashboard",
   },
   {
     id: generateRandomId(),

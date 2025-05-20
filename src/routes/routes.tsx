@@ -42,6 +42,7 @@ import OrderDetailsForOwner from "@/pages/Dashboard/order/OrderDetailsForOwner";
 import AdminNotification from "@/pages/AdminDashboard/notification/AdminNotification";
 import AdminSetting from "@/pages/setting/AdminSetting";
 
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -62,7 +63,7 @@ const AppRoutes = () => {
         }
       >
         <Route path="" element={<DashboardHome />} />
-        <Route path="info" element={<DashboardHome />} />
+       
 
         {/* order routes */}
         <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />

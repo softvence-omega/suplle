@@ -4,14 +4,21 @@ import MenuCategory from './MenuCategory';
 import { initialMenuItems, initialCategories } from './data/Data';
 import type { MenuCategory as MenuCategoryType } from './data/Type';
 import type { MenuItem as MenuItemType } from './data/Type';
+import { useNavigate } from 'react-router-dom';
 
 const RestaurantMenu: React.FC = () => {
   const [menuItems] = useState<MenuItemType[]>(initialMenuItems);
   const [categories] = useState<MenuCategoryType[]>(initialCategories);
 
+  const navigate = useNavigate()
+
   const getItemsByCategory = (categoryId: string) => {
     return menuItems.filter(item => item.category === categoryId);
   };
+
+  const handleAddMenu = () => {
+    navigate("menu/add")
+  }
 
   return (
     <div className="">
@@ -34,7 +41,7 @@ const RestaurantMenu: React.FC = () => {
       <div className="flex justify-start mt-8">
             <button
               className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center md:text-base text-sm"
-             
+             onClick={handleAddMenu}
             >
              Add Menu 
             </button>
