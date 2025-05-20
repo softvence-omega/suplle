@@ -40,7 +40,7 @@ const useUserTable = (onEdit: (user: User) => void) => {
 // Table Row Component
 const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
   return (
-    <tr className="bg-white border-b">
+    <tr className="bg-white border-b dark:bg-primary-dark dark:text-white">
       <td className="px-6 py-4">{index + 1}</td>
       <td className="px-6 py-4">{user.userName}</td>
       <td className="px-6 py-4">{user.email}</td>
@@ -79,9 +79,9 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
   const { handleView, handleEdit } = useUserTable(onEdit);
 
   return (
-    <div className="relative overflow-x-auto my-4">
+    <div className="relative overflow-x-auto my-4 ">
       <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-white dark:bg-primary-dark">
           <tr>
             <th scope="col" className="px-6 py-3">Sl.</th>
             <th scope="col" className="px-6 py-3">User Name</th>
