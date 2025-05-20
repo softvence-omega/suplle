@@ -182,7 +182,8 @@ const AllMenu = () => {
             ))}
           </TableBody>
         </Table>
-    </div>
+      </div>
+
   );
 };
 

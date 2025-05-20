@@ -31,7 +31,7 @@ const AddMenu = () => {
               name="menu"
               type="text"
               placeholder="Enter Menu Name"
-              className="w-full rounded p-3 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-3 dark:bg-gray-700 dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
 
@@ -42,7 +42,7 @@ const AddMenu = () => {
               cols={20}
               rows={5}
               placeholder="Sort Description......."
-              className="w-full rounded p-2 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-2 dark:bg-gray-700 dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
           <div className="">
@@ -51,7 +51,7 @@ const AddMenu = () => {
               name="image"
               type="file"
               placeholder="Paste image URl or upload"
-              className="w-full rounded p-3 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-3 dark:bg-gray-700 dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
 
@@ -105,7 +105,7 @@ const AddMenu = () => {
             </div>
             <button
               type="submit"
-              className="bg-green-600 cursor-pointer font-light py-2.5 px-5 rounded text-white text-sm sm:text-[14px]"
+              className="bg-green-600 cursor-pointer font-light py-2.5 px-5 rounded  text-white text-sm sm:text-[14px]"
             >
               Create Menu
             </button>
