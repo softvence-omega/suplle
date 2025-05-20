@@ -1,6 +1,7 @@
 import React from 'react';
 import { Eye, Pencil } from 'lucide-react';
 import type { OrderCardProps } from './OrderCard';
+import { useNavigate } from 'react-router-dom';
 
 const statusStyles: Record<string, string> = {
   Pending: 'bg-blue-100 text-blue-800',
@@ -20,8 +21,18 @@ const OrderListRow: React.FC<OrderCardProps> = ({
   total,
   status,
 }) => {
+  const navigate = useNavigate()
+  const handleOrderDetails = () =>{
+    // Handle order details logic here
+    navigate(`/dashboard/order/details/${orderId}`)
+  }
+  const handleOrderEdit = () =>{
+    // Handle order edit logic here
+    navigate(`/dashboard/order/edit/${orderId}`)
+  
+  }
   return (
-    <tr className="border-b text-sm text-[#2A3342]">
+    <tr className="border-b text-sm text-[#2A3342] dark:text-[#FFFFFF] ">
       <td className="py-3 px-4 font-medium">{orderId}</td>
       <td className="py-3 px-4">{table}</td>
       <td className="py-3 px-4 font-semibold">{type}</td>
@@ -51,9 +62,9 @@ const OrderListRow: React.FC<OrderCardProps> = ({
         </span>
       </td>
       <td className="py-3 px-4 flex items-center gap-2">
-        <Eye size={16} className="text-green-600 cursor-pointer" />
+        <Eye onClick={handleOrderDetails} size={16} className="text-green-600 cursor-pointer" />
         <span className="text-gray-300">|</span>
-        <Pencil size={16} className="text-green-600 cursor-pointer" />
+        <Pencil onClick={handleOrderEdit} size={16} className="text-green-600 cursor-pointer" />
       </td>
     </tr>
   );

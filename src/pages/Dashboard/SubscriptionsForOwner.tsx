@@ -1,5 +1,11 @@
+import MultiStep from "@/components/DashboardSubscription/Multistep";
+
 const SubscriptionsForOwner = () => {
-  return <div>SubscriptionsForOwner</div>;
+  return (
+    <div>
+      <MultiStep />
+    </div>
+  );
 };
 
 export default SubscriptionsForOwner;

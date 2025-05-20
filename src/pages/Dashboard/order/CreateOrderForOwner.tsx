@@ -54,17 +54,17 @@ const totalPrice = orderItems.reduce((sum, item) => sum + item.amount * item.qua
 
   return (
     <Wrapper>
-      <div className="flex items-center space-x-2 mb-4 bg-green-50 p-4 rounded-lg">
+      <div className="flex items-center space-x-2 mb-4 bg-green-50 p-4 rounded-lg dark:bg-primary-dark dark:text-white">
         <FaArrowLeft />
-        <p className="text-lg font-medium text-black">Create New Order</p>
+        <p className="text-lg font-medium text-black dark:text-white">Create New Order</p>
       </div>
 
-      <div className="flex flex-col gap-4 md:flex-row">
+      <div className="flex flex-col gap-4 md:flex-row ">
         {/* LEFT SIDE */}
-        <div className="bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md md:w-2/3 w-full">
+        <div className="bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md md:w-2/3 w-full dark:bg-primary-dark">
           {/* Customer Info */}
           <div>
-            <p className="text-base font-medium text-[#021433]">Customer Information</p>
+            <p className="text-base font-medium text-[#021433] dark:text-white">Customer Information</p>
             <div className="flex flex-col gap-4 md:flex-row w-full py-4">
               <Input type="name" placeholder="Customer Name" />
               <Input type="number" placeholder="Phone Number" />
@@ -73,7 +73,7 @@ const totalPrice = orderItems.reduce((sum, item) => sum + item.amount * item.qua
 
           {/* Order Type */}
           <div>
-            <p className="text-base font-medium text-[#021433]">Order Type</p>
+            <p className="text-base font-medium text-[#021433] dark:text-white">Order Type</p>
             <div className="flex flex-col gap-4 md:flex-row w-full py-4">
               <Button className="font-normal">Dine-in</Button>
               <Button className="bg-green-50 text-green-500 font-normal">Takeaway</Button>
@@ -82,7 +82,7 @@ const totalPrice = orderItems.reduce((sum, item) => sum + item.amount * item.qua
 
           {/* Table Selection + Search */}
           <div className="pb-8">
-            <p className="text-base font-medium text-[#021433]">Table Selection</p>
+            <p className="text-base font-medium text-[#021433] dark:text-white">Table Selection</p>
             <SelectInput />
           </div>
 
@@ -129,8 +129,8 @@ const totalPrice = orderItems.reduce((sum, item) => sum + item.amount * item.qua
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="md:w-1/3 w-full bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md">
-          <p className="text-base font-medium text-[#021433]">Order Summary</p>
+        <div className="md:w-1/3 w-full dark:bg-primary-dark bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md">
+          <p className="text-base font-medium text-[#021433] dark:text-white">Order Summary</p>
 
           <div className="flex flex-col gap-2 max-h-[200px] overflow-auto">
             {orderItems.length === 0 ? (
@@ -148,18 +148,19 @@ const totalPrice = orderItems.reduce((sum, item) => sum + item.amount * item.qua
           </div>
 
           <div className="flex flex-row justify-between items-center pt-4 border-t">
-            <p className="text-base font-bold text-black">Total</p>
-            <p className="text-base font-bold text-black">${totalPrice.toFixed(2)}</p>
+            <p className="text-base font-bold text-black dark:text-white">Total</p>
+            <p className="text-base font-bold text-black dark:text-white">${totalPrice.toFixed(2)}</p>
           </div>
 
           <div className="pb-8">
-            <p className="text-base font-medium text-[#021433]">Payment Method</p>
+            <p className="text-base font-medium text-[#021433] dark:text-white ">Payment Method</p>
             <SelectInput />
           </div>
 
           <div className="flex justify-end">
             <PrimaryButton
               children="Create Order"
+              className="dark:bg-primary dark:text-white"
               onClick={() => {
                 console.log("Order Created", orderItems);
               }}

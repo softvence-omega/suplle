@@ -105,7 +105,7 @@ const AddMenu = () => {
             </div>
             <button
               type="submit"
-              className="bg-green-600 cursor-pointer font-light py-2.5 px-5 rounded  text-white text-sm sm:text-[14px]"
+              className="bg-green-600 cursor-pointer font-light py-2.5 px-5 rounded text-white text-sm sm:text-[14px]"
             >
               Create Menu
             </button>
