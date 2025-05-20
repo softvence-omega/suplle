@@ -258,7 +258,7 @@ const StaffViewForOwner = () => {
   }, [users, filters]);
 
   // Get current users for the page
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 7;
   const currentUsers = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);

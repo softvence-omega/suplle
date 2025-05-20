@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 /* import ViewUserModal from "./ViewUserModal"; */
 import EditUserModal from "./EditUserModal";
-import EditIcon from "@/components/ui/EditIcon";
 import type { User } from "@/pages/Dashboard/staff/StaffViewForOwner";
-import { EyeIcon } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+import eye from "@/assets/admin/eye.png";
+import edit from "@/assets/admin/edit.png";
 
 // Types
 interface UserTableProps {
@@ -55,15 +56,16 @@ const UserTableRow = ({
       <td className="px-6 py-4">{user.role}</td>
       <td className="px-6 py-4">
         <span
-          className={`px-2 py-1 rounded-full text-xs ${
+          className={`flex w-[160px] px-[10px] py-[10px] justify-center items-center gap-[10px] rounded-[8px] text-xs ${
             user.status === "Active"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-green-100 text-black"
+              : "bg-red-100 text-black"
           }`}
         >
           {user.status}
         </span>
       </td>
+
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
           {/* <Button variant="ghost" size="icon" onClick={() => onView(user)}>
@@ -75,14 +77,15 @@ const UserTableRow = ({
             onClick={() => navigate(`/dashboard/staff/details/${user.id}`)}
             aria-label="View user details"
           >
-            <EyeIcon className="h-4 w-4" />
+            {/* <EyeIcon className="h-4 w-4" /> */}
+            <img src={eye} alt="" className="h-6 w-6" />
           </Button>
 
           <Button variant="ghost" size="icon">
             <EditUserModal
               onEdit={onEdit}
               selectedUser={user}
-              ButtonText={<EditIcon className="h-4 w-4" />}
+              ButtonText={<img src={edit} alt="" className="h-6 w-6" />}
             />
           </Button>
         </div>
