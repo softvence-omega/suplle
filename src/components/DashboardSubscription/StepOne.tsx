@@ -1,4 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 const StepOne = () => {
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("choose-design");
+  };
   return (
     <div className="mt-10 border border-green-50 rounded-sm max-w-[50%] px-4 py-2">
       <div className="space-y-2.5 my-3">
@@ -13,9 +19,12 @@ const StepOne = () => {
           <p className="text-[10px] sm:text-[14px] font-light text-green-800 dark:text-green-100">
             QR Codes
           </p>
-          <p className="text-[10px] sm:text-[13px] font-light text-green-400">
+          <button
+            onClick={handleNavigate}
+            className="text-[10px] sm:text-[13px] cursor-pointer text-green-800"
+          >
             Choose a design
-          </p>
+          </button>
         </div>
       </div>
       {/* SCANNER */}
