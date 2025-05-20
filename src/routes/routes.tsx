@@ -41,6 +41,8 @@ import EditOrderForOwner from "@/pages/Dashboard/order/EditOrderForOwner";
 import OrderDetailsForOwner from "@/pages/Dashboard/order/OrderDetailsForOwner";
 import AdminNotification from "@/pages/AdminDashboard/notification/AdminNotification";
 import AdminSetting from "@/pages/setting/AdminSetting";
+import Settings from "@/pages/AdminDashboard/settings/Settings";
+import Notification from "@/pages/AdminDashboard/notification/Notification";
 
 const AppRoutes = () => {
   return (
@@ -118,6 +120,8 @@ const AppRoutes = () => {
         <Route path="subscriptions" element={<AdminSubscription />} />
         <Route path="notification" element={<AdminNotification />} />
         <Route path="setting" element={<AdminSetting />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="notification" element={<Notification />} />
       </Route>
     </Routes>
   );
