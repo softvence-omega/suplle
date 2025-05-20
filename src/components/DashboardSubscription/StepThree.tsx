@@ -1,5 +1,4 @@
 import type React from "react";
-import QrDesign from "./QrDesign";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -110,7 +109,12 @@ const StepThree = () => {
       </div>
 
       {/* <QrDesign/>  it's a next page for user successfully subscription. when subscription buying successful, then show this page! work done, just you can add condition wise */}
-
+      {showSubscription && (
+        <div>
+          {/* Add your QrDesign component here */}
+          {/* <QrDesign/> */}
+        </div>
+      )}
     </div>
   );
 };

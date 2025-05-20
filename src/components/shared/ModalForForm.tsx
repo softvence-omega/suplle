@@ -14,7 +14,7 @@ import {
 import { Button } from "../ui/button";
 
 const ModalForForm = () => {
-  const [editUser, setEditUser] = useState();
+  const [editUser] = useState();
   const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
