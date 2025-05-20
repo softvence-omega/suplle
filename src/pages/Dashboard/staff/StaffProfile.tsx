@@ -1,6 +1,6 @@
 import StaffProfileDetails from "@/components/dashboard/StaffViewForOwner/StaffProfileDetails";
 
-const StaffDetailsForOwner = () => {
+const StaffProfile = () => {
   return (
     <div>
       <StaffProfileDetails />
@@ -8,4 +8,4 @@ const StaffDetailsForOwner = () => {
   );
 };
 
-export default StaffDetailsForOwner;
+export default StaffProfile;
