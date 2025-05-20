@@ -1,6 +1,7 @@
 import { generateRandomId } from '@/utils/utils'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Wrapper from '../shared/Wrapper'
 
 const foodCategoryData = [
     { id: generateRandomId(), name: 'Offers', url: '/offers', value: 'offers' },	
@@ -17,7 +18,8 @@ const foodCategoryData = [
 const FoodCategory = () => {
     const [selectFilteredValue, setselectFilteredValue] = useState('offers')
   return (
-    <div className='bg-[#F3F3F3] border-1 border-solid w-full'>
+    <Wrapper>
+    <div className='bg-[#F3F3F3] border-1 border-solid w-full rounded-xl'>
         <div className="flex flex-col md:flex-row items-center justify-evenly-start  md:justify-start  space-x-4 items-center gap-5">
           {
             foodCategoryData.map((item) => (
@@ -28,6 +30,7 @@ const FoodCategory = () => {
           }
         </div>
     </div>
+    </Wrapper>
   )
 }
 

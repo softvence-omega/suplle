@@ -13,10 +13,11 @@ import {
 } from '@/components/ui/select'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 const orders = [
   {
-    orderId: "#001",
+    orderId: "001",
     table: "Table 12",
     type: "Dine-in",
     people: 2,
@@ -29,7 +30,7 @@ const orders = [
     total: "$48.00",
   },
   {
-    orderId: "#002",
+    orderId: "002",
     table: "Table 45",
     type: "Dine-in",
     people: 8,
@@ -42,7 +43,7 @@ const orders = [
     total: "$133.50",
   },
   {
-    orderId: "#003",
+    orderId: "003",
     table: "Takeaway",
     type: "Takeaway",
     people: 1,
@@ -55,7 +56,7 @@ const orders = [
     total: "$29.90",
   },
   {
-    orderId: "#004",
+    orderId: "004",
     table: "Table 9",
     type: "Dine-in",
     people: 4,
@@ -68,7 +69,7 @@ const orders = [
     total: "$82.75",
   },
   {
-    orderId: "#005",
+    orderId: "005",
     table: "Delivery",
     type: "Delivery",
     people: 1,
@@ -84,19 +85,23 @@ const orders = [
 
 function DineInOrderShowForOwner() {
   const { register } = useForm();
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
+  const handleCreateOrder = () => {
+    navigate('/dashboard/order/create')
+  }
   return (
     <div>
       <div className='flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between'>
-        <h5 className='text-[#333333] text-xl font-medium'>Dine-in Orders</h5>
-        <Button>+ Add Order</Button>
+        <h5 className='dark:text-white text-[#333333] text-xl font-medium'>Dine-in Orders</h5>
+        <Button onClick={handleCreateOrder}>+ Add Order</Button>
       </div>
 
       <div className='flex flex-col md:flex-row gap-5 mt-5 items-start md:items-center justify-between '>
         <div className='flex flex-col md:flex-row  w-[70%]' >
           <div className='w-1/2'>
-          <p className='text-base font-normal text-[#203849]'>Order Status</p>
+          <p className='dark:text-white text-base font-normal text-[#203849]'>Order Status</p>
 
           <Select>
             <SelectTrigger className=" h-[42px]">
@@ -116,7 +121,7 @@ function DineInOrderShowForOwner() {
           name="search_table"
           label="Search Table"
           labelClassName='text-[#203849] text-base font-normal'
-          inputClassName=' border-[#E1E9ED] rounded-lg   focus:outline-none h-[42px]'
+          inputClassName=' border-[#E1E9ED] rounded-lg focus:outline-none h-[42px]'
           type='text'
           placeholder='Search Table'
           register={register}
@@ -125,9 +130,9 @@ function DineInOrderShowForOwner() {
         </div>
         
 
-        <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-4 w-[30%]'>
-          <button onClick={() => setViewMode('grid')}>
-            <GridIcon className={`${viewMode === 'grid' ? 'text-primary' : 'text-gray-400'}`} />
+        <div className='flex items-center justify-start md:justify-end w-[30%]'>
+          <button className='dark:text-white' onClick={() => setViewMode('grid')}>
+            <GridIcon className={`${viewMode === 'grid' ? 'text-primary' : 'text-gray-400 ' }`} />
           </button>
           <button onClick={() => setViewMode('list')}>
             <ListIcon className={`${viewMode === 'list' ? 'text-primary' : 'text-gray-400'}`} />
@@ -151,7 +156,7 @@ function DineInOrderShowForOwner() {
   ) : (
     <div className="overflow-x-auto rounded-xl shadow-sm border">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50 text-[#2A3342] text-sm font-medium">
+        <thead className="bg-gray-50 text-[#2A3342] text-sm font-medium dark:bg-black dark:text-[#FFFFFF]">
           <tr>
             <th className="py-3 px-4 text-left">Order No.</th>
             <th className="py-3 px-4 text-left">Table</th>
@@ -164,7 +169,7 @@ function DineInOrderShowForOwner() {
             <th className="py-3 px-4 text-left">Action</th>
           </tr>
         </thead>
-        <tbody className="bg-white">
+        <tbody className="bg-white dark:bg-[#161616] ">
           {orders.map((order) => (
             <OrderListRow key={order.orderId} {...order} view="list" />
           ))}

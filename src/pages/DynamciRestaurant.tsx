@@ -8,6 +8,7 @@ import FoodCategory1 from "@/components/dynamicResturants/FoodCategory1";
 import FoodList from "@/components/dynamicResturants/FoodList";
 import GoogleMap from "@/components/dynamicResturants/GoogleMap";
 import Wrapper from "@/components/shared/Wrapper";
+import Footer from "@/components/shared/Footer";
 const DynamicRestaurant = () => {
   const { id } = useParams();
   console.log(id);
@@ -36,6 +37,7 @@ const DynamicRestaurant = () => {
       <FoodCategory1 />
       <FoodList />
       <GoogleMap/>
+      <Footer/>
     </div>
   );
 };

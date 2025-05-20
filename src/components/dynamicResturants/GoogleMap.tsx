@@ -39,7 +39,7 @@ const GoogleMap = () => {
  
   return (
     <Wrapper>
-    <div className="w-full p-3 md:p-12 bg-white rounded-[12px] shadow-md">
+    <div className="w-full p-3 md:p-1 bg-white ">
       
       <div className="mapouter relative w-full h-[389px] mb-6">
         <div className="gmap_canvas w-full h-full rounded-[12px]  ">
@@ -55,7 +55,7 @@ const GoogleMap = () => {
             .mapouter {
               position: relative;
               width: 100%;
-              height: 400px;
+              height: 110px;
             }
             .gmap_canvas {
               overflow: hidden;
@@ -70,7 +70,7 @@ const GoogleMap = () => {
           `}
         </style>
       </div>
-      <div className="w-2/6 relative -top-90 left-20 h-auto bg-black rounded-[12px] p-4 flex flex-col justify-center items-start">
+      <div className="w-2/6 relative -top-20 left-20 h-auto bg-black rounded-[12px] p-4 flex flex-col justify-center items-start">
         <div>
             <p className="text-[30px] font-bold text-start text-white   ">
           Urban Bistro
