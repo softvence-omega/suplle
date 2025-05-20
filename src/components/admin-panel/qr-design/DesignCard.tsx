@@ -37,13 +37,14 @@ export const DesignCard: React.FC<DesignCardProps> = ({
         <div className=" flex justify-center gap-4 items-center ">
           <button 
             onClick={onEdit}
-            className="px-6 py-2  bg-primary text-white rounded-md  md:text-base text-sm dark:bg-[#030303] dark:text-primary "
+            className="px-6 py-2  bg-primary text-white rounded-md  md:text-base text-sm dark:bg-[#030303] dark:text-primary hover:opacity-50 transition-opacity cursor-pointer"
           >
             Edit
           </button>
           <button
             onClick={onStatusChange}
-            className="px-6 py-2 bg-[#E7F6F6] text-[#0C7775] rounded-md  md:text-base text-sm dark:bg-[#030303] dark:text-primary"
+            className="px-6 py-2 bg-[#E7F6F6] text-[#0C7775] rounded-md  md:text-base text-sm dark:bg-[#030303] dark:text-primary hover:bg-teal-500 hover:text-white
+            "
           >
             {statusChangeLabel}
           </button>
