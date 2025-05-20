@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 /* import ViewUserModal from "./ViewUserModal"; */
 import EditUserModal from "./EditUserModal";
-import EditIcon from "@/components/ui/EditIcon";
 import type { User } from "@/pages/Dashboard/staff/StaffViewForOwner";
-import { EyeIcon } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+import eye from "@/assets/admin/eye.png";
+import edit from "@/assets/admin/edit.png";
 
 // Types
 interface UserTableProps {
@@ -75,14 +76,15 @@ const UserTableRow = ({
             onClick={() => navigate(`/dashboard/staff/details/${user.id}`)}
             aria-label="View user details"
           >
-            <EyeIcon className="h-4 w-4" />
+            {/* <EyeIcon className="h-4 w-4" /> */}
+            <img src={eye} alt="" className="h-6 w-6" />
           </Button>
 
           <Button variant="ghost" size="icon">
             <EditUserModal
               onEdit={onEdit}
               selectedUser={user}
-              ButtonText={<EditIcon className="h-4 w-4" />}
+              ButtonText={<img src={edit} alt="" className="h-6 w-6" />}
             />
           </Button>
         </div>
