@@ -48,7 +48,7 @@ export const NewDesignForm: React.FC<NewDesignFormProps> = ({
         placeholder="Enter QR code category"
         required
         fullWidth
-         className="h-[45px]"
+        className="h-[45px]"
       />
 
       <SuppleTextarea
@@ -58,7 +58,7 @@ export const NewDesignForm: React.FC<NewDesignFormProps> = ({
         rows={5}
         required
         fullWidth
-         className="h-[45px]"
+        className="h-[45px]"
       />
 
       <SuppleInput
@@ -69,28 +69,28 @@ export const NewDesignForm: React.FC<NewDesignFormProps> = ({
         placeholder="USD"
         fullWidth
         endIcon={<CircleDollarSign className="w-4 h-4" />}
-         className="h-[45px]"
+        className="h-[45px]"
       />
-<SuppleFileUpload
-  name="imageUrl"
-  label="Upload Image"
-  helperText="Click to upload image (JPG, PNG)"
-  accept="image/*"
-  required
-  icon={<Upload className="w-4 h-4 text-gray-400" />}
-  onChange={(file) => {
-    
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        console.log("Image preview URL:", reader.result);
-      
-      };
-      reader.readAsDataURL(file);
-    }
-  }}
-  InputClassName="px-4 py-6 text-center dark:bg-black "
-/>
+      <SuppleFileUpload
+        name="imageUrl"
+        label="Upload Image"
+        helperText="Click to upload image (JPG, PNG)"
+        accept="image/*"
+        required
+        icon={<Upload className="w-4 h-4 text-gray-400" />}
+        onChange={(file) => {
+
+          if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              console.log("Image preview URL:", reader.result);
+
+            };
+            reader.readAsDataURL(file);
+          }
+        }}
+        InputClassName="px-4 py-6 text-center dark:bg-black "
+      />
 
       <div className="flex space-x-4 pt-2">
         <button
