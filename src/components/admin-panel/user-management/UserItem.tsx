@@ -1,8 +1,10 @@
 // UserItem.tsx
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { Eye, SquarePen } from "lucide-react";
+/* import { Eye, SquarePen } from "lucide-react"; */
 import type { User } from "./user";
+import eye from "@/assets/admin/eye.png";
+import edit from "@/assets/admin/Edit.png";
 
 interface UserItemProps {
   users: User[];
@@ -32,14 +34,26 @@ const UserItem: React.FC<UserItemProps> = ({ users, onClick, onEditClick }) => {
             <TableCell>{user.status}</TableCell>
             <TableCell>
               <div className="flex justify-end items-end space-x-4 text-[#36BDA1] w-full">
-                <Eye
+                {/* <Eye
                   className="w-6 h-6 cursor-pointer"
                   onClick={() => onClick(user.id)}
+                /> */}
+                <img
+                  onClick={() => onClick(user.id)}
+                  src={eye}
+                  alt=""
+                  className="w-6 h-6 cursor-pointer"
                 />
                 <div className="w-[18.81px] border border-[#B6B6B6] rotate-[-90deg] mb-2" />
-                <SquarePen
+                {/*  <SquarePen
                   className="w-6 h-6 cursor-pointer"
                   onClick={() => onEditClick(user.id)}
+                /> */}
+                <img
+                  onClick={() => onEditClick(user.id)}
+                  src={edit}
+                  alt=""
+                  className="w-6 h-6 font-semibold cursor-pointer"
                 />
               </div>
             </TableCell>
