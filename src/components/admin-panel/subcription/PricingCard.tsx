@@ -41,6 +41,8 @@ const PricingCard: React.FC<PricingCardProps> = ({ price, name, features }) => {
           ))}
         </ul>
       </div>
+
+      
       <div className="px-6 pb-8 w-full flex justify-center items-center mt-auto">
   {/* Light Mode Button */}
   <button className="w-full px-4 py-2 bg-gradient-to-b from-[#56DAAB] to-[#0F9996] text-white rounded-md md:text-base text-sm dark:hidden">
