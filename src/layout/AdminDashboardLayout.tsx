@@ -17,7 +17,7 @@ const AdminDashboardLayout = () => {
   };
   return (
     <div>
-      <div className="bg-white min-h-screen">
+      <div className=" min-h-screen">
         {/* Top Navigation */}
         <header className="fixed w-full z-30 flex transform ease-in-out duration-500 bg-green-100 dark:bg-primary-dark  p-2 items-center justify-between h-16 px-10">
           <div

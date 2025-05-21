@@ -21,7 +21,7 @@ const UserDetails = ({ user }: { user: User }) => (
       <p className="mt-1">{user.email}</p>
     </div>
     <div>
-      <label className="text-sm font-medium">Role</label>
+      <label className="text-sm font-medium">Roles</label>
       <p className="mt-1">{user.role}</p>
     </div>
     <div>
