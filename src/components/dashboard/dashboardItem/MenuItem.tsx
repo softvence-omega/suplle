@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus} from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { MenuItem as MenuItemType } from './data/Type';
 import { Link } from 'react-router-dom';
 
@@ -39,15 +39,15 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
             <PlusCircle size={20} className="text-white" />
           </button>
           </div> */}
-             <Link to={'/dashboard/menu/edit'} style={{ borderRadius: "45px 0px 0px 0px" }} className="bg-white/90 dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0">
-                                <button
-                                    className="flex items-center justify-center bg-[#03081F] absolute bottom-[5px] right-[5px]  text-white rounded-full w-6 h-6"
-                               
-                                >
-                                    <Plus size={12} />
-                                </button>
-                            </Link>
-        
+          <Link to={'/dashboard/menu/edit'} style={{ borderRadius: "45px 0px 0px 0px" }} className="bg-white/90 dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0">
+            <button
+              className="flex items-center justify-center bg-[#03081F] absolute bottom-[5px] right-[5px]  text-white rounded-full w-6 h-6"
+
+            >
+              <Plus size={12} />
+            </button>
+          </Link>
+
         </div>
       </div>
     </div>
