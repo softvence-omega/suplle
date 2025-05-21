@@ -132,7 +132,7 @@ function DineInOrderShowForOwner() {
           </div>
         </div>
 
-        <div className="flex items-center justify-start md:justify-end w-[30%]">
+        <div className="flex items-center justify-start md:justify-end gap-5 w-[30%]">
           <button
             className="dark:text-white"
             onClick={() => setViewMode("grid")}
