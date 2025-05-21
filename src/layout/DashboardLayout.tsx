@@ -6,6 +6,7 @@ import NotificationIcon from "@/components/icons/NotificationIcon";
 import MessageIcon from "@/components/icons/MessageIcon";
 import { useState } from "react";
 import OwnerSiderBar from "@/features/Sidebar/DashboardSideBar";
+import TourGuide from "@/components/tour/TourGuide";
 
 const DashboardLayout = () => {
   const { theme, toggleTheme } = useThemeStore();
@@ -98,11 +99,13 @@ const DashboardLayout = () => {
             sidebarOpen ? "ml-12 md:ml-60" : "ml-12"
           } transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 bg-[#F6F8FB] dark:bg-secondary-dark min-h-screen`}
         >
-          {/* Page Content Placeholder */}
-          <div className="md:p-8">
+          <div className="p-8">
             <Outlet />
           </div>
         </main>
+
+        {/* Tour Guide */}
+        <TourGuide isAdmin={false} />
       </div>
     </div>
   );

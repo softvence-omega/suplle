@@ -1,3 +1,4 @@
+
 import { generateRandomId } from '@/utils/utils'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -29,6 +30,7 @@ const FoodCategory1: React.FC<Props> = ({ selectedCategory, setSelectedCategory 
               } transition hover:bg-black hover:text-white 
                 rounded-xl font-semibold text-sm sm:text-base md:text-lg lg:text-xl
                 px-3 sm:px-4 py-1 whitespace-nowrap`}
+
             >
               {item.name}
             </button>
@@ -36,7 +38,7 @@ const FoodCategory1: React.FC<Props> = ({ selectedCategory, setSelectedCategory 
         </div>
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default FoodCategory1
+export default FoodCategory1;

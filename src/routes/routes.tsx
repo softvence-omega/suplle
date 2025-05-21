@@ -43,6 +43,7 @@ import AdminNotification from "@/pages/AdminDashboard/notification/AdminNotifica
 import AdminSetting from "@/pages/setting/AdminSetting";
 import QrDesign from "@/components/DashboardSubscription/QrDesign";
 
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -63,7 +64,7 @@ const AppRoutes = () => {
         }
       >
         <Route path="" element={<DashboardHome />} />
-        <Route path="info" element={<DashboardHome />} />
+       
 
         {/* order routes */}
         <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />

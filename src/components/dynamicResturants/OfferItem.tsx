@@ -1,3 +1,4 @@
+
 // components/OfferItem.tsx
 import React from 'react'
 import { Plus } from 'lucide-react'
@@ -10,7 +11,6 @@ type Props = {
 
 const OfferItem: React.FC<Props> = ({ selectedCategory }) => {
   const filteredOffers = dummyOfferData.filter(item => item.category === selectedCategory)
-
   return (
     <Wrapper>
       <div className="flex flex-wrap gap-4 justify-start items-center p-5 md:p-12">
@@ -32,12 +32,15 @@ const OfferItem: React.FC<Props> = ({ selectedCategory }) => {
             </div>
             <div className="absolute bottom-0 right-0 bg-white bg-opacity-60 rounded-tl-3xl px-3 py-2">
               <Plus className="text-white rounded-full bg-black" size={30} />
+
             </div>
           </div>
         ))}
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default OfferItem
+
+export default OfferItem;
+

@@ -14,8 +14,7 @@ import { useState } from "react";
 type Status = "ALL_MENU" | "ADD_MENU" | "CATEGORIES";
 const AdminMenuManagement = () => {
   const [tabs, setTabs] = useState<Status>("ALL_MENU");
-  const [restaurantForm, setRestaurantForm] = useState(false);
-  
+  // Removed unused restaurantForm state
 
   return (
     <div className="font-rubik">
@@ -39,11 +38,11 @@ const AdminMenuManagement = () => {
         </Breadcrumb>
 
         <h1 className="font-rubik text-sm sm:text-[18px] mt-7">
-          {!restaurantForm ? "Menu Management" : "Add Restaurants"}
+          Menu Management
         </h1>
       </div>
       {/*  TABS */}
-      <div className={cn(restaurantForm && "hidden", "mt-5")}>
+      <div className="mt-5">
         <div className="flex items-center space-x-5 border-b-[2px]">
           <button
             onClick={() => setTabs("ALL_MENU")}

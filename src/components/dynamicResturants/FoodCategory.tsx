@@ -1,3 +1,4 @@
+
 // components/FoodCategory.tsx
 import React from 'react'
 import Wrapper from '../shared/Wrapper'
@@ -44,7 +45,8 @@ const FoodCategory: React.FC<Props> = ({ selectedCategory, setSelectedCategory }
         </div>
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default FoodCategory
+export default FoodCategory;
+

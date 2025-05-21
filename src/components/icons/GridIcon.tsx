@@ -1,14 +1,14 @@
 import React from "react";
 
 interface GridIconProps {
-  size?: number;       // Optional size, defaults to 25px
-  color?: string;      // Optional fill color, defaults to black
-  className?: string;  // Optional custom className
+  size?: number; // Optional size, defaults to 25px
+  color?: string; // Optional fill color, defaults to black
+  className?: string; // Optional custom className
 }
 
 const GridIcon: React.FC<GridIconProps> = ({
   size = 25,
-  color = "#1C1B1F",
+  // color = "#1C1B1F",
   className = "dark:text-white text-[#1C1B1F]",
 }) => (
   <svg
@@ -38,7 +38,7 @@ const GridIcon: React.FC<GridIconProps> = ({
     <g mask="url(#mask0)">
       <path
         d="M4.1665 21V4H21.1665V21H4.1665ZM19.6665 19.5V13.25H13.4165V19.5H19.6665ZM19.6665 5.5H13.4165V11.75H19.6665V5.5ZM5.6665 5.5V11.75H11.9165V5.5H5.6665ZM5.6665 19.5H11.9165V13.25H5.6665V19.5Z"
-    fill="currentColor"
+        fill="currentColor"
       />
     </g>
   </svg>

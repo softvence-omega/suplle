@@ -1,14 +1,15 @@
 import React from "react";
 
 interface ListIconProps {
-  size?: number;       // Optional size, defaults to 25px
-  color?: string;      // Optional fill color, defaults to black
-  className?: string;  // Optional custom className
+  size?: number; // Optional size, defaults to 25px
+  color?: string; // Optional fill color, defaults to black
+  className?: string; // Optional custom className
 }
 
 const ListIcon: React.FC<ListIconProps> = ({
   size = 25,
-  color = "#1C1B1F",
+
+  // color = "#1C1B1F",
   className = "",
 }) => (
   <svg
