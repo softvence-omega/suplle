@@ -1,5 +1,4 @@
 import FoodCard from "@/components/dashboard/ManageMenu/FoodCard";
-import SectionHeader from "@/components/ui/sectionHeader";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -31,7 +30,7 @@ const menuSections: MenuSection[] = [
         price: "20",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: true
+        available: true,
       },
       {
         title: "Bacon Burger",
@@ -39,7 +38,7 @@ const menuSections: MenuSection[] = [
         price: "10",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: false
+        available: false,
       },
       {
         title: "Swiss Burger",
@@ -47,7 +46,7 @@ const menuSections: MenuSection[] = [
         price: "15",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: true
+        available: true,
       },
       {
         title: "Beef Burger",
@@ -55,9 +54,9 @@ const menuSections: MenuSection[] = [
         price: "12",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: true
-      }
-    ]
+        available: true,
+      },
+    ],
   },
   {
     title: "Main Course",
@@ -68,7 +67,7 @@ const menuSections: MenuSection[] = [
         price: "25",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: true
+        available: true,
       },
       {
         title: "Cheeseburger",
@@ -76,7 +75,7 @@ const menuSections: MenuSection[] = [
         price: "30",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: true
+        available: true,
       },
       {
         title: "Fish and Chips",
@@ -84,7 +83,7 @@ const menuSections: MenuSection[] = [
         price: "25",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: false
+        available: false,
       },
       {
         title: "Baked Ziti",
@@ -92,9 +91,9 @@ const menuSections: MenuSection[] = [
         price: "35",
         description: "Satisfy your cravings with our best-selling Cheeseburger",
         imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: true
-      }
-    ]
+        available: true,
+      },
+    ],
   },
   {
     title: "Drinks",
@@ -105,15 +104,16 @@ const menuSections: MenuSection[] = [
         price: "25",
         description: "A refreshing blend of mint leaves served over ice",
         imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: true
+        available: true,
       },
       {
         title: "Berry Smoothie",
         size: "Small Size",
         price: "30",
-        description: "A healthy, fruity drink made with strawberries and yogurt",
+        description:
+          "A healthy, fruity drink made with strawberries and yogurt",
         imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: true
+        available: true,
       },
       {
         title: "Pina Colada",
@@ -121,7 +121,7 @@ const menuSections: MenuSection[] = [
         price: "25",
         description: "A tropical cocktail made with rum and coconut cream",
         imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: false
+        available: false,
       },
       {
         title: "Lemonade Fizz",
@@ -129,10 +129,10 @@ const menuSections: MenuSection[] = [
         price: "35",
         description: "A zesty and sparkling lemonade made with fresh lemons",
         imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: true
-      }
-    ]
-  }
+        available: true,
+      },
+    ],
+  },
 ];
 
 // Section Title Component
@@ -144,7 +144,7 @@ const SectionTitle = ({ title }: { title: string }) => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
     >
-      {title} 
+      {title}
     </motion.h2>
   );
 };
@@ -155,14 +155,14 @@ const DashbordComponent = () => {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   return (
     <>
-     <RestaurantHeader name="Urban Bistro" address="123 Main Street" />
+      <RestaurantHeader name="Urban Bistro" address="123 Main Street" />
       <div className="flex flex-col">
         {menuSections.map((section: MenuSection, index: number) => (
           <div key={index} className="mb-8">
