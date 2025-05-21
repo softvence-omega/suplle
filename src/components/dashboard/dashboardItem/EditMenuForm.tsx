@@ -49,7 +49,7 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
     price: 0,
     size: "",
     category: categories[0]?.id || "",
-    available: true,
+    available: "",
     image: "",
   };
 
