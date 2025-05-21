@@ -5,7 +5,7 @@ export interface MenuItem {
   price: number;
   size: string;
   category: string;
-  available: string;
+  available?: boolean | undefined;
   image: string;
 }
 

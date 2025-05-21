@@ -9,7 +9,6 @@ import SuppleSelect from "@/components/Forms/SuppleDropdown";
 import { SelectItem } from "@radix-ui/react-select";
 import { Upload } from "lucide-react";
 
-
 interface EditMenuFormProps {
   categories: MenuCategory[];
   onAddItem: (item: Omit<MenuItem, "id">) => void;
@@ -36,8 +35,6 @@ const CategorySelect = ({ categories }: { categories: MenuCategory[] }) => {
   );
 };
 
-
-
 const EditMenuForm: React.FC<EditMenuFormProps> = ({
   categories,
   onAddItem,
@@ -49,7 +46,7 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
     price: 0,
     size: "",
     category: categories[0]?.id || "",
-    available: "",
+    available: undefined,
     image: "",
   };
 
@@ -65,18 +62,17 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
         defaultValues={defaultValues}
         className="p-4 space-y-4"
       >
-
         <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-         <SuppleInput
-          name="name"
-          label="Item Name"
-          required
-          fullWidth
-          placeholder="Cheeseburger"
-          className="h-[45px]"
-        />
-           
-         <CategorySelect categories={categories} />
+          <SuppleInput
+            name="name"
+            label="Item Name"
+            required
+            fullWidth
+            placeholder="Cheeseburger"
+            className="h-[45px]"
+          />
+
+          <CategorySelect categories={categories} />
           <SuppleInput
             name="20%"
             label="Price"
@@ -85,53 +81,48 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
             fullWidth
             min={0}
             step={0.01}
-             className="h-[45px]"
+            className="h-[45px]"
           />
-    <SuppleSelect
-  name="size"
-  label="Size"
-  required
-  placeholder="Select size"
->
-  <SelectItem value="Small">Small</SelectItem>
-  <SelectItem value="Medium">Medium</SelectItem>
-  <SelectItem value="Large">Large</SelectItem>
-  <SelectItem value="Extra Large">Extra Large</SelectItem>
-</SuppleSelect>
+          <SuppleSelect
+            name="size"
+            label="Size"
+            required
+            placeholder="Select size"
+          >
+            <SelectItem value="Small">Small</SelectItem>
+            <SelectItem value="Medium">Medium</SelectItem>
+            <SelectItem value="Large">Large</SelectItem>
+            <SelectItem value="Extra Large">Extra Large</SelectItem>
+          </SuppleSelect>
 
-<SuppleSelect
-  name="available"
-  label="Availability"
-  required
-  placeholder="Select availability"
->
-  <option value="true">Available</option>
-  <option value="false">Not Available</option>
-</SuppleSelect>
+          <SuppleSelect
+            name="available"
+            label="Availability"
+            required
+            placeholder="Select availability"
+          >
+            <option value="true">Available</option>
+            <option value="false">Not Available</option>
+          </SuppleSelect>
 
-     
-
-        <SuppleFileUpload
-          name="image"
-          label="Upload Image"
-          
-          required
-          helperText="Upload item photo"
-          onChange={(file) => {
-            if (file) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                console.log("Image preview URL:", reader.result);
-              };
-              reader.readAsDataURL(file);
-            }
-          }}
-           InputClassName="px-4 py-3 text-center dark:bg-black "
-        />
-   
-      
+          <SuppleFileUpload
+            name="image"
+            label="Upload Image"
+            required
+            helperText="Upload item photo"
+            onChange={(file) => {
+              if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  console.log("Image preview URL:", reader.result);
+                };
+                reader.readAsDataURL(file);
+              }
+            }}
+            InputClassName="px-4 py-3 text-center dark:bg-black "
+          />
         </div>
-         <SuppleTextarea
+        <SuppleTextarea
           name="description"
           label="Description"
           required
@@ -140,15 +131,12 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
           placeholder="Write item details"
         />
 
-        
         <SuppleFileUpload
           name="image"
           label="Upload Menu File"
-          
           required
           helperText="Upload  Menu File ( .XLSX or .CSV )"
-          
-    icon={<Upload className="w-4 h-4 text-gray-400" />}
+          icon={<Upload className="w-4 h-4 text-gray-400" />}
           onChange={(file) => {
             if (file) {
               const reader = new FileReader();
@@ -158,27 +146,24 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
               reader.readAsDataURL(file);
             }
           }}
-           InputClassName="px-4 py-3 text-center dark:bg-black "
+          InputClassName="px-4 py-3 text-center dark:bg-black "
         />
 
+        <div className="flex space-x-4 pt-2">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-primary text-white rounded-md border-transparent md:text-base text-sm"
+          >
+            Save Menu
+          </button>
 
-       <div className="flex space-x-4 pt-2">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-primary text-white rounded-md border-transparent md:text-base text-sm"
-        >
-          Save Menu
-        </button>
-
-         <button
+          <button
             type="button"
-           
             className="px-4 py-2 bg-white border border-primary text-primary rounded-md md:text-base text-sm dark:bg-[#161616]"
           >
             Cancel
           </button>
- 
-      </div>
+        </div>
       </SuppleForm>
     </div>
   );
