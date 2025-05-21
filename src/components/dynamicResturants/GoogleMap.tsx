@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Wrapper from "../shared/Wrapper";
- 
+
 const offices = [
   {
     name: "Germany Office",
@@ -33,59 +33,45 @@ const offices = [
     lng: 18.4241,
   },
 ];
- 
+
 const GoogleMap = () => {
   const [activeOffice] = useState(offices[2]);
- 
+
   return (
     <Wrapper>
-    <div className="w-full p-3 md:p-1 bg-white ">
-      
-      <div className="mapouter relative w-full h-[389px] mb-6">
-        <div className="gmap_canvas w-full h-full rounded-[12px]  ">
+      <div className="w-full p-3 md:p-6 bg-white">
+        <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
           <iframe
             title="Google Map"
-            className="gmap_iframe w-full h-full "
+            className="w-full h-full rounded-xl"
             src={`https://maps.google.com/maps?width=600&height=400&hl=en&q=${activeOffice.lat},${activeOffice.lng}&t=&z=15&ie=UTF8&iwloc=B&output=embed`}
-            
+            loading="lazy"
           ></iframe>
-        </div>
-        <style>
-          {`
-            .mapouter {
-              position: relative;
-              width: 100%;
-              height: 110px;
-            }
-            .gmap_canvas {
-              overflow: hidden;
-              background: none !important;
-              width: 100%;
-              height: 400px;
-            }
-            .gmap_iframe {
-              width: 100% !important;
-              height: 400px !important;
-            }
-          `}
-        </style>
-      </div>
-      <div className="w-2/6 relative -top-20 left-20 h-auto bg-black rounded-[12px] p-4 flex flex-col justify-center items-start">
-        <div>
-            <p className="text-[30px] font-bold text-start text-white   ">
-          Urban Bistro
-        </p>
-        <p className="text-green-500">South London</p>
-        </div>
-        <div>
-            <p className="text-white text-lg font-normal">Tooley St, London Bridge, London SE1 2TF,United Kingdom</p>
-            <p className="text-white pt-3"> Phone number <br/><span className="text-green-500">+863 674 093 34</span> </p>
-            <p className="text-white pt-3"> Website <br/><span className="text-green-500"> http://urban bistro.uk/</span> </p>
+
+          {/* Info Card */}
+          <div className="absolute bottom-4 left-4 right-4 md:left-6 md:w-auto bg-black bg-opacity-80 rounded-xl p-4 flex flex-col gap-2 text-white backdrop-blur-md max-w-md">
+            <div>
+              <p className="text-2xl font-bold">Urban Bistro</p>
+              <p className="text-green-500 text-sm">South London</p>
+            </div>
+            <div className="text-sm leading-relaxed">
+              <p>Tooley St, London Bridge, London SE1 2TF, United Kingdom</p>
+              <p className="pt-2">
+                Phone number <br />
+                <span className="text-green-500">+863 674 093 34</span>
+              </p>
+              <p className="pt-2">
+                Website <br />
+                <span className="text-green-500 break-words">
+                  http://urbanbistro.uk/
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
     </Wrapper>
   );
 };
- 
+
 export default GoogleMap;
