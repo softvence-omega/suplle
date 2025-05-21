@@ -13,7 +13,7 @@ const RestaurantHeader: React.FC<RestaurantHeaderProps> = ({
   logo 
 }) => {
   return (
-    <header className="flex items-center space-x-4 py-4 mb-6">
+    <header className="flex items-center space-x-4  mb-6">
       <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center">
         {logo ? (
           <img src={logo} alt={`${name} logo`} className="w-full h-full rounded-full object-cover" />

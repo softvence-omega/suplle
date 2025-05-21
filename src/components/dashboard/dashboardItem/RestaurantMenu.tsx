@@ -5,48 +5,77 @@ import { initialMenuItems, initialCategories } from './data/Data';
 import type { MenuCategory as MenuCategoryType } from './data/Type';
 import type { MenuItem as MenuItemType } from './data/Type';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const RestaurantMenu: React.FC = () => {
   const [menuItems] = useState<MenuItemType[]>(initialMenuItems);
   const [categories] = useState<MenuCategoryType[]>(initialCategories);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getItemsByCategory = (categoryId: string) => {
     return menuItems.filter(item => item.category === categoryId);
   };
 
   const handleAddMenu = () => {
-    navigate("menu/add")
-  }
+    navigate("menu/add");
+  };
 
   return (
-    <div className="">
-      <div className="py-6">
+    <motion.div
+      className=""
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <div>
         <RestaurantHeader 
           name="Urban Bistro" 
           address="123 Main Street" 
         />
       </div>
 
-      <h2 className="text-xl font-medium text-[#333333] dark:text-white mb-4">Menu</h2>
-      {categories.map((category) => (
-        <MenuCategory
-          key={category.id}
-          title={category.name}
-          items={getItemsByCategory(category.id)}
-        />
-      ))}
+      <motion.h2 
+        className="text-xl font-medium text-[#333333] dark:text-white mb-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+      >
+        Menu
+      </motion.h2>
 
-      <div className="flex justify-start mt-8">
-            <button
-              className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center md:text-base text-sm"
-             onClick={handleAddMenu}
-            >
-             Add Menu 
-            </button>
-          </div>
-    </div>
+      <div>
+        {categories.map((category, index) => (
+          <motion.div
+            key={category.id}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 + index * 0.3, duration: 0.7 }}
+          >
+            <MenuCategory
+              title={category.name}
+              items={getItemsByCategory(category.id)}
+            />
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div
+        className="flex justify-start mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5 + categories.length * 0.3, duration: 0.6 }}
+      >
+        <motion.button
+          className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center md:text-base text-sm"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleAddMenu}
+        >
+          Add Menu
+        </motion.button>
+      </motion.div>
+    </motion.div>
   );
 };
 
