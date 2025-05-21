@@ -1,10 +1,11 @@
-import RestaurantMenu from "@/components/dashboard/dashboardItem/RestaurantMenu"
+import DashbordComponent from "@/components/dashboard/dashboardItem/DashbordComponent"
+
 
 
 const DashboardHome = () => {
   return (
     <div>
-      <RestaurantMenu/>
+     <DashbordComponent/>
     </div>
   )
 }
