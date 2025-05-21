@@ -100,10 +100,10 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
           <button
             key={tab}
             onClick={() => onTabChange(tab)}
-            className={`pb-2 px-1 text-sm font-light border-b-2 transition-colors duration-200 ${
+            className={`pb-2 px-1 text-sm font-light border-b-2 transition-all duration-200 ease-in-out  ${
               activeTab === tab
-                ? 'border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                ? 'text-black border-[#333333] dark:text-white font-normal dark:border-white'
+                : 'text-black  dark:text-gray-300 border-transparent dark:hover:text-white '
             }`}
           >
             {tab}
