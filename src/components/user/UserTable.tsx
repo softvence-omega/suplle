@@ -20,6 +20,7 @@ interface UserTableProps {
 
 export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
   const [viewModalOpen, setViewModalOpen] = useState(false);
+
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -27,9 +28,21 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
     name: z.string().min(1, { message: "Name is required" }),
     phone: z.string().min(1, { message: "Phone is required" }),
     email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters long" }),
+    role: z.enum([
+      "manager",
+      "dine-in",
+      "waiter",
+      "takeaway",
+      "chef",
+      "cashier",
+      "maintenance",
+    ]),
   });
+
+  type UserFormData = z.infer<typeof validData>;
 
   const handleView = (user: User) => {
     setSelectedUser(user);
@@ -53,12 +66,24 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">Sl.</th>
-            <th scope="col" className="px-6 py-3">User Name</th>
-            <th scope="col" className="px-6 py-3">Email</th>
-            <th scope="col" className="px-6 py-3">Role</th>
-            <th scope="col" className="px-6 py-3">Status</th>
-            <th scope="col" className="px-6 py-3">Action</th>
+            <th scope="col" className="px-6 py-3">
+              Sl.
+            </th>
+            <th scope="col" className="px-6 py-3">
+              User Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Email
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Role
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -69,9 +94,13 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">{user.role}</td>
               <td className="px-6 py-4">
-                <span className={`px-2 py-1 rounded-full text-xs ${
-                  user.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                }`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs ${
+                    user.status === "Active"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
+                  }`}
+                >
                   {user.status}
                 </span>
               </td>
@@ -130,93 +159,113 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
               <div>
                 <label className="text-sm font-medium">Status</label>
                 <p className="mt-1">
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    selectedUser.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      selectedUser.status === "Active"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
                     {selectedUser.status}
                   </span>
                 </p>
               </div>
             </div>
             <div className="flex justify-end">
-              <Button onClick={() => setViewModalOpen(false)} type="button">Close</Button>
+              <Button onClick={() => setViewModalOpen(false)} type="button">
+                Close
+              </Button>
             </div>
           </div>
         )}
       </Modal>
 
-     
-        {selectedUser && (
-          <SuppleForm 
-            resolver={zodResolver(validData)} 
-            onSubmit={handleEditSubmit} 
-            className="grid gap-2"
-            defaultValues={{
-              name: selectedUser.userName,
-              email: selectedUser.email,
-              role: selectedUser.role,
-            }}
-          >
-            <div className="">
-              <SuppleInput
-                name="name"
-                label="Name"
-                placeholder="Name"
-                type="text"
-              />
-            </div>
-            <div className="">
-              <SuppleInput
-                name="email"
-                label="Email"
-                placeholder="Email"
-                type="email"
-              />
-            </div>
-            <div className="">
-              <SuppleSelect name="role" label="Role">
-                {userRoles.map((role) => (
-                  <SelectItem key={role.value} value={role.value}>
-                    {role.label}
-                  </SelectItem>
-                ))}
-              </SuppleSelect>
-            </div>
-            <div className="flex items-center space-x-2 justify-end">
-              <Button onClick={() => setEditModalOpen(false)} type="button" variant="outline">
-                Cancel
-              </Button>
-              <Button type="submit">
-                Save Changes
-              </Button>
-            </div>
-          </SuppleForm>
-        )}
-
-
+      {/* Edit Modal */}
+      <Modal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        trigger={<></>}
+        title="Edit User"
+      >
+        <SuppleForm<UserFormData>
+          resolver={zodResolver(validData)}
+          onSubmit={handleEditSubmit}
+          className="grid gap-2"
+          defaultValues={{
+            name: selectedUser?.userName ?? "",
+            email: selectedUser?.email ?? "",
+            role: selectedUser?.role ?? undefined,
+          }}
+        >
+          <div className="">
+            <SuppleInput
+              name="name"
+              label="Name"
+              placeholder="Name"
+              type="text"
+            />
+          </div>
+          <div className="">
+            <SuppleInput
+              name="email"
+              label="Email"
+              placeholder="Email"
+              type="email"
+            />
+          </div>
+          <div className="">
+            <SuppleSelect name="role" label="Role">
+              {userRoles.map((role) => (
+                <SelectItem key={role.value} value={role.value}>
+                  {role.label}
+                </SelectItem>
+              ))}
+            </SuppleSelect>
+          </div>
+          <div className="flex items-center space-x-2 justify-end">
+            <Button
+              onClick={() => setEditModalOpen(false)}
+              type="button"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+            <Button type="submit">Save Changes</Button>
+          </div>
+        </SuppleForm>
+      </Modal>
     </div>
   );
-} 
+}
 
-
-const EditUser = ({ ButtonText }: { ButtonText: string }) => {
+export const EditUser = ({ ButtonText }: { ButtonText: string }) => {
   const [open, setOpen] = useState(false);
   const validData = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     phone: z.string().min(1, { message: "Phone is required" }),
     email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters long" }),
+    role: z.enum([
+      "manager",
+      "dine-in",
+      "waiter",
+      "takeaway",
+      "chef",
+      "cashier",
+      "maintenance",
+    ]),
   });
 
   const onSubmit = (data: FieldValues) => {
     console.log("Form data:", data);
     setOpen(false);
-  }
+  };
 
   const closeModal = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <Modal
@@ -226,7 +275,11 @@ const EditUser = ({ ButtonText }: { ButtonText: string }) => {
       title="Create New Sub User Account"
       description="Fill in the details below to create a new sub user account"
     >
-      <SuppleForm resolver={zodResolver(validData)} onSubmit={onSubmit} className="grid gap-2">
+      <SuppleForm
+        resolver={zodResolver(validData)}
+        onSubmit={onSubmit}
+        className="grid gap-2"
+      >
         <div className="">
           <SuppleInput
             name="name"
@@ -261,20 +314,27 @@ const EditUser = ({ ButtonText }: { ButtonText: string }) => {
         </div>
         <div className="">
           <SuppleSelect name="role" label="Role">
-            {
-              userRoles.map((role) => (
-                <SelectItem key={role.value} value={role.value}>
-                  {role.label}
-                </SelectItem>
-              ))
-            }
+            {userRoles.map((role) => (
+              <SelectItem key={role.value} value={role.value}>
+                {role.label}
+              </SelectItem>
+            ))}
           </SuppleSelect>
         </div>
         <div className="flex items-center space-x-2 justify-end">
-          <Button onClick={closeModal} type="button" variant={"outline"} className="mt-4">Cancel</Button>
-          <Button type="submit" className="mt-4">Create User</Button>
+          <Button
+            onClick={closeModal}
+            type="button"
+            variant={"outline"}
+            className="mt-4"
+          >
+            Cancel
+          </Button>
+          <Button type="submit" className="mt-4">
+            Create User
+          </Button>
         </div>
       </SuppleForm>
     </Modal>
-  )
-}
+  );
+};

@@ -1,32 +1,45 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal } from "../ui/modal";
-import { Button } from "../ui/button";
 
 const AllRestaurant = () => {
   const [showModal, setShowModal] = useState(false);
-  const [showDetailsData, setShowDetailsData] = useState({});
-  const [showFormModal, setShowFormModal] = useState(false);
-  const [formModalData, setFormModalData] = useState({});
+  const [showDetailsData, setShowDetailsData] = useState<Invoice | null>(null);
+
+  // const [showFormModal, setShowFormModal] = useState(false);
+  // const [formModalData, setFormModalData] = useState({});
 
   // DATA SET FUNCTIONS
-  const handleCloseModal = () => {
-    setShowFormModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setShowFormModal(false);
+  // };
 
-  const handleFormModal = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // const name = e.target.name.value;
-    // const email = e.target.email.value;
-    // const 
-  };
+  // const handleFormModal = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   // const name = e.target.name.value;
+  //   // const email = e.target.email.value;
+  //   // const
+  // };
 
   // DATA VIEW FUNCTIONS
   const handelCloseModal = () => {
     setShowModal(false);
   };
-  const handleShowDetailsData = (invoice: any) => {
+  interface Invoice {
+    invoice: string;
+    name: string;
+    mail: string;
+    order: string;
+    status: string;
+    image: string;
+    paymentStatus: string;
+    totalAmount: string;
+    paymentMethod: string;
+    icons: string[];
+  }
+
+  const handleShowDetailsData = (invoice: Invoice) => {
     if (invoice) {
       setShowDetailsData(invoice);
     }
@@ -234,7 +247,7 @@ const AllRestaurant = () => {
         trigger="Close"
         title="Restaurants Details Data"
       >
-        {showDetailsData && (
+        {showDetailsData !== null && (
           <div className="text-center space-y-4">
             {" "}
             <img

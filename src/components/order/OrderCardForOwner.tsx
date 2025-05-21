@@ -13,7 +13,7 @@ const OrderCardForOwner: React.FC<OrderCardForOwnerProps> = ({
   onQuantityChange,
   onAddToOrder,
 }) => {
-  const total = amount * quantity;
+  // const total = amount * quantity;
 
   return (
     <div
@@ -30,7 +30,6 @@ const OrderCardForOwner: React.FC<OrderCardForOwnerProps> = ({
           <p className="text-sm font-normal text-primary">
             ${amount.toFixed(2)}
           </p>
-          
         </div>
         <div
           className="flex items-center space-x-4"

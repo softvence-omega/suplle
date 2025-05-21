@@ -19,7 +19,7 @@ export const adminSeiderBarData = [
     url: "/admin/dashboard",
   },
   {
-    id: generateRandomId(),
+    id: "resturant-management",
     label: "Restaurant",
     icon: RestaurantIcon,
     children: [
@@ -74,7 +74,7 @@ export const ownerSeiderBarData = [
     id: generateRandomId(),
     label: "Dashboard",
     icon: WindowIcon,
-    url: "/dashboard/info",
+    url: "/dashboard",
   },
   {
     id: generateRandomId(),

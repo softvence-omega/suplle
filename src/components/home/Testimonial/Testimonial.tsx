@@ -56,7 +56,7 @@ const Testimonial = () => {
 
   // Handle drag/swipe
   const handleDragEnd = (
-    event: MouseEvent | TouchEvent | PointerEvent,
+    _event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
     if (info.offset.x > 100) {
