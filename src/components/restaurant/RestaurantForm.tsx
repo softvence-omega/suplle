@@ -33,7 +33,7 @@ const RestaurantForm = () => {
               name="restaurant"
               type="text"
               placeholder="Enter Restaurant Name"
-              className="w-full rounded p-2 bg-white dark:bg-gray-700 dark:text-green-50 mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-2 bg-white dark:bg-primary-dark dark:text-green-50 mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
           <div className="">
@@ -42,7 +42,7 @@ const RestaurantForm = () => {
               name="email"
               type="email"
               placeholder="Enter your email"
-              className="w-full rounded p-2 dark:bg-gray-700 dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-2 dark:bg-primary-dark dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
           <div className="">
@@ -52,7 +52,7 @@ const RestaurantForm = () => {
               cols={20}
               rows={5}
               placeholder="Enter address"
-              className="w-full rounded p-2 dark:bg-gray-700 dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-2 dark:bg-primary-dark dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
           <div className="">
@@ -61,7 +61,7 @@ const RestaurantForm = () => {
               name="image"
               type="file"
               placeholder="Paste image URl or upload"
-              className="w-full rounded p-2 dark:bg-gray-700 dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
+              className="w-full rounded p-2 dark:bg-primary-dark dark:text-green-50 bg-white mt-3 text-[12px] sm:text-[14px] text-green-900 focus:ring focus:ring-opacity-75  focus:dark:ring-violet-600 dark:border-gray-300"
             />
           </div>
           <button
