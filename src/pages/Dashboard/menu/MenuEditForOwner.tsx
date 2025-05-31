@@ -125,15 +125,32 @@ const MenuEditForOwner = () => {
           />
         </div>
 
-        <SuppleFileUpload
-          InputClassName="p-4"
-          name="menuFile"
-          label="Upload Menu File*"
-          accept=".xlsx,.csv"
-          helperText="Upload Menu File ( .XLSX or .CSV )"
-          icon={<FileIcon />}
-          required
+         <div className="dark:bg-[#1A1A1A] p-2 rounded-xl">
+  <SuppleFileUpload
+    name="menuFile"
+    InputClassName="p-4 bg-[#2A2A2A] text-white placeholder:text-gray-400 dark:bg-black"
+    label="Upload Menu File (.XLSX or .CSV)"
+    accept=".xlsx,.csv"
+    helperText="Upload Menu File (.XLSX or .CSV)"
+    icon={
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 12V17M11 12V17M7 7V18.4C7 18.9601 7 19.2399 7.10899 19.4538C7.20487 19.6427 7.35785 19.7957 7.54686 19.8915C7.76074 20 8.03995 20 8.59835 20H15.4017C15.9601 20 16.2393 20 16.4532 19.8915C16.6422 19.7957 16.7951 19.6427 16.891 19.4538C17 19.2399 17 18.9601 17 18.4V7M7 7H9M7 7H5M9 7H15M9 7C9 6.06812 9 5.60216 9.15224 5.23462C9.35523 4.74457 9.74457 4.35523 10.2346 4.15224C10.6022 4 11.0681 4 12 4C12.9319 4 13.3978 4 13.7654 4.15224C14.2554 4.35523 14.6448 4.74457 14.8478 5.23462C15 5.60216 15 6.06812 15 7M15 7H17M17 7H19"
+          stroke="#11A8A5"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
+      </svg>
+    }
+  />
+</div>
 
         <div className="flex justify-end gap-4">
           <Button 

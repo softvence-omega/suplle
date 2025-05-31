@@ -160,7 +160,7 @@ function TakeAwayOrderShowForOwner() {
         ) : (
           <div className="overflow-x-auto rounded-xl shadow-sm border">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50 text-[#2A3342] text-sm font-medium">
+              <thead className="bg-gray-50 text-[#2A3342] text-sm font-medium dark:bg-black dark:text-[#FFFFFF]">
                 <tr>
                   <th className="py-3 px-4 text-left">Order No.</th>
                   <th className="py-3 px-4 text-left">Table</th>
@@ -173,7 +173,7 @@ function TakeAwayOrderShowForOwner() {
                   <th className="py-3 px-4 text-left">Action</th>
                 </tr>
               </thead>
-              <tbody className="bg-white">
+              <tbody className="bg-white dark:bg-[#161616] ">
                 {orders.map((order) => (
                   <OrderListRow key={order.orderId} {...order} view="list" />
                 ))}

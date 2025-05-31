@@ -32,23 +32,32 @@ const howSuplleHelpsData = [
 
 const HowSuplleHelps = () => {
   return (
-    <div className="mt-44 mb-12">
-      <h1 className="text-6xl text-center mb-24">
+    <div className="py-20 px-4 sm:px-6 lg:px-12 bg-white">
+      <h1 className="text-3xl sm:text-4xl lg:text-6xl text-center font-bold mb-16">
         How Suplle <span className="text-primary">Helps</span>
       </h1>
-      <div className="flex justify-center items-center gap-16">
-        <div>
+
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-12 lg:gap-20 max-w-7xl mx-auto">
+        <div className="w-full max-w-md lg:max-w-xl">
           <img
             src={img1}
-            alt=""
-            className="lg:w-[661px] lg:h-[564px] rounded-3xl"
+            alt="How Suplle Helps"
+            className="w-full h-auto rounded-3xl shadow-md"
           />
         </div>
-        <div className="flex flex-col gap-2">
+
+        <div className="flex flex-col gap-6 w-full max-w-2xl">
           {howSuplleHelpsData.map((data) => (
-            <div key={data.id} className="border-b-1 border-black py-3">
-              <h1 className="text-3xl mb-2">{data.title}</h1>
-              <p className="text-xl">{data.description}</p>
+            <div
+              key={data.id}
+              className="border-b border-gray-300 pb-4"
+            >
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-1">
+                {data.title}
+              </h2>
+              <p className="text-gray-600 text-base sm:text-lg">
+                {data.description}
+              </p>
             </div>
           ))}
         </div>

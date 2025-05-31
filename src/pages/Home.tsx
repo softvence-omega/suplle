@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <div className="">
       <Banner />
-      <WhatIsSuplle />
+       <WhatIsSuplle />
       <Story />
       <WhyChooseSuplle />
       <HowSuplleHelps />
