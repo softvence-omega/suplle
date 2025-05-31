@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 
 const SignInBox = () => {
   return (
-    <div className="lg:w-[1296px] lg:h-[318px] bg-[#F5FFFF] mx-auto pt-24 rounded-3xl mt-24">
-      <h1 className="text-5xl font-light text-center p  t-24">
+    <div className="w-full max-w-screen-xl min-h-[250px] bg-[#F5FFFF] mx-auto px-4 sm:px-6 py-16 rounded-3xl mt-24">
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light text-center">
         Already have an <span className="text-primary">account?</span>
       </h1>
-      <Button className="bg-transparent border-1 border-primary hover:bg-primary hover:text-white px-20 py-6 rounded-3xl text-primary text-lg flex mx-auto mt-16">
+      <Button className="bg-transparent border border-primary hover:bg-primary hover:text-white px-10 sm:px-20 py-4 sm:py-6 rounded-3xl text-primary text-base sm:text-lg flex mx-auto mt-10">
         Sign In
       </Button>
     </div>
@@ -14,3 +14,4 @@ const SignInBox = () => {
 };
 
 export default SignInBox;
+

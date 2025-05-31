@@ -81,7 +81,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="mt-44 text-center px-4">
+    <div className="mt-20 text-center px-4">
       <p className="text-primary font-bold text-xl mb-6">
         3,940+ Happy Suplle Users
       </p>

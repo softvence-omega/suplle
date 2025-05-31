@@ -20,7 +20,7 @@ const OrderData = [
   { id: 8, title: "Chocolate Cake", amount: 8.0 },
 ];
 
-const CreateOrderForOwner = () => {
+const EditOrderForOwner = () => {
   const { register } = useForm();
   const [quantities, setQuantities] = useState<{ [title: string]: number }>({});
 
@@ -59,7 +59,7 @@ const CreateOrderForOwner = () => {
       <div className="flex items-center space-x-2 mb-4 bg-green-50 p-4 rounded-lg dark:bg-primary-dark dark:text-white">
         <FaArrowLeft />
         <p className="text-lg font-medium text-black dark:text-white">
-          Create New Order
+          Edit Order
         </p>
       </div>
 
@@ -111,7 +111,7 @@ const CreateOrderForOwner = () => {
           </div>
 
           {/* Food Items */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 gap-4">
             {OrderData.map((item) => (
               <OrderCardForOwner
                 key={item.id}
@@ -195,4 +195,4 @@ const CreateOrderForOwner = () => {
   );
 };
 
-export default CreateOrderForOwner;
+export default EditOrderForOwner;
