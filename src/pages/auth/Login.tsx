@@ -6,8 +6,12 @@ import { Link } from "react-router-dom";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 import MessageSquareIcon from "@/components/icons/MessageSquareIcon";
 import LockIcon from "@/components/icons/LockIcon";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { loginUser } from "@/store/features/auth/authSlice";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Create a new FormData object from the form
@@ -20,6 +24,8 @@ const Login = () => {
     console.log("Email:", email);
     console.log("Password:", password);
     // Here, you can send the values to an API or perform other actions
+
+    dispatch(loginUser({ email, password }));
   };
   return (
     <div className="w-full min-h-screen bg-gradient-to-r from-[#0F9996] to-[#56DAAB] dark:bg-gradient-to-r dark:from-[#030303] dark:to-[#030303]">
@@ -108,8 +114,9 @@ const Login = () => {
                     className="w-full text-base font-medium cursor-pointer"
                     type="submit"
                   >
-                    Log In
+                    {loading ? "Loggin in..." : "Log In"}
                   </PrimaryButton>
+                  {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
               </form>
 

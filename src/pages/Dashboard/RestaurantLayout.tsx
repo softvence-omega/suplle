@@ -100,7 +100,9 @@ const RestaurantLayout = () => {
 
           {/* Table Properties */}
           <div className="bg-white p-4 rounded-lg shadow dark:bg-primary-dark">
-            <h2 className="font-medium mb-4 dark:text-white">Table Properties</h2>
+            <h2 className="font-medium mb-4 dark:text-white">
+              Table Properties
+            </h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm text-gray-600 mb-1 dark:text-white">

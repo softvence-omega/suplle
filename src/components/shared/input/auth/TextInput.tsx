@@ -4,34 +4,35 @@ import type {
   UseFormRegister,
   FieldErrors,
   RegisterOptions,
+  Path,
 } from "react-hook-form";
 
-interface InputComponentProps {
-  name: string; // Name of the input field
-  label: string; // Label for the input field
-  className?: string; // Optional additional class names
-  register: UseFormRegister<FieldValues>; // React Hook Form's register function
-  rules?: RegisterOptions; // Optional validation rules
-  errors?: FieldErrors<FieldValues>; // Full errors object from React Hook Form
+interface InputComponentProps<T extends FieldValues> {
+  name: Path<T>; // Name of the input field, type-safe
+  label: string;
+  className?: string;
+  register: UseFormRegister<T>; // Register function for your form fields
+  rules?: RegisterOptions<T, Path<T>>;
+  errors?: FieldErrors<T>; // Errors for your form fields
   placeholder?: string;
   type?: string;
   labelClassName?: string;
-  inputClassName?:string // Optional class name for the label
+  inputClassName?: string;
 }
 
-const InputComponent: React.FC<InputComponentProps> = ({
+const InputComponent = <T extends FieldValues>({
   name,
   label,
   className = "",
   labelClassName = "",
-  inputClassName="",
+  inputClassName = "",
   register,
   rules = {},
   errors,
   placeholder,
   type,
   ...props
-}) => {
+}: InputComponentProps<T>) => {
   const error = errors ? errors[name] : undefined;
   return (
     <div className={`w-full ${className}`}>

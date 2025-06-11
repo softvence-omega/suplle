@@ -5,6 +5,8 @@ import App from "./App.tsx";
 import { useThemeStore } from "./store/useThemeStore";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./store/store.ts";
 
 const ThemeInitializer = () => {
   const initializeTheme = useThemeStore((state) => state.initializeTheme);
@@ -18,9 +20,11 @@ const ThemeInitializer = () => {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <ThemeInitializer />
-      <ToastContainer />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ThemeInitializer />
+        <ToastContainer />
+      </BrowserRouter>
+    </Provider>
   </StrictMode>
 );

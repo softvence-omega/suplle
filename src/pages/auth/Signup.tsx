@@ -3,18 +3,53 @@ import computerImage from "@/assets/Auth/computer.png";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 import { useForm } from "react-hook-form";
 import InputComponent from "@/components/shared/input/auth/TextInput";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { registerUser } from "@/store/features/auth/authSlice";
+
+type SignupFormFields = {
+  restaurantName: string;
+  businessName: string;
+  businessEmail: string;
+  phone: string;
+  restaurantAddress: string;
+  password: string;
+  confirmPassword: string;
+  referralCode?: string;
+};
 
 const Signup = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<SignupFormFields>();
 
   // Handle form submission
-  const onSubmit = (data: unknown) => {
+  const onSubmit = (data: SignupFormFields) => {
+    const {
+      restaurantName,
+      businessName,
+      businessEmail,
+      phone,
+      restaurantAddress,
+      password,
+      referralCode,
+    } = data;
     console.log("Form Data:", data);
     // Here, you can send the data to an API or perform other actions
+
+    dispatch(
+      registerUser({
+        restaurantName: restaurantName as string,
+        businessName: businessName as string,
+        businessEmail: businessEmail as string,
+        phone: phone as string,
+        restaurantAddress: restaurantAddress as string,
+        password: password as string,
+        referralCode: referralCode ? (referralCode as string) : undefined,
+      })
+    );
   };
 
   return (
@@ -49,7 +84,7 @@ const Signup = () => {
               <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <div className="text-[#9B9FA8] space-y-3">
                   <InputComponent
-                    name="restaurant-name"
+                    name="restaurantName"
                     placeholder="Enter restaurant name"
                     register={register}
                     errors={errors}
@@ -59,14 +94,14 @@ const Signup = () => {
                     }}
                   />
                   <InputComponent
-                    name="business-name"
+                    name="businessName"
                     placeholder="Enter business name"
                     register={register}
                     errors={errors}
                     label="Business Name"
                   />
                   <InputComponent
-                    name="business-email"
+                    name="businessEmail"
                     placeholder="Enter business eamil"
                     register={register}
                     errors={errors}
@@ -80,7 +115,7 @@ const Signup = () => {
                     label="Phone Number"
                   />
                   <InputComponent
-                    name="restaurant-address"
+                    name="restaurantAddress"
                     placeholder="Enter restaurant address"
                     register={register}
                     errors={errors}
@@ -95,7 +130,7 @@ const Signup = () => {
                     type="password"
                   />
                   <InputComponent
-                    name="confirm-password"
+                    name="confirmPassword"
                     placeholder="Enter confirm password"
                     register={register}
                     errors={errors}
@@ -103,7 +138,7 @@ const Signup = () => {
                     type="password"
                   />
                   <InputComponent
-                    name="referral-code"
+                    name="referralCode"
                     placeholder="Enter Code"
                     register={register}
                     errors={errors}
