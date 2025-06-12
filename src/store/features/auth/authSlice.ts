@@ -30,6 +30,10 @@ const initialState: AuthState = {
   error: null,
 };
 
+const baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
+
+// Login for restaurant owner
+
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (
@@ -37,26 +41,39 @@ export const loginUser = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const res = await axios.post(`${baseURL}/auth/login`, {
+        email,
+        password,
+      });
 
       const { user, accessToken } = res.data.data;
 
       Cookies.set("accessToken", accessToken, { expires: 1 });
 
       return { user, accessToken };
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Login failed"
-      );
+    } catch (error: unknown) {
+      let message = "Login failed";
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        error.response &&
+        typeof error.response === "object" &&
+        "data" in error.response &&
+        error.response.data &&
+        typeof error.response.data === "object" &&
+        "message" in error.response.data
+      ) {
+        message =
+          (error.response as { data: { message?: string } }).data.message ||
+          message;
+      }
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
+
+// Sign Up for restaurant owner
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
@@ -82,9 +99,7 @@ export const registerUser = createAsyncThunk(
   ) => {
     try {
       const res = await axios.post(
-        `${
-          import.meta.env.VITE_BACKEND_BASE_URL
-        }/auth/register-restuarant-owner`,
+        `${baseURL}/auth/register-restuarant-owner`,
         {
           phone,
           restaurantName,
@@ -96,15 +111,114 @@ export const registerUser = createAsyncThunk(
         }
       );
 
+      // const { userEmail } = res.data;
+      Cookies.set("userEmail", res?.data?.data?.userEmail);
+      console.log(
+        "User email in register reduxSlice:",
+        res?.data?.data?.userEmail
+      );
+      return res.data?.data;
+    } catch (error: unknown) {
+      let message = "Registration failed";
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        error.response &&
+        typeof error.response === "object" &&
+        "data" in error.response &&
+        error.response.data &&
+        typeof error.response.data === "object" &&
+        "message" in error.response.data
+      ) {
+        message =
+          (error.response as { data: { message?: string } }).data.message ||
+          message;
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// OTP verification
+
+export const verifyOtp = createAsyncThunk(
+  "auth/verifyOtp",
+  async ({ otp }: { otp: string }, thunkAPI) => {
+    try {
+      const email = Cookies.get("userEmail"); // You stored this after registration
+
+      if (!email) {
+        throw new Error("Email not found in cookies");
+      }
+
+      const res = await axios.post(
+        `${baseURL}/auth/verify-otp?email=${email}`,
+        { otp }
+      );
+
       const { user, accessToken } = res.data.data;
 
-      Cookies.set("accessToken", accessToken, { expires: 1 });
+      // Cookies.set("accessToken", accessToken, { expires: 1 });
+      Cookies.remove("userEmail"); // Cleanup after successful verification
 
       return { user, accessToken };
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Registration failed"
+    } catch (error: unknown) {
+      let message = "OTP verification failed";
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        error.response &&
+        typeof error.response === "object" &&
+        "data" in error.response &&
+        error.response.data &&
+        typeof error.response.data === "object" &&
+        "message" in error.response.data
+      ) {
+        message =
+          (error.response as { data: { message?: string } }).data.message ||
+          message;
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Resend code
+
+export const resendCode = createAsyncThunk(
+  "auth/resendCode",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/auth/resend-otp?email=${email}`
       );
+      return response.data.message; // or whatever your API returns
+    } catch (error: unknown) {
+      let message = "Failed to resend code";
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        (error as { response?: { data?: { message?: string } } }).response &&
+        typeof (error as { response?: { data?: { message?: string } } })
+          .response === "object" &&
+        "data" in
+          (error as { response?: { data?: { message?: string } } }).response! &&
+        (error as { response?: { data?: { message?: string } } }).response!
+          .data &&
+        typeof (error as { response?: { data?: { message?: string } } })
+          .response!.data === "object" &&
+        "message" in
+          (error as { response?: { data?: { message?: string } } }).response!
+            .data!
+      ) {
+        message =
+          (error as { response: { data: { message?: string } } }).response.data
+            .message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -169,7 +283,35 @@ const authSlice = createSlice({
           state.user = null;
           state.accessToken = null;
         }
-      );
+      )
+      .addCase(verifyOtp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        verifyOtp.fulfilled,
+        (state, action: PayloadAction<{ user: User; accessToken: string }>) => {
+          state.loading = false;
+          state.user = action.payload.user;
+          state.accessToken = action.payload.accessToken;
+        }
+      )
+      .addCase(verifyOtp.rejected, (state, action: PayloadAction<unknown>) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(resendCode.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resendCode.fulfilled, (state) => {
+        state.loading = false;
+        // state.message = action.payload;
+      })
+      .addCase(resendCode.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 

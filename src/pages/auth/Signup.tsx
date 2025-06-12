@@ -3,8 +3,9 @@ import computerImage from "@/assets/Auth/computer.png";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 import { useForm } from "react-hook-form";
 import InputComponent from "@/components/shared/input/auth/TextInput";
-import { useAppDispatch } from "@/hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { registerUser } from "@/store/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 type SignupFormFields = {
   restaurantName: string;
@@ -18,6 +19,9 @@ type SignupFormFields = {
 };
 
 const Signup = () => {
+  const { loading, error, user } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
   const {
     register,
@@ -50,6 +54,9 @@ const Signup = () => {
         referralCode: referralCode ? (referralCode as string) : undefined,
       })
     );
+
+    navigate("/otp");
+    console.log("User in sign up:", user);
   };
 
   return (
@@ -149,8 +156,9 @@ const Signup = () => {
                     className="w-full text-base font-medium cursor-pointer"
                     type="submit"
                   >
-                    Sign Up
+                    {loading ? "Signing Up..." : "Sign Up"}
                   </PrimaryButton>
+                  {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
               </form>
             </div>
