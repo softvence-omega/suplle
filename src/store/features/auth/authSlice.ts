@@ -157,10 +157,17 @@ export const verifyOtp = createAsyncThunk(
         { otp }
       );
 
-      const { user, accessToken } = res.data.data;
-
       // Cookies.set("accessToken", accessToken, { expires: 1 });
       Cookies.remove("userEmail"); // Cleanup after successful verification
+
+      const data = res.data.data;
+
+      if (!data) {
+        // No user/accessToken returned, just success message
+        return thunkAPI.fulfillWithValue(null); // we explicitly return null to handle in reducer
+      }
+
+      const { user, accessToken } = data;
 
       return { user, accessToken };
     } catch (error: unknown) {
@@ -290,10 +297,19 @@ const authSlice = createSlice({
       })
       .addCase(
         verifyOtp.fulfilled,
-        (state, action: PayloadAction<{ user: User; accessToken: string }>) => {
+        (
+          state,
+          action: PayloadAction<{ user: User; accessToken: string } | null>
+        ) => {
           state.loading = false;
-          state.user = action.payload.user;
-          state.accessToken = action.payload.accessToken;
+          if (action.payload) {
+            state.user = action.payload.user;
+            state.accessToken = action.payload.accessToken;
+          } else {
+            // If no user or token returned, just set user/token to null (or keep as is)
+            state.user = null;
+            state.accessToken = null;
+          }
         }
       )
       .addCase(verifyOtp.rejected, (state, action: PayloadAction<unknown>) => {

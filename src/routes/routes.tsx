@@ -44,7 +44,6 @@ import AdminSetting from "@/pages/setting/AdminSetting";
 import QrDesign from "@/components/DashboardSubscription/QrDesign";
 import BuySubscription from "@/pages/BuySubscription/BuySubscription";
 
-
 const AppRoutes = () => {
   return (
     <Routes>
@@ -54,7 +53,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/otp" element={<OTP />} />
-      <Route path="/forget-password" element={<ForgetPasword />} />
+      <Route path="/forgot-password" element={<ForgetPasword />} />
       {/* dahboard routes for owner ************************************************************* */}
       <Route
         path="dashboard"
@@ -65,7 +64,6 @@ const AppRoutes = () => {
         }
       >
         <Route path="" element={<DashboardHome />} />
-       
 
         {/* order routes */}
         <Route path="order/dine-in" element={<DineInOrderShowForOwner />} />
@@ -121,7 +119,7 @@ const AppRoutes = () => {
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscription />} />
-        
+
         <Route path="notification" element={<AdminNotification />} />
         <Route path="setting" element={<AdminSetting />} />
       </Route>

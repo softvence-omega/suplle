@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import InputComponent from "@/components/shared/input/auth/TextInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { registerUser } from "@/store/features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type SignupFormFields = {
   restaurantName: string;
@@ -27,6 +27,7 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<SignupFormFields>();
 
   // Handle form submission
@@ -143,6 +144,11 @@ const Signup = () => {
                     errors={errors}
                     label="Confirm Password"
                     type="password"
+                    rules={{
+                      required: "Confirm password is required",
+                      validate: (value) =>
+                        value === watch("password") || "Passwords do not match",
+                    }}
                   />
                   <InputComponent
                     name="referralCode"
@@ -160,6 +166,12 @@ const Signup = () => {
                   </PrimaryButton>
                   {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
+                <p className="text-center text-[#59606E] text-sm my-10">
+                  already have an account?{" "}
+                  <span className="text-primary">
+                    <Link to={"/login"}>Login</Link>
+                  </span>
+                </p>
               </form>
             </div>
           </div>
