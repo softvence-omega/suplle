@@ -26,7 +26,7 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
  
 
 const onSubmit = async (data: FieldValues) => {
-const token = Cookies.get("token") || Cookies.get("accessToken") || Cookies.get("jwt");
+const token = Cookies.get("accessToken") ;
 
 
   if (!token) {
@@ -52,7 +52,7 @@ console.log("Token:", token);
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-         Authorization: token ? `Bearer ${token}` : "",
+         Authorization: token,
       },
       body: JSON.stringify(payload),
     });
