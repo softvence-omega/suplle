@@ -23,23 +23,22 @@ const SuppleFileUpload = ({
   className,
   icon,
   helperText,
-  defaultFileName,
   onChange,
-InputClassName
+  InputClassName,
 }: SuppleFileUploadProps) => {
   const { control } = useFormContext();
   const {
     field: { onChange: fieldOnChange, value, ...field },
-    fieldState: { error }
+    fieldState: { error },
   } = useController({
     name,
     control,
-    defaultValue: defaultFileName || ""
+    defaultValue: null, // Set default to null instead of empty string
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
-    fieldOnChange(file?.name || "");
+    fieldOnChange(file); // Store the File object directly
     onChange?.(file);
   };
 
@@ -53,12 +52,12 @@ InputClassName
       )}
       {value ? (
         <div className="flex items-center gap-2 text-sm text-gray-500">
-          <span>{value}</span>
+          <span>{value.name}</span> {/* Display the file name */}
           <button
             type="button"
             className="text-red-500 hover:text-red-700"
             onClick={() => {
-              fieldOnChange("");
+              fieldOnChange(null); // Reset to null
               onChange?.(null);
             }}
           >
@@ -66,27 +65,30 @@ InputClassName
           </button>
         </div>
       ) : (
-        <div className={`border-2 border-dashed border-[#E8E8E8] bg-[#F8FDFD] rounded-md cursor-pointer ${InputClassName}`}>
+        <div
+          className={`border-2 border-dashed border-[#E8E8E8] bg-[#F8FDFD] rounded-md cursor-pointer ${InputClassName}`}
+        >
           <label className="flex items-center gap-2 cursor-pointer">
             {icon}
-            <span className="text-sm text-gray-500">{helperText || "Click to upload file"}</span>
+            <span className="text-sm text-gray-500">
+              {helperText || "Click to upload file"}
+            </span>
             <input
               type="file"
               accept={accept}
               onChange={handleFileChange}
               className="hidden"
               {...field}
+              value="" // This is important to allow re-uploading the same file
             />
           </label>
         </div>
       )}
       {error && (
-        <p className="text-sm text-destructive mt-1">
-          {error.message}
-        </p>
+        <p className="text-sm text-destructive mt-1">{error.message}</p>
       )}
     </div>
   );
 };
 
-export default SuppleFileUpload; 
+export default SuppleFileUpload;
