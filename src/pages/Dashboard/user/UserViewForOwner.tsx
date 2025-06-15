@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import SectionHeader from "@/components/ui/sectionHeader";
 import SearchAndFilterBar from "@/components/dashboard/UserViewForOwner/user/SearchAndFilterBar";
 import MonthFilter from "@/components/dashboard/UserViewForOwner/user/MonthFilter";
@@ -9,13 +8,19 @@ import CreateUserModal from "@/components/dashboard/UserViewForOwner/user/Create
 import axios from "axios";
 import Cookies from "js-cookie";
 
-
 export type User = {
   id: string;
   userName: string;
   phone?: string;
   email: string;
-  role: "manager" | "dine-in" | "waiter" | "takeaway" | "chef" | "cashier" | "maintenance" | "restaurant_owner";
+  role:
+    | "manager"
+    | "dine-in"
+    | "waiter"
+    | "takeaway"
+    | "chef"
+    | "cashier"
+    | "maintenance";
   status: "Active" | "Inactive";
 };
 
@@ -28,61 +33,58 @@ const UserViewForOwner = () => {
     search: "",
     month: "",
   });
-const token =  Cookies.get("accessToken") ;
-  if (!token) {
-    console.error("No token found in cookies");
-    alert("Authentication token missing.");
-    return;
-  }
-  console.log("Token:", token);
 
-  // Fetch users from API
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`,
-           {
-      headers: {
-        "Content-Type": "application/json",
-         Authorization: token ,
-      },}
-        );
-         console.log("API response received:", response);
-        if (response.data.success) {
-          // Transform API data to match frontend structure
-          const transformedUsers = response.data.data.result.map((user: any) => ({
-            id: user._id,
-            userName: user.name,
-            phone: user.phone,
-            email: user.email,
-            role: user.role,
-            status: user.isDeleted ? "Inactive" : "Active",
-          }));
-          
-          setUsers(transformedUsers);
+  const fetchUsers = async () => {
+    try {
+      const token = Cookies.get("accessToken");
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`,
+        {
+          headers: {
+            Authorization: token ,
+          },
         }
-      } catch (err) {
-        console.error("Error fetching users:", err);
-      }
-    };
+      );
 
+      console.log("Response:", response.data);
+
+      const mappedUsers: User[] = response.data.data.result.map((item: any) => ({
+        id: item._id,
+        userName: item?.user?.name || "Unnamed",
+        email: item?.user?.email || "",
+        phone: item?.user?.phone,
+        role: item?.user?.role || "manager",
+        status: item?.user?.isDeleted ? "Inactive" : "Active",
+      }));
+
+      setUsers(mappedUsers);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchUsers();
   }, []);
 
-  // Rest of the component remains exactly the same...
+  // Optional: If you want to reset page when filters change (already done in handlers)
+  // useEffect(() => setCurrentPage(1), [filters]);
+
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
       const matchesRole =
         !filters.role || user.role.toLowerCase() === filters.role.toLowerCase();
       const matchesStatus =
-        !filters.status ||
-        user.status.toLowerCase() === filters.status.toLowerCase();
+        !filters.status || user.status.toLowerCase() === filters.status.toLowerCase();
       const matchesSearch =
         !filters.search ||
         user.userName.toLowerCase().includes(filters.search.toLowerCase()) ||
         user.email.toLowerCase().includes(filters.search.toLowerCase()) ||
         user.role.toLowerCase().includes(filters.search.toLowerCase());
+
+      // If you want to filter by month (assuming user has a createdAt or similar field)
+      // You need to add that field in User and in mappedUsers and add filter here.
 
       return matchesRole && matchesStatus && matchesSearch;
     });
@@ -114,7 +116,11 @@ const token =  Cookies.get("accessToken") ;
     setCurrentPage(1);
   }, []);
 
-  const handlePageChange = useCallback((_items: unknown[]) => {}, []);
+  const handlePageChange = useCallback((items: unknown[]) => {
+    // Optionally, you can update currentPage based on items if needed
+    // setCurrentPage(newPageNumber);
+    // For now, do nothing or handle as required
+  }, []);
 
   const handleEdit = useCallback((user: User) => {
     console.log("Edit user:", user);

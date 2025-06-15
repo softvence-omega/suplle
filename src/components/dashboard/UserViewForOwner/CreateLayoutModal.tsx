@@ -9,34 +9,72 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal } from "@/components/ui/modal";
 import { useState } from "react";
 import { zoneType } from "@/constants/zone";
+import Cookies from "js-cookie";
 
 const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const validData = z.object({
     zoneName: z.string().min(1, { message: "Zone name is required" }),
-    zoneType: z.enum([
-      "east",
-      "west",
-      "south",
-      "north",
-      "upper",
-      "lower",
-      "outside",
-    ]),
-    table: z.enum(["east", "west", "south", "north"]),
-    tableSetting: z.enum(["upper", "lower", "outside"]),
-    seatingCapability: z.coerce
-      .number()
-      .min(1, { message: "Seating Capability is required" }),
+    zoneType: z.string().min(1, { message: "Zone type is required" }),
+    tableName: z.string().min(1, { message: "Table name is required" }),
+    tableSetting: z.string().min(1, { message: "Table setting is required" }),
+    seatingCapability: z
+      .coerce.number()
+      .min(1, { message: "Seating capability is required" }),
   });
 
-  const onSubmit = (data: FieldValues) => {
-    console.log("Form data:", data);
-    setOpen(false);
+  const onSubmit = async (data: FieldValues) => {
+    setLoading(true);
+    setError(null);
+
+    const token = Cookies.get("accessToken"); 
+    if (!token) {
+    console.error("No token found in cookies");
+    alert("Authentication token missing.");
+    return;
+  }
+
+    const payload = {
+      zoneName: data.zoneName,
+      zoneType: data.zoneType,
+      tableName: data.tableName,
+      tableSetting: data.tableSetting,
+      seatingCapacity: data.seatingCapability,
+    };
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/zone/create-zone`,
+        {
+          method: "POST",
+           headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || "Failed to create zone");
+      }
+
+      alert("Zone created successfully");
+      setOpen(false);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const closeModal = () => {
     setOpen(false);
+    setError(null);
   };
 
   return (
@@ -45,50 +83,23 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
       onOpenChange={setOpen}
       trigger={<Button>{ButtonText}</Button>}
       title="Create A Layout"
-      description="Fill in the details below to create a new sub user account"
+      description="Fill in the details below to create a new zone"
     >
       <SuppleForm
         resolver={zodResolver(validData)}
         onSubmit={onSubmit}
         className="grid gap-2"
       >
-        <div className="">
+        <div>
           <SuppleInput
             name="zoneName"
             label="Zone Name"
-            placeholder="Zone Name"
-            type="text"
+            placeholder="Enter zone name"
           />
         </div>
-        <div className="">
-          <SuppleSelect name="zoneType" label="Zone Name">
-            {zoneType.map((zone) => (
-              <SelectItem key={zone.value} value={zone.value}>
-                {zone.label}
-              </SelectItem>
-            ))}
-          </SuppleSelect>
-        </div>
-        <div className="">
-          <SuppleSelect name="table" label="Table">
-            {zoneType.map((zone) => (
-              <SelectItem key={zone.value} value={zone.value}>
-                {zone.label}
-              </SelectItem>
-            ))}
-          </SuppleSelect>
-        </div>
-        <div className="">
-          <SuppleSelect name="tableSetting" label="Table Setting">
-            {zoneType.map((zone) => (
-              <SelectItem key={zone.value} value={zone.value}>
-                {zone.label}
-              </SelectItem>
-            ))}
-          </SuppleSelect>
-        </div>
-        <div className="">
-          <SuppleSelect name="tableName" label="Table Name">
+
+        <div>
+          <SuppleSelect name="zoneType" label="Zone Type">
             {zoneType.map((zone) => (
               <SelectItem key={zone.value} value={zone.value}>
                 {zone.label}
@@ -97,14 +108,34 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
           </SuppleSelect>
         </div>
 
-        <div className="">
+        <div>
+          <SuppleInput
+            name="tableName"
+            label="Table Name"
+            placeholder="Enter table name"
+          />
+        </div>
+
+        <div>
+          <SuppleInput
+            name="tableSetting"
+            label="Table Setting"
+            placeholder="Enter table setting"
+          />
+        </div>
+
+        <div>
           <SuppleInput
             name="seatingCapability"
             label="Seating Capability"
-            placeholder="Seating Capability"
+            placeholder="Enter seating capacity"
             type="number"
           />
         </div>
+
+        {error && (
+          <p className="text-red-600 text-sm font-medium mt-2">{error}</p>
+        )}
 
         <div className="flex items-center space-x-2 justify-end">
           <Button
@@ -112,11 +143,12 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
             type="button"
             variant={"outline"}
             className="mt-4"
+            disabled={loading}
           >
             Cancel
           </Button>
-          <Button type="submit" className="mt-4">
-            Create User
+          <Button type="submit" className="mt-4" disabled={loading}>
+            {loading ? "Creating..." : "Create"}
           </Button>
         </div>
       </SuppleForm>

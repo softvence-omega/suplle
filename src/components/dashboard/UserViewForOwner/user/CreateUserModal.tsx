@@ -26,9 +26,8 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
  
 
 const onSubmit = async (data: FieldValues) => {
+
 const token = Cookies.get("accessToken") ;
-
-
   if (!token) {
     console.error("No token found in cookies");
     alert("Authentication token missing.");
@@ -46,7 +45,7 @@ const token = Cookies.get("accessToken") ;
     isDeleted: false,
   };
   
-console.log("Token:", token);
+// console.log("Token:", token);
   try {
     const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/owner-create-sub-user`, {
       method: "POST",
