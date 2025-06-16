@@ -1,7 +1,10 @@
 import FoodCard from "@/components/dashboard/ManageMenu/FoodCard";
 import SectionHeader from "@/components/ui/sectionHeader";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { fetchMenus } from "@/store/features/menu/fetchMenuSlice";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const menuSections = [
@@ -135,6 +138,13 @@ const SectionTitle = ({ title }: { title: string }) => {
 };
 
 const MenuViewForOwner = () => {
+  const { menus } = useAppSelector((state) => state.fetchMenu);
+  const dispatch = useAppDispatch();
+  console.log("Menus in view page:", menus);
+
+  useEffect(() => {
+    dispatch(fetchMenus());
+  }, [dispatch]);
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -157,14 +167,16 @@ const MenuViewForOwner = () => {
               initial="hidden"
               animate="show"
             >
-              {section.items.map((item, itemIndex) => (
+              {menus.map((item) => (
                 <FoodCard
-                  key={itemIndex}
-                  title={item.title}
-                  size={item.size}
-                  price={item.price}
-                  description={item.description}
-                  imageSrc={item.imageSrc}
+                  // key={itemIndex}
+                  // title={item.itemName}
+                  // size={item.size}
+                  // price={item.price.toString()}
+                  // description={item.description}
+                  // imageSrc={item.image}
+                  item={item}
+                  key={item._id}
                 />
               ))}
             </motion.div>

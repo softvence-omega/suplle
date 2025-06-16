@@ -37,7 +37,7 @@ const Story = () => {
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight">
             Numbers <span className="text-primary">Are Telling</span> Our Story
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-gray-600">
+          <p className="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-300">
             Suplle is transforming how restaurants, pubs, and bars operate —
             and the numbers speak for themselves.
           </p>
@@ -46,13 +46,13 @@ const Story = () => {
         {/* Right Side */}
         <div className="w-full lg:w-1/2 relative">
           <div className="bg-[url('/background/Ellipse33.svg')] bg-no-repeat bg-center bg-contain w-full h-full">
-            <div className="relative bg-white w-full max-w-md mx-auto rounded-2xl shadow-lg py-10 px-6 sm:px-10">
+            <div className="relative bg-white dark:bg-black border border-amber-100 w-full max-w-md mx-auto rounded-2xl shadow-lg py-10 px-6 sm:px-10">
               <div className="flex flex-col gap-8">
                 <div>
                   <h2 className="text-5xl sm:text-6xl font-bold text-primary">
                     {users.toLocaleString()}+
                   </h2>
-                  <p className="text-gray-500 mt-2">Active Users</p>
+                  <p className="text-gray-500 mt-2 dark:text-gray-300">Active Users</p>
                 </div>
 
                 <hr className="border-0 h-px bg-gradient-to-r from-[#6DDCFF] to-[#7F60F9]" />
@@ -61,7 +61,7 @@ const Story = () => {
                   <h2 className="text-5xl sm:text-6xl font-bold text-primary">
                     {restaurants.toLocaleString()}+
                   </h2>
-                  <p className="text-gray-500 mt-2">Restaurants Onboarded</p>
+                  <p className="text-gray-500 mt-2 dark:text-gray-300">Restaurants Onboarded</p>
                 </div>
 
                 <hr className="border-0 h-px bg-gradient-to-r from-[#6DDCFF] to-[#7F60F9]" />
@@ -70,7 +70,7 @@ const Story = () => {
                   <h2 className="text-5xl sm:text-6xl font-bold text-primary">
                     {orders.toLocaleString()}+
                   </h2>
-                  <p className="text-gray-500 mt-2">
+                  <p className="text-gray-500 mt-2 dark:text-gray-300">
                     Orders Processed Monthly
                   </p>
                 </div>

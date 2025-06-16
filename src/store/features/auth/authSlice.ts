@@ -49,6 +49,7 @@ export const loginUser = createAsyncThunk(
       const { user, accessToken } = res.data.data;
 
       Cookies.set("accessToken", accessToken, { expires: 1 });
+      Cookies.set("user", JSON.stringify(user));
 
       return { user, accessToken };
     } catch (error: unknown) {
@@ -256,6 +257,7 @@ const authSlice = createSlice({
           action: PayloadAction<{ user: User; accessToken: string }>
         ) => {
           state.loading = false;
+          console.log("Login successful from auth slice: ", action.payload);
           state.user = action.payload.user;
           state.accessToken = action.payload.accessToken;
         }

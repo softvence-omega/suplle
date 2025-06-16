@@ -8,15 +8,18 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectItem } from "@/components/ui/select";
 import SuppleTextarea from "@/components/Forms/SuppleTextarea";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useParams } from "react-router-dom";
+import { updateMenu } from "@/store/features/menu/updateMenuSlice";
 
 const menuItemSchema = z.object({
   itemName: z.string().min(1, "Item name is required"),
   category: z.string().min(1, "Category is required"),
   price: z.string().min(1, "Price is required"),
   size: z.string().min(1, "Size is required"),
-  availability: z.string().min(1, "Availability is required"),
-  description: z.string().min(1, "Description is required"),
-  image: z.string().min(1, "Item image is required"),
+  image: z
+    .union([z.instanceof(File), z.string().max(0), z.undefined()])
+    .optional(),
   menuFile: z.string().optional(),
 });
 
@@ -29,11 +32,52 @@ type MenuItemFormData = z.infer<typeof menuItemSchema>;
 // );
 
 const MenuEditForOwner = () => {
-  const availabilityOptions = ["Available", "Not Available"];
+  const dispatch = useAppDispatch();
+  // const availabilityOptions = ["Available", "Not Available"];
+
+  const { user } = useAppSelector((state) => state.auth);
+  const { categories } = useAppSelector((state) => state.category);
+  const { restaurantId, menuId } = useParams<{
+    restaurantId?: string;
+    menuId?: string;
+  }>();
+
+  // console.log("restaurant ID:", restaurantId);
+
+  console.log("Categories:", categories);
+
+  console.log("User data:", user);
 
   const onSubmitMenuItem = async (data: MenuItemFormData) => {
     console.log("Menu item data:", data);
+
+    if (!menuId || !restaurantId) {
+      // Handle error (show toast, alert, etc.)
+      console.error("Missing menuId or restaurantId");
+      return;
+    }
+
+    // Convert image string (filename or URL) to File if possible
+    // Assuming SuppleFileUpload provides a File object in data.image
+    // If not, you may need to adjust SuppleFileUpload to return a File
+    let imageFile: File | undefined = undefined;
+    if (data.image && data.image instanceof File) {
+      imageFile = data.image;
+    }
+
+    const payload = {
+      menuId,
+      restaurantId,
+      formData: {
+        category: data.category,
+        itemName: data.itemName,
+        price: Number(data.price),
+        size: data.size,
+      },
+      image: imageFile,
+    };
     // Add your API call here
+    dispatch(updateMenu(payload));
   };
 
   const handleDeleteMenu = () => {
@@ -49,14 +93,14 @@ const MenuEditForOwner = () => {
         <SuppleForm<MenuItemFormData>
           onSubmit={onSubmitMenuItem}
           defaultValues={{
-            itemName: "Cheeseburger",
-            category: "starters",
-            price: "20",
-            size: "small",
-            availability: "available",
-            description:
-              "Satisfy your cravings with our best-selling Cheeseburger – the ultimate fast food indulgence! Made with a juicy beef patty, melted cheddar cheese, fresh lettuce, ripe tomatoes, crispy onions, and our signature burger sauce, all stacked inside a soft, toasted bun. Loved by foodies and burger lovers alike, this mouth-watering treat delivers bold flavour in every bite. Whether you're grabbing a quick lunch or treating yourself to a cheat meal, this burger never disappoints!",
-            image: "Burger-01.jpg",
+            itemName: "",
+            category: "",
+            price: "",
+            size: "",
+            // availability: "available",
+            // description:
+            //   "Satisfy your cravings with our best-selling Cheeseburger – the ultimate fast food indulgence! Made with a juicy beef patty, melted cheddar cheese, fresh lettuce, ripe tomatoes, crispy onions, and our signature burger sauce, all stacked inside a soft, toasted bun. Loved by foodies and burger lovers alike, this mouth-watering treat delivers bold flavour in every bite. Whether you're grabbing a quick lunch or treating yourself to a cheat meal, this burger never disappoints!",
+            image: "",
             menuFile: "",
           }}
           resolver={zodResolver(menuItemSchema)}
@@ -68,10 +112,15 @@ const MenuEditForOwner = () => {
             </div>
             <div>
               <SuppleSelect name="category" label="Category*">
-                <SelectItem value="starters">Starters</SelectItem>
-                <SelectItem value="main">Main Course</SelectItem>
+                {categories?.map((category) => (
+                  <SelectItem key={category._id} value={category._id}>
+                    {category.categoryName}
+                  </SelectItem>
+                ))}
+                {/* <SelectItem value="starters">Starters</SelectItem>
+                
                 <SelectItem value="desserts">Desserts</SelectItem>
-                <SelectItem value="drinks">Drinks</SelectItem>
+                <SelectItem value="drinks">Drinks</SelectItem> */}
               </SuppleSelect>
             </div>
             <div>
@@ -84,7 +133,7 @@ const MenuEditForOwner = () => {
                 <SelectItem value="large">Large</SelectItem>
               </SuppleSelect>
             </div>
-            <div>
+            {/* <div>
               <SuppleSelect name="availability" label="Availability*">
                 {availabilityOptions.map((option) => (
                   <SelectItem key={option} value={option.toLowerCase()}>
@@ -92,7 +141,7 @@ const MenuEditForOwner = () => {
                   </SelectItem>
                 ))}
               </SuppleSelect>
-            </div>
+            </div> */}
             <div>
               <SuppleFileUpload
                 InputClassName="p-2"

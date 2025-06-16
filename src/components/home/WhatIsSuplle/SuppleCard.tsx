@@ -19,7 +19,7 @@ const SuppleCard = ({
           />
         }
       </div>
-      <p className="text-gray-500">{category}</p>
+      <p className="text-gray-500 dark:text-gray-300">{category}</p>
       <h1 className="text-3xl font-medium">{title}</h1>
       <p className="text-xl px-5">{description}</p>
     </div>
