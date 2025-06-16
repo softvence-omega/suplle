@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
 import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
 import { useState } from "react";
-import ViewUserModal from "./ViewUserModal";
+
 import EditUserModal from "./EditUserModal";
 import EditIcon from "@/components/ui/EditIcon";
+import DeleteUserButton from "./DeleteUserButton";
 
 // Types
 interface UserTableProps {
   users: User[];
   onEdit: (user: User) => void;
+  serialStart?: number; // optional, default to 1
 }
 
 interface UserTableRowProps {
@@ -16,6 +18,7 @@ interface UserTableRowProps {
   index: number;
   onView: (user: User) => void;
   onEdit: (user: User) => void;
+  serialNumber: number; // new prop to show correct serial
 }
 
 // Custom hook for managing user state
@@ -38,10 +41,10 @@ const useUserTable = (onEdit: (user: User) => void) => {
 };
 
 // Table Row Component
-const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
+const UserTableRow = ({ user, index, onView, onEdit, serialNumber }: UserTableRowProps) => {
   return (
     <tr className="bg-white border-b dark:bg-primary-dark dark:text-white">
-      <td className="px-6 py-4">{index + 1}</td>
+      <td className="px-6 py-4">{serialNumber}</td> {/* Use serialNumber here */}
       <td className="px-6 py-4">{user.userName}</td>
       <td className="px-6 py-4">{user.email}</td>
       <td className="px-6 py-4">{user.role}</td>
@@ -59,8 +62,9 @@ const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" onClick={() => onView(user)}>
-            <ViewUserModal selectedUser={user} />
+            <DeleteUserButton userId={user.id} />
           </Button>
+          
           <Button variant="ghost" size="icon">
             <EditUserModal
               onEdit={onEdit}
@@ -75,7 +79,7 @@ const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
 };
 
 // Main Table Component
-export default function UserTable({ users, onEdit }: UserTableProps) {
+export default function UserTable({ users, onEdit, serialStart = 1 }: UserTableProps) {
   const { handleView, handleEdit } = useUserTable(onEdit);
 
   return (
@@ -99,6 +103,7 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
               index={index}
               onView={handleView}
               onEdit={handleEdit}
+              serialNumber={serialStart + index} // Pass serial number here
             />
           ))}
         </tbody>
@@ -106,6 +111,3 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
     </div>
   );
 }
-
-
-

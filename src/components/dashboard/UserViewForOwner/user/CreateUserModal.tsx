@@ -10,68 +10,69 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal } from "@/components/ui/modal";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
 
   const validData = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     phone: z.string().min(1, { message: "Phone is required" }),
     email: z.string().email({ message: "Invalid email address" }),
     password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-    role: z.enum(["manager", "dine-in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
+    role: z.enum(["manager", "dine in", "waiter", "takeaway", "chef", "cashier", "maintenance"]),
   });
 
- 
-
-const onSubmit = async (data: FieldValues) => {
-
-const token = Cookies.get("accessToken") ;
-  if (!token) {
-    console.error("No token found in cookies");
-    alert("Authentication token missing.");
-    return;
-  }
-
-  const payload = {
-    ...data,
-    providerId: null,
-    provider: null,
-    image: "https://example.com/avatar.jpg",
-    otp: "123456",
-    otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
-    isTourCompleted: false,
-    isDeleted: false,
-  };
-  
-// console.log("Token:", token);
-  try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/owner-create-sub-user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-         Authorization: token,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      console.error("Server responded with error:", result);
-      alert(result?.message || "Something went wrong");
+  const onSubmit = async (data: FieldValues) => {
+    const token = Cookies.get("accessToken");
+    if (!token) {
+      console.error("No token found in cookies");
+      alert("Authentication token missing.");
       return;
     }
 
-    console.log("User created successfully:", result);
-    setOpen(false);
-  } catch (error) {
-    console.error("Network or parsing error:", error);
-    alert("Something went wrong");
-  }
-};
+    const payload = {
+      ...data,
+      providerId: null,
+      provider: null,
+      image: "https://example.com/avatar.jpg",
+      otp: "123456",
+      otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      isTourCompleted: false,
+      isDeleted: false,
+    };
 
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/users/owner-create-sub-user`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      toast("New user account has been created successfully.");
+
+      setOpen(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Server responded with error:", error.response?.data);
+        alert(error.response?.data?.message || "Something went wrong");
+      } else {
+        console.error("Unknown error:", error);
+        alert("Something went wrong");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Modal

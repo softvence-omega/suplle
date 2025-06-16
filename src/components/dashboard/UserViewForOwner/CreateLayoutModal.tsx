@@ -10,6 +10,7 @@ import { Modal } from "@/components/ui/modal";
 import { useState } from "react";
 import { zoneType } from "@/constants/zone";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
   const [open, setOpen] = useState(false);
@@ -45,31 +46,32 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
       seatingCapacity: data.seatingCapability,
     };
 
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/zone/create-zone`,
-        {
-          method: "POST",
-           headers: {
+
+
+try {
+  const res = await axios.post(
+    `${import.meta.env.VITE_BACKEND_BASE_URL}/zone/create-zone`,
+    payload,
+    {
+      headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || "Failed to create zone");
-      }
-
-      alert("Zone created successfully");
-      setOpen(false);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
+  );
+
+  alert("Zone created successfully");
+  setOpen(false);
+} catch (err: any) {
+  if (axios.isAxiosError(err)) {
+    setError(err.response?.data?.message || "Failed to create zone");
+  } else {
+    setError("Something went wrong");
+  }
+} finally {
+  setLoading(false);
+}
+
   };
 
   const closeModal = () => {

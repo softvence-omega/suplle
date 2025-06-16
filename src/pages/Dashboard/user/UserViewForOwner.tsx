@@ -7,25 +7,23 @@ import Pagination from "@/utils/Pagination";
 import CreateUserModal from "@/components/dashboard/UserViewForOwner/user/CreateUserModal";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Loader2 } from "lucide-react"; 
+
 
 export type User = {
   id: string;
   userName: string;
   phone?: string;
   email: string;
-  role:
-    | "manager"
-    | "dine-in"
-    | "waiter"
-    | "takeaway"
-    | "chef"
-    | "cashier"
-    | "maintenance";
+  role: string;
   status: "Active" | "Inactive";
+  image?: string;
+  createdAt?: string;
 };
 
 const UserViewForOwner = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     role: "",
@@ -35,6 +33,7 @@ const UserViewForOwner = () => {
   });
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
       const token = Cookies.get("accessToken");
 
@@ -42,34 +41,37 @@ const UserViewForOwner = () => {
         `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`,
         {
           headers: {
-            Authorization: token ,
+            Authorization: token,
           },
         }
       );
 
-      console.log("Response:", response.data);
+     
+      const mappedUsers: User[] = response.data.data.result
+        .filter((item: any) => !item.isDeleted) 
+        .map((item: any) => ({
+          id: item._id,
+          userName: item.name || "",
+          email: item.email || "",
+          phone: item.phone || "",
+          role: item.role || "",
+          status: "Active", // ✅ All shown users are active only
+          image: item.image,
+          createdAt: item.createdAt,
+        }));
 
-      const mappedUsers: User[] = response.data.data.result.map((item: any) => ({
-        id: item._id,
-        userName: item?.user?.name || "Unnamed",
-        email: item?.user?.email || "",
-        phone: item?.user?.phone,
-        role: item?.user?.role || "manager",
-        status: item?.user?.isDeleted ? "Inactive" : "Active",
-      }));
 
       setUsers(mappedUsers);
     } catch (error) {
       console.error("Failed to fetch users:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchUsers();
   }, []);
-
-  // Optional: If you want to reset page when filters change (already done in handlers)
-  // useEffect(() => setCurrentPage(1), [filters]);
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
@@ -82,45 +84,21 @@ const UserViewForOwner = () => {
         user.userName.toLowerCase().includes(filters.search.toLowerCase()) ||
         user.email.toLowerCase().includes(filters.search.toLowerCase()) ||
         user.role.toLowerCase().includes(filters.search.toLowerCase());
+      const matchesMonth =
+        !filters.month ||
+        (user.createdAt && user.createdAt.startsWith(filters.month));
 
-      // If you want to filter by month (assuming user has a createdAt or similar field)
-      // You need to add that field in User and in mappedUsers and add filter here.
-
-      return matchesRole && matchesStatus && matchesSearch;
+      return matchesRole && matchesStatus && matchesSearch && matchesMonth;
     });
   }, [users, filters]);
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE =10;
   const currentUsers = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredUsers, currentPage]);
 
-  const handleRoleChange = useCallback((role: string) => {
-    setFilters((prev) => ({ ...prev, role }));
-    setCurrentPage(1);
-  }, []);
-
-  const handleStatusChange = useCallback((status: string) => {
-    setFilters((prev) => ({ ...prev, status }));
-    setCurrentPage(1);
-  }, []);
-
-  const handleSearch = useCallback((search: string) => {
-    setFilters((prev) => ({ ...prev, search }));
-    setCurrentPage(1);
-  }, []);
-
-  const handleMonthChange = useCallback((month: string) => {
-    setFilters((prev) => ({ ...prev, month }));
-    setCurrentPage(1);
-  }, []);
-
-  const handlePageChange = useCallback((items: unknown[]) => {
-    // Optionally, you can update currentPage based on items if needed
-    // setCurrentPage(newPageNumber);
-    // For now, do nothing or handle as required
-  }, []);
+  const serialStart = (currentPage - 1) * ITEMS_PER_PAGE + 1;
 
   const handleEdit = useCallback((user: User) => {
     console.log("Edit user:", user);
@@ -135,22 +113,36 @@ const UserViewForOwner = () => {
       />
 
       <SearchAndFilterBar
-        onRoleChange={handleRoleChange}
-        onStatusChange={handleStatusChange}
-        onSearch={handleSearch}
+        onRoleChange={(role) => setFilters((prev) => ({ ...prev, role }))}
+        onStatusChange={(status) => setFilters((prev) => ({ ...prev, status }))}
+        onSearch={(search) => setFilters((prev) => ({ ...prev, search }))}
       />
 
-      <MonthFilter onMonthChange={handleMonthChange} />
-
-      <UserTable users={currentUsers} onEdit={handleEdit} />
-
-      <Pagination
-        data={filteredUsers}
-        itemsPerPage={ITEMS_PER_PAGE}
-        onPageChange={handlePageChange}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+      <MonthFilter
+        onMonthChange={(month) => setFilters((prev) => ({ ...prev, month }))}
       />
+
+      {loading ? (
+        <div className="flex justify-center items-center py-10">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      ) : (
+        <>
+          <UserTable
+            users={currentUsers}
+            onEdit={handleEdit}
+            serialStart={serialStart}
+          />
+
+          <Pagination
+            data={filteredUsers}
+            itemsPerPage={ITEMS_PER_PAGE}
+            onPageChange={() => {}}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      )}
     </>
   );
 };
