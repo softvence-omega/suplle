@@ -74,7 +74,10 @@ const AppRoutes = () => {
         {/* menu routes */}
         <Route path="menu/view" element={<MenuViewForOwner />} />
         <Route path="menu/add" element={<MenuAddForOwner />} />
-        <Route path="menu/edit" element={<MenuEditForOwner />} />
+        <Route
+          path="menu/edit/:restaurantId/:menuId"
+          element={<MenuEditForOwner />}
+        />
         {/* layout routes */}
         <Route path="restaurant-layout" element={<RestaurantLayout />} />
         {/* user routes */}

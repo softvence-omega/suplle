@@ -14,6 +14,12 @@ const initialState: CreateMenuState = {
   error: null,
 };
 
+// View menu
+
+//
+
+// Thunk for fetching nmenu
+
 // Thunk for creating a menu item
 export const createMenu = createAsyncThunk(
   "menu/createMenu",
@@ -56,6 +62,10 @@ export const createMenu = createAsyncThunk(
     }
   }
 );
+
+// Slice for fetching menus
+
+// Slice for creating a menu
 
 const createMenuSlice = createSlice({
   name: "menu",
