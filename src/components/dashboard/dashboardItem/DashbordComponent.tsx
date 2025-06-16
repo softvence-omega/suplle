@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import RestaurantHeader from "./RestaruntHeader";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useEffect } from "react";
+import { fetchMenus } from "@/store/features/menu/fetchMenuSlice";
 
 // Types
 export type MenuSectionItem = {
@@ -150,6 +153,13 @@ const SectionTitle = ({ title }: { title: string }) => {
 };
 
 const DashbordComponent = () => {
+  const { menus } = useAppSelector((state) => state.fetchMenu);
+  const dispatch = useAppDispatch();
+  console.log("Menus in dashboard page:", menus);
+
+  useEffect(() => {
+    dispatch(fetchMenus());
+  }, [dispatch]);
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -173,14 +183,15 @@ const DashbordComponent = () => {
               initial="hidden"
               animate="show"
             >
-              {section.items.map((item, itemIndex) => (
+              {menus.map((item, itemIndex) => (
                 <FoodCard
                   key={itemIndex}
-                  title={item.title}
-                  size={item.size}
-                  price={item.price}
-                  description={item.description}
-                  imageSrc={item.imageSrc}
+                  item={item}
+                  // title={item.itemName}
+                  // size={item.size}
+                  // price={item.price.toString()}
+                  // description={item.description}
+                  // imageSrc={item.image}
                 />
               ))}
             </motion.div>
