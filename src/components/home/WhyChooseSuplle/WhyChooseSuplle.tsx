@@ -27,7 +27,7 @@ const whyChooseSuplleData = [
 
 const WhyChooseSuplle = () => {
   return (
-    <div className="w-full bg-white py-20 px-4 sm:px-6 lg:px-12">
+    <div className="w-full bg-white dark:bg-black py-20 px-4 sm:px-6 lg:px-12">
       <h1 className="text-3xl sm:text-4xl lg:text-6xl text-center font-bold">
         Why Choose <span className="text-primary">Suplle</span>
       </h1>
@@ -44,7 +44,7 @@ const WhyChooseSuplle = () => {
           >
             <img src={data.icon} alt={data.title} className="w-12 h-12 mb-4" />
             <h2 className="text-xl sm:text-2xl font-semibold">{data.title}</h2>
-            <p className="text-gray-600 text-base sm:text-lg">
+            <p className="text-gray-600 text-base sm:text-lg dark:text-gray-300">
               {data.description}
             </p>
           </div>

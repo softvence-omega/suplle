@@ -53,7 +53,7 @@ const FAQ = () => {
       <h1 className="text-center text-3xl sm:text-5xl lg:text-6xl font-bold mb-7">
         Frequently asked <span className="text-primary">questions</span>
       </h1>
-      <p className="text-center text-base sm:text-xl text-gray-600">
+      <p className="text-center text-base sm:text-xl text-gray-600 dark:text-gray-300">
         Everything you need to know about the product and billing.
       </p>
 
