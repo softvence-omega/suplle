@@ -17,8 +17,15 @@ const initialState: MenuUpdateState = {
 };
 
 // Thunk for updating a menu item
+interface UpdateMenuResponse {
+  // Define the expected properties returned by your API, for example:
+  success: boolean;
+  message: string;
+  // Add other fields as needed
+}
+
 export const updateMenu = createAsyncThunk<
-  any,
+  UpdateMenuResponse,
   {
     menuId: string;
     formData: Record<string, unknown>;
