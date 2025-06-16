@@ -25,7 +25,7 @@ const orders = [
     status: "Completed",
     items: [
       { name: "Spaghetti Carbonara", quantity: 1 },
-      { name: "Garlic Bread", quantity: 1 },
+      { name: "Garlic Bread", quantity: 2 },
     ],
     time: "1:15 PM",
     total: "$48.00",
