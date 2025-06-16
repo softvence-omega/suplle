@@ -22,7 +22,7 @@ export type User = {
   status: "Active" | "Inactive";
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE =10;
 
 const StaffViewForOwner = () => {
   const [users, setUsers] = useState<User[]>([]);

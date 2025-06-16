@@ -98,8 +98,9 @@ const UserViewForOwner = () => {
     return filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredUsers, currentPage]);
 
-  const serialStart = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-
+  const handlePageChange = useCallback((_items: unknown[]) => {
+    // optional: implement page data update if needed
+  }, []);
   const handleEdit = useCallback((user: User) => {
     console.log("Edit user:", user);
   }, []);
@@ -128,19 +129,20 @@ const UserViewForOwner = () => {
         </div>
       ) : (
         <>
-          <UserTable
-            users={currentUsers}
-            onEdit={handleEdit}
-            serialStart={serialStart}
-          />
+       <UserTable
+  users={filteredUsers} // pass full filtered users, NOT sliced ones
+  onEdit={handleEdit}
+  currentPage={currentPage}
+  itemsPerPage={ITEMS_PER_PAGE}
+/>
 
-          <Pagination
-            data={filteredUsers}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={() => {}}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+         <Pagination
+        data={filteredUsers}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
         </>
       )}
     </>
