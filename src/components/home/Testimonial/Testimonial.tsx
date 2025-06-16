@@ -81,7 +81,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="mt-20 text-center px-4">
+    <div className="mt-20 text-center px-4 dark:bg-black dark:text-white">
       <p className="text-primary font-bold text-xl mb-6">
         3,940+ Happy Suplle Users
       </p>
@@ -106,7 +106,7 @@ const Testimonial = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction > 0 ? -200 : 200 }}
                 transition={{ duration: 0.5 }}
-                className="flex-1 min-w-[calc(50%-1rem)] bg-white rounded-lg p-6"
+                className="flex-1 min-w-[calc(50%-1rem)] bg-white rounded-lg p-6 dark:bg-black"
               >
                 <div className="flex flex-col md:flex-row items-center gap-8">
                   <img
@@ -123,7 +123,7 @@ const Testimonial = () => {
                     <p className="text-lg italic mb-6">{testimonial.comment}</p>
                     <div className="flex items-center gap-5">
                       <h3 className="font-bold text-xl">{testimonial.name}</h3>
-                      <p className="text-gray-600">{testimonial.designation}</p>
+                      <p className="text-gray-600 dark:text-gray-400">{testimonial.designation}</p>
                     </div>
                   </div>
                 </div>

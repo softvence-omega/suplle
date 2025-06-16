@@ -11,6 +11,7 @@ import Wrapper from "@/components/shared/Wrapper";
 import Footer from "@/components/shared/Footer";
 import { useState } from "react";
 const DynamicRestaurant = () => {
+  
   const { id } = useParams();
   console.log(id);
   const [selectedCategory, setSelectedCategory] = useState('offers')

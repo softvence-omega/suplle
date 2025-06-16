@@ -32,7 +32,7 @@ const howSuplleHelpsData = [
 
 const HowSuplleHelps = () => {
   return (
-    <div className="py-20 px-4 sm:px-6 lg:px-12 bg-white">
+    <div className="py-20 px-4 sm:px-6 lg:px-12 bg-white dark:bg-black">
       <h1 className="text-3xl sm:text-4xl lg:text-6xl text-center font-bold mb-16">
         How Suplle <span className="text-primary">Helps</span>
       </h1>
@@ -55,7 +55,7 @@ const HowSuplleHelps = () => {
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-1">
                 {data.title}
               </h2>
-              <p className="text-gray-600 text-base sm:text-lg">
+              <p className="text-gray-600 text-base sm:text-lg dark:text-gray-300">
                 {data.description}
               </p>
             </div>
