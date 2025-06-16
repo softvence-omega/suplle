@@ -5,6 +5,7 @@ import authReducer from "../store/features/auth/authSlice";
 import categoryReducer from "../store/features/category/createCategorySlice";
 import menuReducer from "../store/features/menu/menuSlice";
 import fetchMenuReducer from "../store/features/menu/fetchMenuSlice";
+import orderReducer from "../store/features/orders/orderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     category: categoryReducer,
     menu: menuReducer,
     fetchMenu: fetchMenuReducer,
+    orders: orderReducer,
   },
 });
 

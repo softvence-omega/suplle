@@ -2,10 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useState } from "react";
 import { Modal } from "../ui/modal";
+import { set } from "react-hook-form";
+import RestaurantUpdateForm from "./RestaurantUpdateForm";
+
 
 const AllRestaurant = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDetailsData, setShowDetailsData] = useState<Invoice | null>(null);
+  const [showUpdateData, setShowUpdateData] = useState<Invoice | null>(null);
 
   // const [showFormModal, setShowFormModal] = useState(false);
   // const [formModalData, setFormModalData] = useState({});
@@ -23,9 +28,13 @@ const AllRestaurant = () => {
   // };
 
   // DATA VIEW FUNCTIONS
-  const handelCloseModal = () => {
-    setShowModal(false);
-  };
+  const handleClosePreviewModal = () => {
+  setShowPreviewModal(false);
+};
+
+const handleCloseUpdateModal = () => {
+  setShowUpdateModal(false);
+};
   interface Invoice {
     invoice: string;
     name: string;
@@ -43,7 +52,13 @@ const AllRestaurant = () => {
     if (invoice) {
       setShowDetailsData(invoice);
     }
-    setShowModal(true);
+    setShowPreviewModal(true);
+  };
+  const handleUpdateData=(invoice: Invoice) => {
+    if (invoice) {
+      setShowUpdateData(invoice);
+    }
+    setShowUpdateModal(true);
   };
   const invoices = [
     {
@@ -131,6 +146,12 @@ const AllRestaurant = () => {
       icons: ["eye", "edit"],
     },
   ];
+  // Helper to close both modals if needed
+  function setShowModal(open: boolean) {
+    setShowPreviewModal(open);
+    setShowUpdateModal(open);
+  }
+
   return (
     <div className="space-y-4 mt-7">
       <h1 className="font-rubik text-sm sm:text-[18px] ">All Restaurants</h1>
@@ -206,7 +227,9 @@ const AllRestaurant = () => {
                     </svg>
                   </button>
                   <div className="w-[1.5px] h-[15px] bg-gray-300" />
-                  <button className="cursor-pointer">
+                  <button
+                  onClick={() => handleUpdateData(invoice)}
+                  className="cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -242,8 +265,8 @@ const AllRestaurant = () => {
       {/* MODAL */}
 
       <Modal
-        open={showModal}
-        onOpenChange={handelCloseModal}
+        open={showPreviewModal}
+        onOpenChange={handleClosePreviewModal}
         trigger="Close"
         title="Restaurants Details Data"
       >
@@ -260,8 +283,24 @@ const AllRestaurant = () => {
             <p>Email {showDetailsData?.mail}</p>
             <p>Order No: {showDetailsData?.order}</p>
           </div>
-        )}
+        )}``
       </Modal>
+      <Modal
+  open={showUpdateModal}
+  onOpenChange={handleCloseUpdateModal}
+  trigger={<button style={{ display: "none" }} />}
+  title="Update Restaurant Info"
+>
+  {showUpdateData && (
+    <RestaurantUpdateForm
+      initialData={showUpdateData}
+      onSave={(updatedData) => {
+        console.log("Updated data: ", updatedData);
+        setShowModal(false);
+      }}
+    />
+  )}
+</Modal>
 
       {/* <Modal title=""  onOpenChange={} open={} trigger>d</Modal> */}
     </div>

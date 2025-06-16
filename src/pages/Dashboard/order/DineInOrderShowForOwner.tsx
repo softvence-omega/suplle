@@ -1,10 +1,13 @@
-import OrderListRow from "@/components/dashboard/orders/OrderListRow";
+// import OrderListRow from "@/components/dashboard/orders/OrderListRow";
 import GridIcon from "@/components/icons/GridIcon";
 import ListIcon from "@/components/icons/ListIcon";
 import InputComponent from "@/components/shared/input/auth/TextInput";
-import OrderCard from "@/components/shared/OrderCard";
+// import OrderCard from "@/components/shared/OrderCard";
 import { Button } from "@/components/ui/button";
-import axios from 'axios';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+// import { RootState, AppDispatch } from "@/redux/store";
 import {
   Select,
   SelectContent,
@@ -12,100 +15,93 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { fetchOrders } from "@/store/features/orders/orderSlice";
+import type { AppDispatch, RootState } from "@/store/store";
 
-const orders = [
-  {
-    orderId: "001",
-    table: "Table 12",
-    type: "Dine-in",
-    people: 2,
-    status: "Completed",
-    items: [
-      { name: "Spaghetti Carbonara", quantity: 1 },
-      { name: "Garlic Bread", quantity: 1 },
-    ],
-    time: "1:15 PM",
-    total: "$48.00",
-  },
-  {
-    orderId: "002",
-    table: "Table 45",
-    type: "Dine-in",
-    people: 8,
-    status: "InProgress",
-    items: [
-      { name: "Margherita Pizza", quantity: 1 },
-      { name: "Caesar Salad", quantity: 2 },
-    ],
-    time: "2:56 AM",
-    total: "$133.50",
-  },
-  {
-    orderId: "003",
-    table: "Takeaway",
-    type: "Takeaway",
-    people: 1,
-    status: "Preparing",
-    items: [
-      { name: "Burger", quantity: 2 },
-      { name: "Fries", quantity: 1 },
-    ],
-    time: "11:45 AM",
-    total: "$29.90",
-  },
-  {
-    orderId: "004",
-    table: "Table 9",
-    type: "Dine-in",
-    people: 4,
-    status: "Ready",
-    items: [
-      { name: "Sushi Platter", quantity: 1 },
-      { name: "Miso Soup", quantity: 4 },
-    ],
-    time: "7:30 PM",
-    total: "$82.75",
-  },
-  {
-    orderId: "005",
-    table: "Delivery",
-    type: "Delivery",
-    people: 1,
-    status: "Delivered",
-    items: [
-      { name: "Pad Thai", quantity: 1 },
-      { name: "Spring Rolls", quantity: 1 },
-    ],
-    time: "5:10 PM",
-    total: "$37.20",
-  },
-];
+// const orders = [
+//   {
+//     orderId: "001",
+//     table: "Table 12",
+//     type: "Dine-in",
+//     people: 2,
+//     status: "Completed",
+//     items: [
+//       { name: "Spaghetti Carbonara", quantity: 1 },
+//       { name: "Garlic Bread", quantity: 1 },
+//     ],
+//     time: "1:15 PM",
+//     total: "$48.00",
+//   },
+//   {
+//     orderId: "002",
+//     table: "Table 45",
+//     type: "Dine-in",
+//     people: 8,
+//     status: "InProgress",
+//     items: [
+//       { name: "Margherita Pizza", quantity: 1 },
+//       { name: "Caesar Salad", quantity: 2 },
+//     ],
+//     time: "2:56 AM",
+//     total: "$133.50",
+//   },
+//   {
+//     orderId: "003",
+//     table: "Takeaway",
+//     type: "Takeaway",
+//     people: 1,
+//     status: "Preparing",
+//     items: [
+//       { name: "Burger", quantity: 2 },
+//       { name: "Fries", quantity: 1 },
+//     ],
+//     time: "11:45 AM",
+//     total: "$29.90",
+//   },
+//   {
+//     orderId: "004",
+//     table: "Table 9",
+//     type: "Dine-in",
+//     people: 4,
+//     status: "Ready",
+//     items: [
+//       { name: "Sushi Platter", quantity: 1 },
+//       { name: "Miso Soup", quantity: 4 },
+//     ],
+//     time: "7:30 PM",
+//     total: "$82.75",
+//   },
+//   {
+//     orderId: "005",
+//     table: "Delivery",
+//     type: "Delivery",
+//     people: 1,
+//     status: "Delivered",
+//     items: [
+//       { name: "Pad Thai", quantity: 1 },
+//       { name: "Spring Rolls", quantity: 1 },
+//     ],
+//     time: "5:10 PM",
+//     total: "$37.20",
+//   },
+// ];
 
 function DineInOrderShowForOwner() {
-  const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { data: orders, loading, error } = useSelector(
+    (state: RootState) => state.orders
+  );
 
-    useEffect(() => {
-        // Make GET request to fetch data
-        axios
-            .get("https://suplle-server-v2-2.onrender.com/api/v1/order/all-order?isDeleted=false")
-            .then((response) => {
-                setData(response.data);
-                console.log(data)
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+  if (loading) return <p>Loading orders...</p>;
+  if (error) return <p className="text-green-500">Error: {error}</p>; 
+
   const { register } = useForm();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -179,9 +175,9 @@ function DineInOrderShowForOwner() {
       <div className="mt-6">
         {viewMode === "grid" ? (
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {orders.map((order) => (
+            {/* {orders.map((order) => (
               <OrderCard key={order.orderId} {...order} />
-            ))}
+            ))} */}
           </div>
         ) : (
           <div className="overflow-x-auto rounded-xl shadow-sm border">
@@ -200,9 +196,9 @@ function DineInOrderShowForOwner() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-[#161616] ">
-                {orders.map((order) => (
+                {/* {orders.map((order) => (
                   <OrderListRow key={order.orderId} {...order} view="list" />
-                ))}
+                ))} */}
               </tbody>
             </table>
           </div>
