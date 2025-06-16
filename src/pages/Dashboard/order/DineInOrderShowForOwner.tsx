@@ -4,10 +4,14 @@ import ListIcon from "@/components/icons/ListIcon";
 import InputComponent from "@/components/shared/input/auth/TextInput";
 // import OrderCard from "@/components/shared/OrderCard";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // import { RootState, AppDispatch } from "@/redux/store";
+=======
+// import axios from "axios";
+>>>>>>> dev/mahim
 import {
   Select,
   SelectContent,
@@ -90,6 +94,7 @@ import type { AppDispatch, RootState } from "@/store/store";
 // ];
 
 function DineInOrderShowForOwner() {
+<<<<<<< HEAD
   const dispatch = useDispatch<AppDispatch>();
   const { data: orders, loading, error } = useSelector(
     (state: RootState) => state.orders
@@ -102,6 +107,29 @@ function DineInOrderShowForOwner() {
   if (loading) return <p>Loading orders...</p>;
   if (error) return <p className="text-green-500">Error: {error}</p>; 
 
+=======
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //     // Make GET request to fetch data
+  //     axios
+  //         .get("https://suplle-server-v2-2.onrender.com/api/v1/order/all-order?isDeleted=false")
+  //         .then((response) => {
+  //             setData(response.data);
+  //             console.log(data)
+  //             setLoading(false);
+  //         })
+  //         .catch((err) => {
+  //             setError(err.message);
+  //             setLoading(false);
+  //         });
+  // }, []);
+
+  // if (loading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error}</div>;
+>>>>>>> dev/mahim
   const { register } = useForm();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
