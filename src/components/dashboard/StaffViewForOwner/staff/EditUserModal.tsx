@@ -30,6 +30,12 @@ const UserFormFields = () => (
         label="Email"
         placeholder="Email"
         type="email"
+      /> 
+      <SuppleInput
+        name="email"
+        label="Email"
+        placeholder="Email"
+        type="email"
       />
     </div>
 

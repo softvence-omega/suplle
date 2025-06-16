@@ -1,6 +1,6 @@
 export type RoleValue =
   | "manager"
-  | "dine-in"
+  | "dine in"
   | "waiter"
   | "takeaway"
   | "chef"
@@ -14,7 +14,7 @@ export type RoleOption = {
 
 export const userRoles: RoleOption[] = [
   { value: "manager", label: "Manager" },
-  { value: "dine-in", label: "Dine-in" },
+  { value: "dine in", label: "Dine In" },
   { value: "waiter", label: "Waiter" },
   { value: "takeaway", label: "Takeaway" },
   { value: "chef", label: "Chef" },
