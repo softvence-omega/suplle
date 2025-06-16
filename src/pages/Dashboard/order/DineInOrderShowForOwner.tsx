@@ -4,7 +4,7 @@ import ListIcon from "@/components/icons/ListIcon";
 import InputComponent from "@/components/shared/input/auth/TextInput";
 import OrderCard from "@/components/shared/OrderCard";
 import { Button } from "@/components/ui/button";
-// import axios from "axios";
+
 import {
   Select,
   SelectContent,
@@ -85,27 +85,6 @@ const orders = [
 ];
 
 function DineInOrderShowForOwner() {
-  // const [data, setData] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //     // Make GET request to fetch data
-  //     axios
-  //         .get("https://suplle-server-v2-2.onrender.com/api/v1/order/all-order?isDeleted=false")
-  //         .then((response) => {
-  //             setData(response.data);
-  //             console.log(data)
-  //             setLoading(false);
-  //         })
-  //         .catch((err) => {
-  //             setError(err.message);
-  //             setLoading(false);
-  //         });
-  // }, []);
-
-  // if (loading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error}</div>;
   const { register } = useForm();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
