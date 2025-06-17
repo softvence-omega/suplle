@@ -1,11 +1,10 @@
-// UserList.tsx
 import React from "react";
 import UserItem from "./UserItem";
-import type { UserStatus, User } from "./user";
+import type { User, UserRole } from "./user"; // Import UserRole from user.ts
 
 interface UserListProps {
   users: User[];
-  filter: "All" | UserStatus;
+  filter: "All" | UserRole; // Use UserRole instead of UserStatus
   onUserClick: (userId: string) => void;
   onEditClick: (userId: string) => void;
 }

@@ -5,70 +5,46 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal } from "@/components/ui/modal";
 import { useState } from "react";
-import Cookies from "js-cookie";
-import axios from "axios";
+
+import { editUser } from "@/store/features/user/userSlice";
 import { toast } from "react-toastify";
-import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
+import type { User } from "@/store/features/user/userSlice";
+import { useAppDispatch } from "@/hooks/useRedux";
 
 interface EditUserModalProps {
   ButtonText: React.ReactNode;
   selectedUser: User;
-  onEdit: (updatedUser: User) => void;
+  onEdit: (updatedUser: User) => void; // Optional now, but keep if you want callback
 }
 
 const EditUserModal = ({ ButtonText, selectedUser, onEdit }: EditUserModalProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
-  // Zod validation schema for userName
   const validData = z.object({
     userName: z.string().min(1, { message: "Name is required" }),
   });
 
-  const onSubmit = async (data: { userName: string }) => {
+  type FormData = z.infer<typeof validData>;
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const token = Cookies.get("accessToken");
-
-    if (!token) {
-      toast.error("Authorization token is missing");
-      setLoading(false);
-      return;
-    }
-
     try {
-      const formData = new FormData();
-      formData.append(
-        "data",
-        JSON.stringify({
-          name: data.userName, // Backend expects 'name'
-        })
+      const resultAction = await dispatch(
+        editUser({ id: selectedUser.id, userName: data.userName })
       );
 
-      const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/users/update-user/${selectedUser.id}`,
-        formData,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-
-      if (response.data.success) {
-        toast.success(response.data.message);
-        onEdit({
-          ...selectedUser,
-          userName: data.userName, // Frontend uses 'userName'
-        });
+      if (editUser.fulfilled.match(resultAction)) {
+        toast.success("User updated successfully");
+        onEdit(resultAction.payload); 
         setOpen(false);
       } else {
-        toast.error(response.data.message || "Failed to update user");
+        // rejected case
+        toast.error(resultAction.payload || "Failed to update user");
       }
     } catch (error: any) {
-      console.error("Update error:", error);
-      toast.error(
-        error.response?.data?.message || error.message || "Failed to update user"
-      );
+      toast.error(error.message || "Failed to update user");
     } finally {
       setLoading(false);
     }
@@ -78,11 +54,15 @@ const EditUserModal = ({ ButtonText, selectedUser, onEdit }: EditUserModalProps)
     <Modal
       open={open}
       onOpenChange={setOpen}
-      trigger={<Button variant="outline">{ButtonText}</Button>}
+      trigger={
+        <Button variant="outline" aria-label="Open edit user modal">
+          {ButtonText}
+        </Button>
+      }
       title="Update User Name"
       description="Edit the user's name below"
     >
-      <SuppleForm
+      <SuppleForm<FormData>
         defaultValues={{ userName: selectedUser.userName || "" }}
         resolver={zodResolver(validData)}
         onSubmit={onSubmit}
@@ -93,7 +73,9 @@ const EditUserModal = ({ ButtonText, selectedUser, onEdit }: EditUserModalProps)
           label="Name"
           placeholder="Enter new name"
           type="text"
+          disabled={loading}
         />
+        
 
         <div className="flex items-center justify-end gap-2 mt-4">
           <Button

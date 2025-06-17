@@ -19,7 +19,7 @@ const userStatus = [
 ];
 
 const roleOptions = [
-  "manager",  "waiter", "takeaway", "chef", "cashier", "maintenance",
+  "manager",  "waiter", "takeaway", "chef", "cashier", "maintenance","staff",
 ];
 
 // Zod schema
@@ -28,7 +28,7 @@ const schema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone must be at least 10 digits"),
   role: z.enum([
-    "manager",  "waiter", "dine in","takeaway", "chef", "cashier", "maintenance",
+    "manager",  "waiter", "dine in","takeaway", "chef", "cashier", "maintenance","staff"
   ], { required_error: "Role is required" }),
   workDays: z.array(z.string()).min(1, "Select at least one work day"),
   workTimeStart: z.string().min(1, "Start time is required"),
