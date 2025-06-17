@@ -1,47 +1,40 @@
 import { Button } from "@/components/ui/button";
 import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
-import { useState } from "react";
-import ViewUserModal from "./ViewUserModal";
+import { useState, useEffect } from "react";
+
 import EditUserModal from "./EditUserModal";
 import EditIcon from "@/components/ui/EditIcon";
+import DeleteUserButton from "./DeleteUserButton";
 
 // Types
 interface UserTableProps {
-  users: User[];
+  users: User[]; // Full filtered user list
   onEdit: (user: User) => void;
+  currentPage: number;
+  itemsPerPage: number;
 }
 
 interface UserTableRowProps {
   user: User;
   index: number;
+  serialNumber: number;
   onView: (user: User) => void;
-  onEdit: (user: User) => void;
+  onEdit: (updatedUser: User) => void;
+  onDeleteSuccess: (id: string) => void;
 }
 
-// Custom hook for managing user state
-const useUserTable = (onEdit: (user: User) => void) => {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  const handleView = (user: User) => {
-    setSelectedUser(user);
-  };
-
-  const handleEdit = (user: User) => {
-    onEdit(user);
-  };
-
-  return {
-    selectedUser,
-    handleView,
-    handleEdit,
-  };
-};
-
 // Table Row Component
-const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
+const UserTableRow = ({
+  user,
+  index,
+  serialNumber,
+  onView,
+  onEdit,
+  onDeleteSuccess,
+}: UserTableRowProps) => {
   return (
     <tr className="bg-white border-b dark:bg-primary-dark dark:text-white">
-      <td className="px-6 py-4">{index + 1}</td>
+      <td className="px-6 py-4">{serialNumber}</td>
       <td className="px-6 py-4">{user.userName}</td>
       <td className="px-6 py-4">{user.email}</td>
       <td className="px-6 py-4">{user.role}</td>
@@ -59,12 +52,16 @@ const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" onClick={() => onView(user)}>
-            <ViewUserModal selectedUser={user} />
+            <DeleteUserButton
+              userId={user.id}
+              onDeleteSuccess={() => onDeleteSuccess(user.id)}
+            />
           </Button>
+
           <Button variant="ghost" size="icon">
             <EditUserModal
-              onEdit={onEdit}
               selectedUser={user}
+              onEdit={onEdit}
               ButtonText={<EditIcon className="h-4 w-4" />}
             />
           </Button>
@@ -75,11 +72,43 @@ const UserTableRow = ({ user, index, onView, onEdit }: UserTableRowProps) => {
 };
 
 // Main Table Component
-export default function UserTable({ users, onEdit }: UserTableProps) {
-  const { handleView, handleEdit } = useUserTable(onEdit);
+export default function UserTable({
+  users,
+  onEdit,
+  currentPage,
+  itemsPerPage,
+}: UserTableProps) {
+  // Local state for paginated users
+  const [paginatedUsers, setPaginatedUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setPaginatedUsers(users.slice(startIndex, endIndex));
+  }, [users, currentPage, itemsPerPage]);
+
+  const handleView = (user: User) => {
+    // Optional: implement view modal or details if needed
+  };
+
+  const handleEdit = (updatedUser: User) => {
+    // Call parent's onEdit to update user in main state
+    onEdit(updatedUser);
+
+    // Also update paginated users locally to reflect changes immediately
+    setPaginatedUsers((prev) =>
+      prev.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
+  };
+
+  const handleDeleteSuccess = (id: string) => {
+    // Remove deleted user from paginated users
+    setPaginatedUsers((prev) => prev.filter((user) => user.id !== id));
+    // Optionally parent should remove user from full list for consistency
+  };
 
   return (
-    <div className="relative overflow-x-auto my-4 ">
+    <div className="relative overflow-x-auto my-4">
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-white dark:bg-primary-dark">
           <tr>
@@ -92,20 +121,27 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <UserTableRow
-              key={user.id}
-              user={user}
-              index={index}
-              onView={handleView}
-              onEdit={handleEdit}
-            />
-          ))}
+          {paginatedUsers.length === 0 ? (
+            <tr>
+              <td colSpan={6} className="text-center py-6">
+                No users found.
+              </td>
+            </tr>
+          ) : (
+            paginatedUsers.map((user, index) => (
+              <UserTableRow
+                key={user.id}
+                user={user}
+                index={index}
+                serialNumber={(currentPage - 1) * itemsPerPage + index + 1}
+                onView={handleView}
+                onEdit={handleEdit}
+                onDeleteSuccess={handleDeleteSuccess}
+              />
+            ))
+          )}
         </tbody>
       </table>
     </div>
   );
 }
-
-
-

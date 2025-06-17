@@ -37,10 +37,13 @@ const MenuEditForOwner = () => {
 
   const { user } = useAppSelector((state) => state.auth);
   const { categories } = useAppSelector((state) => state.category);
+  const { menus } = useAppSelector((state) => state.fetchMenu);
   const { restaurantId, menuId } = useParams<{
     restaurantId?: string;
     menuId?: string;
   }>();
+
+  const menuItem = menus.find((item) => item._id === menuId);
 
   // console.log("restaurant ID:", restaurantId);
 
@@ -93,10 +96,10 @@ const MenuEditForOwner = () => {
         <SuppleForm<MenuItemFormData>
           onSubmit={onSubmitMenuItem}
           defaultValues={{
-            itemName: "",
-            category: "",
-            price: "",
-            size: "",
+            itemName: menuItem?.itemName || "",
+            category: menuItem?.category?._id || "",
+            price: menuItem?.price?.toString() || "",
+            size: menuItem?.size || "",
             // availability: "available",
             // description:
             //   "Satisfy your cravings with our best-selling Cheeseburger – the ultimate fast food indulgence! Made with a juicy beef patty, melted cheddar cheese, fresh lettuce, ripe tomatoes, crispy onions, and our signature burger sauce, all stacked inside a soft, toasted bun. Loved by foodies and burger lovers alike, this mouth-watering treat delivers bold flavour in every bite. Whether you're grabbing a quick lunch or treating yourself to a cheat meal, this burger never disappoints!",

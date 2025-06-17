@@ -1,10 +1,7 @@
 import { Button } from "@/components/ui/button";
-
 import { useState } from "react";
-/* import ViewUserModal from "./ViewUserModal"; */
 import EditUserModal from "./EditUserModal";
 import type { User } from "@/pages/Dashboard/staff/StaffViewForOwner";
-
 import { useNavigate } from "react-router-dom";
 import eye from "@/assets/admin/eye.png";
 import edit from "@/assets/admin/edit.png";
@@ -13,11 +10,13 @@ import edit from "@/assets/admin/edit.png";
 interface UserTableProps {
   users: User[];
   onEdit: (user: User) => void;
+  currentPage: number;
+  itemsPerPage: number;
 }
 
 interface UserTableRowProps {
   user: User;
-  index: number;
+  serialNumber: number;
   onView: (user: User) => void;
   onEdit: (user: User) => void;
 }
@@ -44,13 +43,14 @@ const useUserTable = (onEdit: (user: User) => void) => {
 // Table Row Component
 const UserTableRow = ({
   user,
-  index,
-  /* onView, */ onEdit,
+  serialNumber,
+  onEdit,
 }: UserTableRowProps) => {
   const navigate = useNavigate();
+
   return (
     <tr className="dark:bg-[#161616] border-b">
-      <td className="px-6 py-4">{index + 1}</td>
+      <td className="px-6 py-4">{serialNumber}</td>
       <td className="px-6 py-4">{user.userName}</td>
       <td className="px-6 py-4">{user.email}</td>
       <td className="px-6 py-4">{user.role}</td>
@@ -68,16 +68,12 @@ const UserTableRow = ({
 
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
-          {/* <Button variant="ghost" size="icon" onClick={() => onView(user)}>
-            <ViewUserModal selectedUser={user} />
-          </Button> */}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate(`/dashboard/staff/details/${user.id}`)}
             aria-label="View user details"
           >
-            {/* <EyeIcon className="h-4 w-4" /> */}
             <img src={eye} alt="" className="h-6 w-6" />
           </Button>
 
@@ -95,7 +91,12 @@ const UserTableRow = ({
 };
 
 // Main Table Component
-export default function UserTable({ users, onEdit }: UserTableProps) {
+export default function UserTable({
+  users,
+  onEdit,
+  currentPage,
+  itemsPerPage,
+}: UserTableProps) {
   const { handleView, handleEdit } = useUserTable(onEdit);
 
   return (
@@ -128,7 +129,7 @@ export default function UserTable({ users, onEdit }: UserTableProps) {
             <UserTableRow
               key={user.id}
               user={user}
-              index={index}
+              serialNumber={(currentPage - 1) * itemsPerPage + index + 1}
               onView={handleView}
               onEdit={handleEdit}
             />
