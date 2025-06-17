@@ -14,7 +14,7 @@ const Login = () => {
   const { loading, error } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Create a new FormData object from the form
     const formData = new FormData(e.target as HTMLFormElement);
@@ -27,9 +27,34 @@ const Login = () => {
     console.log("Password:", password);
     // Here, you can send the values to an API or perform other actions
 
-    dispatch(loginUser({ email, password }));
+    try {
+      const resultAction = await dispatch(loginUser({ email, password }));
+      if (loginUser.fulfilled.match(resultAction)) {
+        const { role } = resultAction.payload.user;
 
-    navigate("/dashboard/menu/add");
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (role === "owner") {
+          navigate("/dashboard/menu/add");
+        } else if (
+          role === "staff" ||
+          role === "waiter" ||
+          role === "manager" ||
+          role === "chef" ||
+          role === "takeaway" ||
+          role === "cashier"
+        ) {
+          navigate("/dashboard/order/dine-in");
+        } else {
+          // fallback or error
+          navigate("/unauthorized");
+        }
+      }
+      console.log(resultAction, "resuldfasdfasdfasf");
+      navigate("/dashboard/menu/add");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="w-full min-h-screen bg-gradient-to-r from-[#0F9996] to-[#56DAAB] dark:bg-gradient-to-r dark:from-[#030303] dark:to-[#030303]">
