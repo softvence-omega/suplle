@@ -1,6 +1,9 @@
+import { useAppDispatch } from "@/hooks/useRedux";
+import { fetchRestaurants } from "@/store/features/restaurant/restaurantSlice";
 import React from "react";
 
 const RestaurantForm = () => {
+  const dispatch = useAppDispatch();
   const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,6 +22,7 @@ const RestaurantForm = () => {
       imageName,
     };
     console.log(data, "17 no");
+    dispatch(fetchRestaurants());
   };
   return (
     <div className="mt-4 font-rubik">
