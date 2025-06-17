@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
-import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
+
 import { useState, useEffect } from "react";
 
 import EditUserModal from "./EditUserModal";
 import EditIcon from "@/components/ui/EditIcon";
 import DeleteUserButton from "./DeleteUserButton";
+import type { User } from "@/store/features/user/userSlice";
 
 // Types
 interface UserTableProps {

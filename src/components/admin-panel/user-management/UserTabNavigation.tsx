@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { ChevronsRight } from "lucide-react";
-import type { UserStatus } from "./user";
+import type { UserRole } from "./user"; // Import UserRole instead of UserStatus
 
-type Tab = "All" | UserStatus;
+type UserRoleTab = "All" | UserRole;
 
 interface TabNavigationProps {
-  activeTab: Tab;
-  onTabChange: (tab: Tab) => void;
+  activeTab: UserRoleTab;
+  onTabChange: (tab: UserRoleTab) => void;
 }
 
 const UserTabNavigation: React.FC<TabNavigationProps> = ({
   activeTab,
   onTabChange,
 }) => {
-  const allTabs: Tab[] = ["All", "Staff", "Owner"];
+  const allTabs: UserRoleTab[] = ["All", "Staff", "Owner", "Manager", "Waiter", "Dine In"];
   const visibleTabs = allTabs.slice(0, 3);
   const hiddenTabs = allTabs.slice(3);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -34,7 +34,7 @@ const UserTabNavigation: React.FC<TabNavigationProps> = ({
                 ${
                   activeTab === tab
                     ? "border-[#333333] text-black font-normal dark:border-[#FFFFFF] dark:text-[#FFFFFF]"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300  "
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }
               `}
             >

@@ -5,6 +5,7 @@ export type RoleValue =
   | "takeaway"
   | "chef"
   | "cashier"
+  | "staff"
   | "maintenance";
 
 export type RoleOption = {
@@ -19,5 +20,6 @@ export const userRoles: RoleOption[] = [
   { value: "takeaway", label: "Takeaway" },
   { value: "chef", label: "Chef" },
   { value: "cashier", label: "Cashier" },
-  { value: "maintenance", label: "Maintenance" },
+  { value: "maintenance", label: "Maintenance" }, 
+  { value: "staff", label: "staff" },
 ];
