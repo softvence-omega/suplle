@@ -31,6 +31,7 @@ const AllRestaurant = () => {
     null
   );
   const [showUpdateData, setShowUpdateData] = useState<Restaurant | null>(null);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const dispatch = useAppDispatch();
   const { restaurants, loading, error } = useAppSelector(
@@ -44,17 +45,17 @@ const AllRestaurant = () => {
   const handleClosePreviewModal = () => setShowPreviewModal(false);
   const handleCloseUpdateModal = () => setShowUpdateModal(false);
 
-  const handleShowDetailsData = (restaurant: any) => {
+  const handleShowDetailsData = (restaurant: Restaurant) => {
     setShowDetailsData(restaurant);
     setShowPreviewModal(true);
   };
 
-  const handleUpdateData = (restaurant: any) => {
+  const handleUpdateData = (restaurant: Restaurant) => {
     setShowUpdateData(restaurant);
     setShowUpdateModal(true);
   };
 
-  const setShowModal = (open: any) => {
+  const setShowModal = (open: boolean) => {
     setShowPreviewModal(open);
     setShowUpdateModal(open);
   };
@@ -156,26 +157,30 @@ const AllRestaurant = () => {
                   }
                 : undefined
             }
-            onSave={(updatedData) => {
+            loading={updateLoading}
+            onSave={async (updatedData) => {
               if (!showUpdateData?._id) return;
+              setUpdateLoading(true);
 
-              dispatch(
-                editRestaurant({
-                  id: showUpdateData._id,
-                  restaurantName: updatedData.name,
-                  phone: updatedData.mail,
-                  restaurantAddress: updatedData.address,
-                  logo: updatedData.image, // If you are uploading file, make sure it's a File object
-                })
-              )
-                .unwrap()
-                .then(() => {
-                  toast.success("Restaurant updated successfully");
-                  setShowModal(false);
-                })
-                .catch((err) => {
-                  toast.error(`Update failed: ${err}`);
-                });
+              try {
+                await dispatch(
+                  editRestaurant({
+                    id: showUpdateData._id,
+                    restaurantName: updatedData.name,
+                    phone: updatedData.mail,
+                    restaurantAddress: updatedData.address,
+                    logo: updatedData.image,
+                  })
+                ).unwrap();
+
+                toast.success("Restaurant updated successfully");
+                setShowModal(false);
+                dispatch(fetchRestaurants());
+              } catch (err) {
+                toast.error(`Update failed: ${err}`);
+              } finally {
+                setUpdateLoading(false);
+              }
             }}
           />
         )}
@@ -185,6 +190,3 @@ const AllRestaurant = () => {
 };
 
 export default AllRestaurant;
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}

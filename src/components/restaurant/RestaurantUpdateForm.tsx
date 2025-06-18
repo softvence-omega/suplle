@@ -7,10 +7,20 @@ interface Props {
     address?: string;
     image?: string;
   };
-  onSave: (data: any) => void;
+  onSave: (data: {
+    name: string;
+    mail: string;
+    address: string;
+    image: string;
+  }) => void;
+  loading?: boolean;
 }
 
-const RestaurantUpdateForm: React.FC<Props> = ({ initialData, onSave }) => {
+const RestaurantUpdateForm: React.FC<Props> = ({
+  initialData,
+  onSave,
+  loading,
+}) => {
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     mail: initialData?.mail || "",
@@ -18,7 +28,9 @@ const RestaurantUpdateForm: React.FC<Props> = ({ initialData, onSave }) => {
     image: initialData?.image || "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -29,7 +41,9 @@ const RestaurantUpdateForm: React.FC<Props> = ({ initialData, onSave }) => {
   return (
     <div className="bg-gray-50 p-4 sm:p-6 rounded-md space-y-4 w-full max-w-lg">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Restaurant Name</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Restaurant Name
+        </label>
         <input
           type="text"
           name="name"
@@ -41,7 +55,9 @@ const RestaurantUpdateForm: React.FC<Props> = ({ initialData, onSave }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">E-mail</label>
+        <label className="block text-sm font-medium text-gray-700">
+          E-mail
+        </label>
         <input
           type="email"
           name="mail"
@@ -53,7 +69,9 @@ const RestaurantUpdateForm: React.FC<Props> = ({ initialData, onSave }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Address</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Address
+        </label>
         <textarea
           name="address"
           value={formData.address}
@@ -78,8 +96,9 @@ const RestaurantUpdateForm: React.FC<Props> = ({ initialData, onSave }) => {
       <button
         className="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-md"
         onClick={handleSave}
+        disabled={loading}
       >
-        Save Restaurant
+        {loading ? "Saving Restaurant..." : "Save Restaurant"}
       </button>
     </div>
   );
