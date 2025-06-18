@@ -1,35 +1,88 @@
 import React from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { CircleDollarSign, Upload } from "lucide-react";
+import { toast } from "react-toastify";
 
 import type { Design } from "./data/type";
-import SuppleForm from "@/components/Forms/SuplleForm";
-import SuppleInput from "@/components/Forms/SuppleInput";
 import SuppleTextarea from "@/components/Forms/SuppleTextarea";
 import SuppleFileUpload from "@/components/Forms/SuppleFileUpload";
+import SuppleForm from "@/components/Forms/SuplleForm";
+import SuppleInput from "@/components/Forms/SuppleInput";
 
 interface NewDesignFormProps {
   initialData?: Partial<Design>;
-  onSubmit: (design: Partial<Design>) => void;
   onCancel?: () => void;
   buttonLabel?: string;
+  onSuccess?: (responseData: any) => void;
 }
 
 export const NewDesignForm: React.FC<NewDesignFormProps> = ({
   initialData = {},
-  onSubmit,
   onCancel,
   buttonLabel = "Save New Design",
+  onSuccess,
 }) => {
+  const handleSubmit = async (data: Partial<Design>) => {
+    try {
+      const token = Cookies.get("accessToken");
+      if (!token) throw new Error("Authentication token missing");
+
+
+      const payload = {
+      name: data.name || "",
+      category: data.category || "",
+      description: data.description || "",
+      price: data.price !== undefined ? Number(data.price) : 0,
+      createdBy: "Admin",
+    };
+
+      const formData = new FormData();
+    formData.append("data", JSON.stringify(payload));
+
+      // Send image as File
+      if (data.imageUrl && data.imageUrl instanceof File) {
+        formData.append("image", data.imageUrl);
+      } else {
+        toast.error("Please upload a valid image file.");
+        return;
+      }
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/QrCodeDesign/post-QrCodeDesign`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+           
+          },
+        }
+      );
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Request failed");
+      }
+
+      toast.success("Design created successfully!");
+      
+      onSuccess?.(response.data.data);
+    } catch (error: any) {
+      console.error("Design submission error:", error);
+      const message =
+        error.response?.data?.message || error.message || "Failed to save design";
+      toast.error(message);
+    }
+  };
+
   return (
     <SuppleForm<Partial<Design>>
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       defaultValues={{
-        name: "",
-        description: "",
-        price: undefined,
-        imageUrl: "",
-        category: "",
-        ...initialData,
+        name: initialData.name || "",
+        description: initialData.description || "",
+        price: initialData.price || undefined,
+        imageUrl: initialData.imageUrl || "",
+        category: initialData.category || "",
       }}
       className="space-y-4"
     >
@@ -58,7 +111,6 @@ export const NewDesignForm: React.FC<NewDesignFormProps> = ({
         rows={5}
         required
         fullWidth
-        className="h-[45px]"
       />
 
       <SuppleInput
@@ -66,36 +118,27 @@ export const NewDesignForm: React.FC<NewDesignFormProps> = ({
         label="Price (USD)"
         type="number"
         step="0.01"
+        min="0"
         placeholder="USD"
         fullWidth
         endIcon={<CircleDollarSign className="w-4 h-4" />}
         className="h-[45px]"
       />
+
       <SuppleFileUpload
         name="imageUrl"
         label="Upload Image"
-        helperText="Click to upload image (JPG, PNG)"
+        helperText="Click to upload image (JPG, PNG, max 5MB)"
         accept="image/*"
-        required
+        required={!initialData.imageUrl}
         icon={<Upload className="w-4 h-4 text-gray-400" />}
-        onChange={(file) => {
-
-          if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              console.log("Image preview URL:", reader.result);
-
-            };
-            reader.readAsDataURL(file);
-          }
-        }}
-        InputClassName="px-4 py-6 text-center dark:bg-black "
+        InputClassName="px-4 py-6 text-center dark:bg-black"
       />
 
       <div className="flex space-x-4 pt-2">
         <button
           type="submit"
-          className="px-4 py-2 bg-primary text-white rounded-md border-transparent md:text-base text-sm"
+          className="px-4 py-2 bg-primary text-white rounded-md border-transparent md:text-base text-sm hover:bg-primary/50 transition-colors disabled:opacity-50"
         >
           {buttonLabel}
         </button>
@@ -104,7 +147,7 @@ export const NewDesignForm: React.FC<NewDesignFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 bg-white border border-primary text-primary rounded-md md:text-base text-sm dark:bg-[#161616]"
+            className="px-4 py-2 bg-white border border-primary text-primary rounded-md md:text-base text-sm dark:bg-[#161616] hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>

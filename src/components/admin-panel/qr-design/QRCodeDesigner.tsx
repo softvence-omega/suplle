@@ -14,23 +14,20 @@ export const QRCodeDesigner: React.FC = () => {
     changeDesignStatus
   } = useDesigns();
 
-  const [activeTab, setActiveTab] = useState('available');
+  const [activeTab, setActiveTab] = useState('Available');
   const [showNewDesignForm, setShowNewDesignForm] = useState(false);
 
   const tabs = [
-    { id: 'available', label: 'Available' },
-    { id: 'comingSoon', label: 'Coming Soon' },
-    { id: 'unavailable', label: 'Unavailable' }
+    { id: 'available', label: 'available' },
+    { id: 'comingSoon', label: 'coming Soon' },
+    { id: 'unavailable', label: 'unavailable' }
   ];
-  console.log(updateDesign)
 
   return (
-    <div className="">
+    <div>
       <div className="py-6">
-        <h2 className='md:text-2xl text-xl text-[#333333] dark:text-[#FFFFFF]'>QR Code Designs</h2>
+        <h2 className="md:text-2xl text-xl text-[#333333] dark:text-[#FFFFFF]">QR Code Designs</h2>
       </div>
-
-
 
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
@@ -39,26 +36,26 @@ export const QRCodeDesigner: React.FC = () => {
           {!showNewDesignForm && (
             <DesignGrid
               designs={availableDesigns}
-              onEdit={() => {/* Handle edit logic id */ }}
+              onEdit={() => {/* Handle edit logic */}}
               onStatusChange={(id) => changeDesignStatus(id, 'unavailable')}
               statusChangeLabel="Set Unavailable"
             />
           )}
 
           {showNewDesignForm ? (
-            <div className="mt-6 ">
+            <div className="mt-6">
               <h2 className="md:text-2xl text-xl font-normal text-[#333333] dark:text-white mb-4">Add New Design</h2>
               <NewDesignForm
-                onSubmit={(design) => {
-                  addDesign({ ...design, status: 'available' });
-                  setShowNewDesignForm(false);
-                }}
                 onCancel={() => setShowNewDesignForm(false)}
+                 onSuccess={() => {
+        setShowNewDesignForm(false); 
+      }}
+                
               />
             </div>
           ) : (
             <button
-              className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center md:text-base text-sm "
+              className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-teal-700 transition duration-200 flex items-center md:text-base text-sm"
               onClick={() => setShowNewDesignForm(true)}
             >
               <span className="mr-2">+</span> Add New Design
@@ -68,27 +65,21 @@ export const QRCodeDesigner: React.FC = () => {
       )}
 
       {activeTab === 'comingSoon' && (
-        <>
-          <DesignGrid
-            designs={comingSoonDesigns}
-            onEdit={() => {/* Handle edit logic id */ }}
-            onStatusChange={(id) => changeDesignStatus(id, 'available')}
-            statusChangeLabel="Set Available"
-          />
-
-        </>
+        <DesignGrid
+          designs={comingSoonDesigns}
+          onEdit={() => {/* Handle edit logic */}}
+          onStatusChange={(id) => changeDesignStatus(id, 'available')}
+          statusChangeLabel="Set Available"
+        />
       )}
 
       {activeTab === 'unavailable' && (
-        <>
-          <DesignGrid
-            designs={unavailableDesigns}
-            onEdit={() => {/* Handle edit logic id */ }}
-            onStatusChange={(id) => changeDesignStatus(id, 'available')}
-            statusChangeLabel="Set Available"
-          />
-
-        </>
+        <DesignGrid
+          designs={unavailableDesigns}
+          onEdit={() => {/* Handle edit logic */}}
+          onStatusChange={(id) => changeDesignStatus(id, 'available')}
+          statusChangeLabel="Set Available"
+        />
       )}
     </div>
   );
