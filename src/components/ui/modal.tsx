@@ -30,7 +30,7 @@ export const Modal = ({
           <DialogContent
             className="w-[500px] p-4  popoverContent shadow-lg border rounded-lg"
           >
-            <div className="grid gap-4">
+            <div className="grid gap-4 text-black">
               {(title || description) && (
                 <DialogHeader className="space-y-2">
                   {title && <DialogTitle className="font-medium leading-none">{title}</DialogTitle>}

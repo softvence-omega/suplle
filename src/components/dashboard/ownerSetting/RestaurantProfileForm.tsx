@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-
 import SuppleForm from "@/components/Forms/SuplleForm";
 import SuppleInput from "@/components/Forms/SuppleInput";
 import SuppleFileUpload from "@/components/Forms/SuppleFileUpload";
@@ -10,6 +9,9 @@ import owner1 from "../../../assets/ownerset1.jpg"
 import owner2 from "../../../assets/ownerset2.jpg"
 import owner3 from "../../../assets/ownerset3.jpg"
 import PasswordInput from "./PasswordInput";
+import Cookies from "js-cookie";
+import { fetchRestaurantById } from "@/store/features/restaurant/fetchrestaurantSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
 
 const coverImages = [
@@ -36,14 +38,120 @@ const defaultValues = {
 };
 
 const RestaurantProfileForm: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const restaurantState = useAppSelector((state) => state.fetchRestaurant);
+  console.log(restaurantState.data, "restaurantState in restaurant profile form");
+  const { description, restaurantName, tagline,logo,coverPhoto } = restaurantState.data ?? {};
+  // const data = restaurantState.restaurants;
+  // const loading = restaurantState.loading;
+  // const error = restaurantState.error;
+
+  //  console.log(data, "data in restaurant profile form")
+
+  const userString = Cookies.get("user");
+  const user = userString ? JSON.parse(userString) : null;
+  const restaurantId = user?.restuarant;
+  console.log(restaurantId, "restaurantId in restaurant profile form");
+
+
+  useEffect(() => {
+    if (restaurantId) {
+      dispatch(fetchRestaurantById(restaurantId));
+    }
+  }, [dispatch, restaurantId])
+
+ 
   const handleSubmit = async (data: typeof defaultValues) => {
-    console.log("Submitted Data:", data);
-    // Perform actual API call here
-  };
+  await handleRestaurantInfo(data);
+  await handleBussinessInfo(data);
+};
 
   const handleError = (error: unknown) => {
     console.error("Form Error:", error);
   };
+ const handleRestaurantInfo = async (data: typeof defaultValues) => {
+  try {
+    const token = Cookies.get("accessToken");
+    if (!token) throw new Error("No token found");
+
+    // const userString = Cookies.get("user");
+    // const user = userString ? JSON.parse(userString) : null;
+    // const restaurantId = user?.restuarant;
+
+    // if (!restaurantId) throw new Error("No restaurant ID found");
+
+    const payload = {
+      restaurantName: data.restaurantName,
+      tagline: data.tagline,
+      description: data.description,
+      logo: data.logo,
+      coverUpload: data.coverUpload,
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(payload));
+    if (data.logo) formData.append("logo", data.logo);
+    if (data.coverUpload) formData.append("coverPhoto", data.coverUpload);
+
+    const res = await fetch(
+      `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/update-restaurant`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: ` ${token}`,
+        },
+        body: formData,
+      }
+    );
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Failed to update restaurant");
+
+    console.log("Update Success:", result);
+    console.log("Restaurant Info Updated Successfully",1);
+  } catch (error) {
+    console.error("Update Failed:", error);
+  }
+};
+
+const handleBussinessInfo = async (data: typeof defaultValues) => {
+  try {
+    const token1 = Cookies.get("accessToken");
+    if (!token1) throw new Error("No token found");
+
+    const requestData = {
+      businessName: data.businessName,
+      businessEmail: data.businessEmail,
+      restaurantAddress: data.address,
+      // referralCode: data.referralCode,
+      gstRate: data.gstRate,
+      cgstRate: data.cgstRate,
+      sgstRate: data.sgstRate,
+    };
+
+    const res = await fetch(
+      `https://suplle-server-v2-2.onrender.com/api/v1/owner/update-owner`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `${token1}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+    const result = await res.json();
+    console.log("Response:", result);
+
+    if (!res.ok) throw new Error(result.message || "Failed to update business info");
+
+    console.log("Business Info Updated Successfully");
+  } catch (error) {
+    console.error("Update Failed:", error);
+  }
+};
+
 
   return (
     <SuppleForm
@@ -60,7 +168,7 @@ const RestaurantProfileForm: React.FC = () => {
             <SuppleInput
               name="restaurantName"
               label="Restaurant Name"
-              placeholder="Restaurant Name"
+              placeholder={restaurantName}
               className="h-[45px]" />
 
             <SuppleFileUpload
@@ -76,7 +184,7 @@ const RestaurantProfileForm: React.FC = () => {
             <SuppleInput
               name="tagline"
               label="Tagline"
-              placeholder="Tagline"
+              placeholder={tagline}
               className="h-[45px]" />
 
             <SuppleFileUpload
@@ -103,10 +211,11 @@ const RestaurantProfileForm: React.FC = () => {
           <SuppleTextarea
             name="description"
             label="Description"
-            placeholder="Description"
+            placeholder={description}
             rows={5} />
 
           <Button type="submit" className="bg-[#E7F6F6]  text-[#11A8A5] hover:text-white">Save Changes</Button>
+          
         </div>
       </div>
 
@@ -159,7 +268,6 @@ const RestaurantProfileForm: React.FC = () => {
             </div>
             <Button type="submit" className="bg-[#E7F6F6]  text-[#11A8A5] hover:text-white">Save Changes</Button>
           </div>
-
         </div>
       </div>
 
