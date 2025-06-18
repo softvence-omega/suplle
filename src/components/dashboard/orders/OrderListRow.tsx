@@ -1,70 +1,76 @@
-import React from 'react';
-import { Eye, Pencil } from 'lucide-react';
-import type { OrderCardProps } from './OrderCard';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Eye, Pencil } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import type { Order } from "../dashboardItem/data/Type";
 
 const statusStyles: Record<string, string> = {
-  Pending: 'bg-blue-100 text-blue-800',
-  InProgress: 'bg-yellow-100 text-yellow-800',
-  Delivered: 'bg-green-100 text-green-800',
-  Cancel: 'bg-red-100 text-red-800',
-  Ready: 'bg-green-200 text-green-800',
-  Preparing: 'bg-orange-200 text-orange-800',
-  Completed: 'bg-slate-200 text-slate-800',
+  pending: "bg-blue-100 text-blue-800",
+  inProgress: "bg-yellow-100 text-yellow-800",
+  delivered: "bg-green-100 text-green-800",
+  cancel: "bg-red-100 text-red-800",
+  ready: "bg-green-200 text-green-800",
+  preparing: "bg-orange-200 text-orange-800",
+  completed: "bg-slate-200 text-slate-800",
 };
 
-const OrderListRow: React.FC<OrderCardProps> = ({
-  orderId,
-  table,
-  type,
-  items,
-  total,
-  status,
-}) => {
-  const navigate = useNavigate()
-  const handleOrderDetails = () =>{
+interface OrderCardProps {
+  order: Order;
+}
+
+const OrderListRow: React.FC<OrderCardProps> = ({ order }) => {
+  const navigate = useNavigate();
+  const handleOrderDetails = () => {
     // Handle order details logic here
-    navigate(`/dashboard/order/details/${orderId}`)
-  }
-  const handleOrderEdit = () =>{
+    navigate(`/dashboard/order/details/${order._id}`);
+  };
+  const handleOrderEdit = () => {
     // Handle order edit logic here
-    navigate(`/dashboard/order/edit/${orderId}`)
-  
-  }
+    navigate(`/dashboard/order/edit/${order._id}`);
+  };
   return (
     <tr className="border-b text-sm text-[#2A3342] dark:text-[#FFFFFF] ">
-      <td className="py-3 px-4 font-medium">{orderId}</td>
-      <td className="py-3 px-4">{table}</td>
-      <td className="py-3 px-4 font-semibold">{type}</td>
+      <td className="py-3 px-4 font-medium">{order._id}</td>
+      <td className="py-3 px-4">{order.table}</td>
+      <td className="py-3 px-4 font-semibold">{order.orderType}</td>
       <td className="py-3 px-4">
-        {items.map((item, index) => (
+        {order?.menus?.map((item, index) => (
           <p key={index}>
-            {index + 1}. {item.name}
+            {index + 1}. {item.menu.itemName}
           </p>
         ))}
       </td>
       <td className="py-3 px-4">
-        {items.map((item, index) => (
+        {order?.menus?.map((item, index) => (
           <p key={index}>{item.quantity}</p>
         ))}
       </td>
       <td className="py-3 px-4">
-        {items.map((item, index) => (
-          <p key={index}>
-            ${((parseFloat(total.replace('$', '')) / items.reduce((sum, i) => sum + i.quantity, 0)) * item.quantity).toFixed(2)}
-          </p>
+        {order.menus.map((item, index) => (
+          <p key={index}>${item.menu.price}</p>
         ))}
       </td>
-      <td className="py-3 px-4">{total}</td>
+      <td className="py-3 px-4">$ {order?.total}</td>
       <td className="py-3 px-4">
-        <span className={`px-3 py-1 text-xs font-medium rounded-full ${statusStyles[status]}`}>
-          {status}
+        <span
+          className={`px-3 py-1 text-xs font-medium rounded-full ${
+            statusStyles[order.status]
+          }`}
+        >
+          {order.status}
         </span>
       </td>
       <td className="py-3 px-4 flex items-center gap-2">
-        <Eye onClick={handleOrderDetails} size={16} className="text-green-600 cursor-pointer" />
+        <Eye
+          onClick={handleOrderDetails}
+          size={16}
+          className="text-green-600 cursor-pointer"
+        />
         <span className="text-gray-300">|</span>
-        <Pencil onClick={handleOrderEdit} size={16} className="text-green-600 cursor-pointer" />
+        <Pencil
+          onClick={handleOrderEdit}
+          size={16}
+          className="text-green-600 cursor-pointer"
+        />
       </td>
     </tr>
   );

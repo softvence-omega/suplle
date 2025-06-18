@@ -19,12 +19,14 @@ const validData = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   phone: z.string().min(1, { message: "Phone is required" }),
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
   role: z.enum([
     "manager",
-    "dine-in",
+    "dine in",
     "waiter",
-    "takeaway",
+    "take away",
     "chef",
     "cashier",
     "staff",
@@ -68,9 +70,24 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
         className="grid gap-2"
       >
         <SuppleInput name="name" label="Name" placeholder="Name" type="text" />
-        <SuppleInput name="phone" label="Phone" placeholder="Phone" type="tel" />
-        <SuppleInput name="email" label="Email" placeholder="Email" type="email" />
-        <SuppleInput name="password" label="Password" placeholder="Password" type="password" />
+        <SuppleInput
+          name="phone"
+          label="Phone"
+          placeholder="Phone"
+          type="tel"
+        />
+        <SuppleInput
+          name="email"
+          label="Email"
+          placeholder="Email"
+          type="email"
+        />
+        <SuppleInput
+          name="password"
+          label="Password"
+          placeholder="Password"
+          type="password"
+        />
         <SuppleSelect name="role" label="Role">
           {userRoles.map((role) => (
             <SelectItem key={role.value} value={role.value}>
@@ -80,7 +97,12 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
         </SuppleSelect>
 
         <div className="flex items-center space-x-2 justify-end">
-          <Button onClick={() => setOpen(false)} type="button" variant="outline" className="mt-4">
+          <Button
+            onClick={() => setOpen(false)}
+            type="button"
+            variant="outline"
+            className="mt-4"
+          >
             Cancel
           </Button>
           <Button type="submit" className="mt-4" disabled={loading}>
