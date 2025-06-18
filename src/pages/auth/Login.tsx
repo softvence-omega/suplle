@@ -43,11 +43,19 @@ const Login = () => {
           role === "waiter" ||
           role === "manager" ||
           role === "chef" ||
-          role === "take away" ||
           role === "dine in" ||
           role === "cashier"
         ) {
           navigate("/dashboard/order/dine-in");
+        } else if (
+          role === "staff" ||
+          role === "waiter" ||
+          role === "manager" ||
+          role === "chef" ||
+          role === "take away" ||
+          role === "cashier"
+        ) {
+          navigate("/dashboard/order/take-away");
         } else {
           navigate("/unauthorized");
         }
