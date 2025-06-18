@@ -43,6 +43,7 @@ import AdminNotification from "@/pages/AdminDashboard/notification/AdminNotifica
 import AdminSetting from "@/pages/setting/AdminSetting";
 import QrDesign from "@/components/DashboardSubscription/QrDesign";
 import BuySubscription from "@/pages/BuySubscription/BuySubscription";
+import ResetPassword from "@/pages/auth/ResetPassword";
 
 const AppRoutes = () => {
   return (
@@ -54,6 +55,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/otp" element={<OTP />} />
       <Route path="/forgot-password" element={<ForgetPasword />} />
+   
       {/* dahboard routes for owner ************************************************************* */}
       <Route
         path="dashboard"
@@ -93,6 +95,7 @@ const AppRoutes = () => {
         <Route path="buy-subscription" element={<BuySubscription />} />
         <Route path="subscriptions/choose-design" element={<QrDesign />} />
         <Route path="settings" element={<SettingForOwner />} />
+        <Route path="reset-password" element={<ResetPassword />} />
       </Route>
       {/* dahboard routes for admin ************************************************************* */}
       <Route

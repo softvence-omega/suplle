@@ -125,7 +125,7 @@ export const EditUserDialog = ({
                 Cancel
               </Button>
               <Button
-                className="h-[38.44px] rounded-[6.989px] text-white bg-[linear-gradient(176deg,_#56DAAB_-18.78%,_#0F9996_111.3%)]"
+                className="h-[38.44px] rounded-[6.989px] text-white bg-[linear-gradient(176deg,_#56DAAB_-18.78%,_#0F9996_111.3%)] hover:opacity-70 transition-opacity cursor-pointer"
                 type="submit"
               >
                 Save changes

@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { generateRandomId } from "@/utils/utils";
 import DollarIcon from "@/components/icons/DollerIcon";
@@ -6,61 +9,93 @@ import MountainSvg from "@/components/icons/MountainSvg";
 import OwnerAnalyticsChart from "@/components/dashboard/analytics/OwnerAnalyticsChart";
 import { Star } from "lucide-react";
 
-const cardList = [
-  {
-    id: generateRandomId(),
-    label: "Total Revenue",
-    value: 35428.09,
-    icon: DollarIcon,
-    isSvg: true,
-    chart: MountainSvg,
-  },
-  {
-    id: generateRandomId(),
-    label: "Avg Order Value",
-    value: 415,
-    icon: RestaurantIcon,
-    isSvg: true,
-    chart: MountainSvg,
-  },
-  {
-    id: generateRandomId(),
-    label: "Customer Rating",
-    value: 415,
-    icon: RestaurantIcon,
-    isSvg: true,
-    chart: MountainSvg,
-  },
-];
-
-const staffPerformanceList = [
-  {
-    id: generateRandomId(),
-    name: "John Smith",
-    order: 145,
-    rating: 4.9,
-  },
-  {
-    id: generateRandomId(),
-    name: "Sarah Johnson",
-    order: 132,
-    rating: 4.9,
-  },
-  {
-    id: generateRandomId(),
-    name: "Mike Wilson",
-    order: 128,
-    rating: 4.9,
-  },
-  {
-    id: generateRandomId(),
-    name: "Emily Brown",
-    order: 120,
-    rating: 4.9,
-  },
-];
-
 const AnalyticsAndReport = () => {
+  const [analytics, setAnalytics] = useState({
+    totalRevenue: 0,
+    averageOrderValue: 0,
+    customerRating: 0,
+    totalOrders: 0,
+    cancelOrders: 0,
+    deliveredOrders: 0,
+    totalCustomers: 0,
+  });
+
+  const [monthlyRevenueData, setMonthlyRevenueData] = useState([]);
+  const token = Cookies.get("accessToken");
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const res = await axios.get(
+          "https://suplle-server-v2-2.onrender.com/api/v1/analytics/all-analytics",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+console.log("eitty", res)
+        const data = res.data.data;
+        const monthlyAll = data?.revenue?.monthlyAll || [];
+
+        const formattedData = monthlyAll.map((item: any) => ({
+          month: item.month,
+          sales: item.revenue,
+        }));
+
+        setAnalytics({
+          totalRevenue: data?.revenue?.totalRevenue || 0,
+          averageOrderValue: data?.revenue?.averageOrderValue || 0,
+          customerRating: data?.rating || 0,
+          totalOrders: data?.totalOrders || 0,
+          cancelOrders: data?.CancelOrders || 0,
+          deliveredOrders: data?.deliveredOrders || 0,
+          totalCustomers: data?.totalCustomers || 0,
+        });
+
+        setMonthlyRevenueData(formattedData);
+      } catch (err) {
+        console.error("Failed to load analytics:", err);
+      }
+    };
+
+    fetchAnalytics();
+  }, [token]);
+
+  const cardList = [
+    {
+      id: generateRandomId(),
+      label: "Total Revenue",
+      value: analytics.totalRevenue,
+      icon: DollarIcon,
+      isSvg: true,
+      chart: MountainSvg,
+    },
+    {
+      id: generateRandomId(),
+      label: "Avg Order Value",
+      value: analytics.averageOrderValue,
+      icon: RestaurantIcon,
+      isSvg: true,
+      chart: MountainSvg,
+    },
+    {
+      id: generateRandomId(),
+      label: "Customer Rating",
+      value: analytics.customerRating,
+      icon: RestaurantIcon,
+      isSvg: true,
+      chart: MountainSvg,
+    },
+  ];
+
+  const staffPerformanceList = [
+    { id: generateRandomId(), name: "John Smith", order: 145, rating: 4.9 },
+    { id: generateRandomId(), name: "Sarah Johnson", order: 132, rating: 4.9 },
+    { id: generateRandomId(), name: "Mike Wilson", order: 128, rating: 4.9 },
+    { id: generateRandomId(), name: "Emily Brown", order: 120, rating: 4.9 },
+  ];
+
   return (
     <div className="space-y-3">
       <SectionHeader title="Analytics & Reports" className="px-3" />
@@ -97,24 +132,26 @@ const AnalyticsAndReport = () => {
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full lg:w-[70%] shadow-lg p-6 bg-white dark:bg-[#161616] dark:text-white rounded-lg space-y-5">
           <p className="text-[18px] text-[#131313]">Sales Trends</p>
-          <OwnerAnalyticsChart />
+          <OwnerAnalyticsChart chartData={monthlyRevenueData} />
         </div>
+
         <div className="w-full lg:w-[30%] shadow-lg p-6 bg-white dark:bg-[#161616] dark:text-white rounded-lg space-y-5">
           <p className="text-[18px] text-[#131313]">Staff Performance</p>
           <div className="space-y-3">
-            {staffPerformanceList.map((item) => {
-              return (
-                <div className="bg-[#F5F6F6] dark:bg-[#030303] dark:text-white rounded-sm flex justify-between p-3">
-                  <p>{item.name}</p>
-                  <div className="flex items-center gap-4">
-                    <p>{item.order} orders</p>
-                    <p className="flex items-center gap-1 text-[#DFB300]">
-                      <Star fill="#DFB300" size={18} /> {item.rating}
-                    </p>
-                  </div>
+            {staffPerformanceList.map((item) => (
+              <div
+                key={item.id}
+                className="bg-[#F5F6F6] dark:bg-[#030303] dark:text-white rounded-sm flex justify-between p-3"
+              >
+                <p>{item.name}</p>
+                <div className="flex items-center gap-4">
+                  <p>{item.order} orders</p>
+                  <p className="flex items-center gap-1 text-[#DFB300]">
+                    <Star fill="#DFB300" size={18} /> {item.rating}
+                  </p>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>

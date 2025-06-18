@@ -27,7 +27,7 @@ const UserComponent: React.FC = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`,
           {
-            headers: { Authorization: token || "" },
+            headers: { Authorization: token },
           }
         );
 
