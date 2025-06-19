@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import type { User, UserRole, UserActivity } from "./user";
@@ -6,7 +6,8 @@ import UserTabNavigation from "./UserTabNavigation";
 import UserList from "./UserList";
 import { ViewUserDialog } from "./ViewUserDialog";
 import { EditUserDialog } from "./EditUserDialog";
-import { Loader2 } from "lucide-react"; // using lucide-react spinner icon
+import { Loader2 } from "lucide-react";
+import Pagination from "@/utils/Pagination";
 
 type UserRoleTab = "All" | UserRole;
 
@@ -17,12 +18,16 @@ const UserComponent: React.FC = () => {
   const [editUser, setEditUser] = useState<User | null>(null);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false); // ✅ loader state
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setLoading(true); // ✅ start loading
+        setLoading(true);
         const token = Cookies.get("accessToken");
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`,
@@ -34,12 +39,18 @@ const UserComponent: React.FC = () => {
         const normalizeRole = (role: string): UserRole => {
           const lowerRole = role.toLowerCase();
           switch (lowerRole) {
-            case "owner": return "Owner";
-            case "staff": return "Staff";
-            case "manager": return "Manager";
-            case "waiter": return "Waiter";
-            case "dine in": return "Dine In";
-            default: return "Staff";
+            case "owner":
+              return "Owner";
+            case "staff":
+              return "Staff";
+            case "manager":
+              return "Manager";
+            case "waiter":
+              return "Waiter";
+            case "dine in":
+              return "Dine In";
+            default:
+              return "Staff";
           }
         };
 
@@ -48,7 +59,7 @@ const UserComponent: React.FC = () => {
           name: user.name,
           mail: user.email,
           role: normalizeRole(user.role),
-          status: user.restaurant?.status as UserActivity || "",
+          status: (user.restaurant?.status as UserActivity) || "",
           vendor: user.restaurant?.restaurantName || "",
           image: user.restaurant?.logo || "",
           time: new Date(user.createdAt).toLocaleString(),
@@ -58,7 +69,7 @@ const UserComponent: React.FC = () => {
       } catch (error) {
         console.error("Failed to fetch users:", error);
       } finally {
-        setLoading(false); // ✅ stop loading
+        setLoading(false);
       }
     };
 
@@ -67,11 +78,21 @@ const UserComponent: React.FC = () => {
 
   const handleTabChange = (tab: UserRoleTab) => {
     setActiveTab(tab);
+    setCurrentPage(1);
   };
 
-  const filteredUsers = activeTab === "All"
-    ? users
-    : users.filter((user) => user.role === activeTab);
+  // ✅ Memoized filtered users to prevent infinite loop
+  const filteredUsers = useMemo(() => {
+    return activeTab === "All"
+      ? users
+      : users.filter((user) => user.role === activeTab);
+  }, [users, activeTab]);
+
+  // ✅ Memoized paginated users
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredUsers, currentPage]);
 
   const handleUserClick = (userId: string) => {
     const user = users.find((u) => u.id === userId);
@@ -129,29 +150,36 @@ const UserComponent: React.FC = () => {
         <UserTabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
       </div>
 
-      {/* Loader */}
       {loading ? (
         <div className="flex justify-center items-center py-20">
           <Loader2 className="animate-spin h-8 w-8 text-gray-500" />
         </div>
       ) : (
-        <UserList
-          users={filteredUsers}
-          filter={activeTab}
-          onUserClick={handleUserClick}
-          onEditClick={handleEditClick}
-        />
+        <>
+          <UserList
+            users={paginatedUsers}
+            filter={activeTab}
+            onUserClick={handleUserClick}
+            onEditClick={handleEditClick}
+          />
+
+          <Pagination
+            data={filteredUsers}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            onPageChange={() => {}}
+          />
+        </>
       )}
 
-      {/* View User Dialog */}
-      <ViewUserDialog 
-        open={isViewOpen} 
-        onOpenChange={setIsViewOpen} 
-        selectedUser={selectedUser} 
+      <ViewUserDialog
+        open={isViewOpen}
+        onOpenChange={setIsViewOpen}
+        selectedUser={selectedUser}
         setUsers={setUsers}
       />
 
-      {/* Edit User Dialog */}
       <EditUserDialog
         open={isEditOpen}
         onOpenChange={setIsEditOpen}
