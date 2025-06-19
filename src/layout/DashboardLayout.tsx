@@ -15,11 +15,11 @@ type Notification = {
 };
 
 const fakeNotifications: Notification[] = [
-  { id: 1, message: "📢 Welcome to your dashboard!" },
-  { id: 2, message: "✅ Your profile was updated successfully." },
-  { id: 3, message: "⚠️ You have 3 tasks pending review." },
-  { id: 4, message: "🔔 You have a new order." },
-  { id: 5, message: "🎉 You earned a new badge!" },
+  { id: 1, message: " Welcome to your dashboard!" },
+  { id: 2, message: " Your profile was updated successfully." },
+  { id: 3, message: "You have 3 tasks pending review." },
+  { id: 4, message: " You have a new order." },
+  { id: 5, message: " You earned a new badge!" },
 ];
 
 type UserCookie = {
@@ -181,12 +181,12 @@ useEffect(() => {
   <button className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
       onClick={() => navigate("reset-password")}
   >
-    🔒 Reset Password
+     Reset Password
   </button>
   <button className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
     onClick={() => navigate("/dashboard/settings")}
     >
-    ⚙️ Settings
+     Settings
   </button>
   <button
     className="w-full  px-4 py-2 bg-primary text-center text-white  rounded-md cursor-pointer hover:opacity-50 "
