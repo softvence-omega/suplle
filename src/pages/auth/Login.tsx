@@ -32,26 +32,36 @@ const Login = () => {
       if (loginUser.fulfilled.match(resultAction)) {
         const { role } = resultAction.payload.user;
 
+        console.log(role, "roleeeeeee");
+
         if (role === "admin") {
           navigate("/admin/dashboard");
-        } else if (role === "owner") {
+        } else if (role === "restaurant_owner") {
           navigate("/dashboard/menu/add");
         } else if (
           role === "staff" ||
           role === "waiter" ||
           role === "manager" ||
           role === "chef" ||
-          role === "takeaway" ||
+          role === "dine in" ||
           role === "cashier"
         ) {
           navigate("/dashboard/order/dine-in");
+        } else if (
+          role === "staff" ||
+          role === "waiter" ||
+          role === "manager" ||
+          role === "chef" ||
+          role === "take away" ||
+          role === "cashier"
+        ) {
+          navigate("/dashboard/order/take-away");
         } else {
-          // fallback or error
           navigate("/unauthorized");
         }
       }
       console.log(resultAction, "resuldfasdfasdfasf");
-      navigate("/dashboard/menu/add");
+      // navigate("/dashboard/menu/add");
     } catch (error) {
       console.log(error);
     }
