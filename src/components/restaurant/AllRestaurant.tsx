@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { useEffect, useState } from "react";
 import { Modal } from "../ui/modal";
 import RestaurantUpdateForm from "./RestaurantUpdateForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
@@ -11,6 +11,8 @@ import {
 import EyeButton from "../icons/EyeButton";
 import { TfiPencilAlt } from "react-icons/tfi";
 import { toast } from "react-toastify";
+import Pagination from "@/utils/Pagination";
+
 
 type Restaurant = {
   _id: string;
@@ -21,7 +23,6 @@ type Restaurant = {
   restaurantAddress: string;
   coverPhoto?: string;
   description?: string;
-  // add other fields as needed
 };
 
 const AllRestaurant = () => {
@@ -32,6 +33,9 @@ const AllRestaurant = () => {
   );
   const [showUpdateData, setShowUpdateData] = useState<Restaurant | null>(null);
   const [updateLoading, setUpdateLoading] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginatedRestaurants, setPaginatedRestaurants] = useState<Restaurant[]>([]);
 
   const dispatch = useAppDispatch();
   const { restaurants, loading, error } = useAppSelector(
@@ -68,53 +72,65 @@ const AllRestaurant = () => {
       ) : error ? (
         <p className="text-center text-red-500">Error: {error}</p>
       ) : (
-        <Table>
-          <TableBody>
-            {restaurants.map((restaurant) => (
-              <TableRow key={restaurant._id}>
-                <TableCell>
-                  <div className="flex items-center gap-x-4">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src={restaurant.logo} alt="logo" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <h1 className="text-xs sm:text-sm">
-                      {restaurant.restaurantName}
-                    </h1>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center">
-                  {restaurant.status}
-                </TableCell>
-                <TableCell className="text-center">
-                  {restaurant.phone}
-                </TableCell>
-                <TableCell className="text-center">
-                  {restaurant.restaurantAddress}
-                </TableCell>
-                <TableCell colSpan={3}>
-                  <div className="flex items-center justify-end space-x-4">
-                    <button
-                      onClick={() => handleShowDetailsData(restaurant)}
-                      className="cursor-pointer"
-                    >
-                      <EyeButton />
-                    </button>
-                    <div className="w-[1.5px] h-[15px] bg-gray-300" />
-                    <button
-                      onClick={() => handleUpdateData(restaurant)}
-                      className="cursor-pointer"
-                    >
-                      <TfiPencilAlt className="text-[#56DAAB] w-4 h-4" />
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <>
+          <Table>
+            <TableBody>
+              {paginatedRestaurants.map((restaurant) => (
+                <TableRow key={restaurant._id}>
+                  <TableCell>
+                    <div className="flex items-center gap-x-4">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src={restaurant.logo} alt="logo" />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                      <h1 className="text-xs sm:text-sm">
+                        {restaurant.restaurantName}
+                      </h1>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {restaurant.status}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {restaurant.phone}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {restaurant.restaurantAddress}
+                  </TableCell>
+                  <TableCell colSpan={3}>
+                    <div className="flex items-center justify-end space-x-4">
+                      <button
+                        onClick={() => handleShowDetailsData(restaurant)}
+                        className="cursor-pointer"
+                      >
+                        <EyeButton />
+                      </button>
+                      <div className="w-[1.5px] h-[15px] bg-gray-300" />
+                      <button
+                        onClick={() => handleUpdateData(restaurant)}
+                        className="cursor-pointer"
+                      >
+                        <TfiPencilAlt className="text-[#56DAAB] w-4 h-4" />
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {/* ✅ Pagination */}
+          <Pagination
+            data={restaurants}
+            itemsPerPage={10}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            onPageChange={(items) => setPaginatedRestaurants(items as Restaurant[])}
+          />
+        </>
       )}
 
+      {/* 📦 Preview Modal */}
       <Modal
         open={showPreviewModal}
         onOpenChange={handleClosePreviewModal}
@@ -139,6 +155,7 @@ const AllRestaurant = () => {
         )}
       </Modal>
 
+      {/* ✏️ Update Modal */}
       <Modal
         open={showUpdateModal}
         onOpenChange={handleCloseUpdateModal}
@@ -147,16 +164,12 @@ const AllRestaurant = () => {
       >
         {showUpdateData && (
           <RestaurantUpdateForm
-            initialData={
-              showUpdateData
-                ? {
-                    name: showUpdateData.restaurantName,
-                    mail: showUpdateData.phone,
-                    address: showUpdateData.restaurantAddress,
-                    image: showUpdateData.logo,
-                  }
-                : undefined
-            }
+            initialData={{
+              name: showUpdateData.restaurantName,
+              mail: showUpdateData.phone,
+              address: showUpdateData.restaurantAddress,
+              image: showUpdateData.logo,
+            }}
             loading={updateLoading}
             onSave={async (updatedData) => {
               if (!showUpdateData?._id) return;

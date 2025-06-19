@@ -34,7 +34,7 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
     const token = Cookies.get("accessToken"); 
     if (!token) {
     console.error("No token found in cookies");
-    alert("Authentication token missing.");
+   
     return;
   }
 
