@@ -13,6 +13,7 @@ interface SuppleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  defaultValue?: string | number;
 }
 
 const SuppleInput = ({
@@ -28,6 +29,7 @@ const SuppleInput = ({
   required,
   startIcon,
   endIcon,
+  defaultValue,
   ...props
 }: SuppleInputProps) => {
   const { control } = useFormContext();
@@ -72,6 +74,7 @@ const SuppleInput = ({
                   className
                 )}
                 aria-invalid={!!error || !!fieldError}
+                defaultValue={defaultValue}
               />
               {endIcon && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
