@@ -34,7 +34,7 @@ const AnalyticsAndReport = () => {
             },
           }
         );
-console.log("eitty", res)
+// console.log("eitty", res)
         const data = res.data.data;
         const monthlyAll = data?.revenue?.monthlyAll || [];
 
