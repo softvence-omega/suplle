@@ -49,6 +49,15 @@ const OrderCardForOwner: React.FC<OrderCardForOwnerProps> = ({
             +
           </button>
         </div>
+        {/* <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddToOrder();
+          }}
+          className="w-full mt-2 bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition"
+        >
+          Add
+        </button> */}
       </div>
     </div>
   );

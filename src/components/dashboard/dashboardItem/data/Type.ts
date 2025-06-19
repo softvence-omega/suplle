@@ -71,3 +71,42 @@ export interface FullMenuItem {
 //   id: string;
 //   name: string;
 // }
+
+export interface OrderMenu {
+  _id: string; // This is the _id of the menu-in-order object
+  menu: {
+    _id: string;
+    itemName: string;
+    price: number;
+    size: string;
+  };
+  quantity: number;
+}
+
+// For the payment method
+export interface PaymentMethod {
+  type: string;
+  cardNumber: string | null;
+}
+
+// For the whole order
+export interface Order {
+  _id: string;
+  orderId: string;
+  orderType: string;
+  table: string;
+  person: number;
+  status: string;
+  menus: OrderMenu[];
+  total: number;
+  paymentMethod: PaymentMethod;
+  restaurant: string;
+  specialRequest: string;
+  customerName: string | null;
+  customerPhone: string | null;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  createdAtFormatted: string;
+  updatedAtFormatted: string;
+}

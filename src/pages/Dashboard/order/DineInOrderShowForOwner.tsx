@@ -12,82 +12,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { fetchOrders } from "@/store/features/orders/orderSlice";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
-const orders = [
-  {
-    orderId: "001",
-    table: "Table 12",
-    type: "Dine-in",
-    people: 2,
-    status: "Completed",
-    items: [
-      { name: "Spaghetti Carbonara", quantity: 1 },
-      { name: "Garlic Bread", quantity: 2 },
-    ],
-    time: "1:15 PM",
-    total: "$48.00",
-  },
-  {
-    orderId: "002",
-    table: "Table 45",
-    type: "Dine-in",
-    people: 8,
-    status: "InProgress",
-    items: [
-      { name: "Margherita Pizza", quantity: 1 },
-      { name: "Caesar Salad", quantity: 2 },
-    ],
-    time: "2:56 AM",
-    total: "$133.50",
-  },
-  {
-    orderId: "003",
-    table: "Takeaway",
-    type: "Takeaway",
-    people: 1,
-    status: "Preparing",
-    items: [
-      { name: "Burger", quantity: 2 },
-      { name: "Fries", quantity: 1 },
-    ],
-    time: "11:45 AM",
-    total: "$29.90",
-  },
-  {
-    orderId: "004",
-    table: "Table 9",
-    type: "Dine-in",
-    people: 4,
-    status: "Ready",
-    items: [
-      { name: "Sushi Platter", quantity: 1 },
-      { name: "Miso Soup", quantity: 4 },
-    ],
-    time: "7:30 PM",
-    total: "$82.75",
-  },
-  {
-    orderId: "005",
-    table: "Delivery",
-    type: "Delivery",
-    people: 1,
-    status: "Delivered",
-    items: [
-      { name: "Pad Thai", quantity: 1 },
-      { name: "Spring Rolls", quantity: 1 },
-    ],
-    time: "5:10 PM",
-    total: "$37.20",
-  },
-];
+import type { Order } from "@/components/dashboard/dashboardItem/data/Type";
 
 function DineInOrderShowForOwner() {
   const { register } = useForm();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  const dispatch = useAppDispatch();
+
+  const { data } = useAppSelector((state) => state.orders);
+
+  const dineInOrders = data.filter(
+    (order: Order) => order.orderType === "dine in"
+  );
+
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
+
+  console.log(data);
 
   const handleCreateOrder = () => {
     navigate("/dashboard/order/create");
@@ -158,8 +107,8 @@ function DineInOrderShowForOwner() {
       <div className="mt-6">
         {viewMode === "grid" ? (
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {orders.map((order) => (
-              <OrderCard key={order.orderId} {...order} />
+            {dineInOrders.map((order: Order) => (
+              <OrderCard key={order._id} order={order} />
             ))}
           </div>
         ) : (
@@ -179,8 +128,8 @@ function DineInOrderShowForOwner() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-[#161616] ">
-                {orders.map((order) => (
-                  <OrderListRow key={order.orderId} {...order} view="list" />
+                {dineInOrders.map((order: Order) => (
+                  <OrderListRow key={order._id} order={order} />
                 ))}
               </tbody>
             </table>
