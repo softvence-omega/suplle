@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import SuppleForm from "@/components/Forms/SuplleForm";
 import SuppleInput from "@/components/Forms/SuppleInput";
@@ -8,17 +8,16 @@ import { FileUp } from "lucide-react";
 import owner1 from "../../../assets/ownerset1.jpg"
 import owner2 from "../../../assets/ownerset2.jpg"
 import owner3 from "../../../assets/ownerset3.jpg"
-import PasswordInput from "./PasswordInput";
 import Cookies from "js-cookie";
 import { fetchRestaurantById } from "@/store/features/restaurant/fetchrestaurantSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
 
-const coverImages = [
-  owner1,
-  owner2,
-  owner3,
-];
+// const coverImages = [
+//   owner1,
+//   owner2,
+//   owner3,
+// ];
 
 const defaultValues = {
   restaurantName: "",
@@ -35,9 +34,11 @@ const defaultValues = {
   sgstRate: "",
   currentPassword: "",
   newPassword: "",
+  oldPassword: "",
 };
 
 const RestaurantProfileForm: React.FC = () => {
+  const [coverImages, setCoverImages] = useState<string[]>([owner1, owner2, owner3]);
   const dispatch = useAppDispatch()
   const restaurantState = useAppSelector((state) => state.fetchRestaurant);
   console.log(restaurantState.data, "restaurantState in restaurant profile form");
@@ -53,18 +54,13 @@ const RestaurantProfileForm: React.FC = () => {
   const restaurantId = user?.restuarant;
   console.log(restaurantId, "restaurantId in restaurant profile form");
 
+  
 
   useEffect(() => {
     if (restaurantId) {
       dispatch(fetchRestaurantById(restaurantId));
     }
   }, [dispatch, restaurantId])
-
- 
-  const handleSubmit = async (data: typeof defaultValues) => {
-  await handleRestaurantInfo(data);
-  await handleBussinessInfo(data);
-};
 
   const handleError = (error: unknown) => {
     console.error("Form Error:", error);
@@ -74,11 +70,11 @@ const RestaurantProfileForm: React.FC = () => {
     const token = Cookies.get("accessToken");
     if (!token) throw new Error("No token found");
 
-    // const userString = Cookies.get("user");
-    // const user = userString ? JSON.parse(userString) : null;
-    // const restaurantId = user?.restuarant;
+    const userString = Cookies.get("user");
+    const user = userString ? JSON.parse(userString) : null;
+    const restaurantId = user?.restuarant;
 
-    // if (!restaurantId) throw new Error("No restaurant ID found");
+    if (!restaurantId) throw new Error("No restaurant ID found");
 
     const payload = {
       restaurantName: data.restaurantName,
@@ -87,11 +83,32 @@ const RestaurantProfileForm: React.FC = () => {
       logo: data.logo,
       coverUpload: data.coverUpload,
     }
+    console.log(payload, "payload in handleRestaurantInfo");
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(payload));
     if (data.logo) formData.append("logo", data.logo);
-    if (data.coverUpload) formData.append("coverPhoto", data.coverUpload);
+    if (data.coverUpload) {
+  formData.append("coverPhoto", data.coverUpload);
+
+  // Add preview image to coverImages
+  if (
+    data.coverUpload &&
+    typeof data.coverUpload !== "string" &&
+    typeof data.coverUpload === "object" &&
+    typeof window !== "undefined" &&
+    typeof window.Blob !== "undefined" &&
+    ((data.coverUpload as any) instanceof window.Blob)
+  ) {
+    const newCoverPreview = URL.createObjectURL(data.coverUpload as Blob);
+    setCoverImages((prev) => [...prev, newCoverPreview]);
+  }
+}
+const formDataObject: { [key: string]: any } = {};
+formData.forEach((value, key) => {
+  formDataObject[key] = value;
+});
+console.log(formDataObject);
 
     const res = await fetch(
       `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/update-restaurant`,
@@ -112,29 +129,41 @@ const RestaurantProfileForm: React.FC = () => {
   } catch (error) {
     console.error("Update Failed:", error);
   }
+  useEffect(() => {
+  return () => {
+    coverImages.forEach((img) => {
+      if (img.startsWith("blob:")) URL.revokeObjectURL(img);
+    });
+  };
+}, [coverImages]);
 };
 
 const handleBussinessInfo = async (data: typeof defaultValues) => {
   try {
-    const token1 = Cookies.get("accessToken");
-    if (!token1) throw new Error("No token found");
+    const token = Cookies.get("accessToken");
+    if (!token) throw new Error("No token found");
 
     const requestData = {
       businessName: data.businessName,
       businessEmail: data.businessEmail,
       restaurantAddress: data.address,
       // referralCode: data.referralCode,
-      gstRate: data.gstRate,
-      cgstRate: data.cgstRate,
-      sgstRate: data.sgstRate,
+      taxInfo:{
+        gstRate: data.gstRate,
+        cgstRate: data.cgstRate,
+        sgstRate: data.sgstRate,
+      }
+
     };
+
+    console.log(requestData, "requestData in handleBussinessInfo");
 
     const res = await fetch(
       `https://suplle-server-v2-2.onrender.com/api/v1/owner/update-owner`,
       {
         method: "PUT",
         headers: {
-          Authorization: `${token1}`,
+          Authorization: `${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -149,6 +178,38 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
     console.log("Business Info Updated Successfully");
   } catch (error) {
     console.error("Update Failed:", error);
+  }
+};
+
+const handleAccountInfo = async (data: typeof defaultValues) => {
+  try {
+    const token = Cookies.get("accessToken");
+    if (!token) throw new Error("No token found");
+
+    const payload = {
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
+    };
+    console.log(payload, "payload in handleAccountInfo");
+
+    const res = await fetch(
+      `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/account-settings`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Password change failed");
+
+    console.log("Password changed successfully");
+  } catch (error) {
+    console.error("Password Change Failed:", error);
   }
 };
 
@@ -203,10 +264,11 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {coverImages.map((img, idx) => (
                 <div key={idx} className="h-[300px] rounded overflow-hidden border border-gray-300">
-                  <img src={img} alt={`cover-${idx}`} className=" h-full w-full" />
+                  <img src={img} alt={`cover-${idx}`} className=" h-full w-full object-cover" />
                 </div>
               ))}
             </div>
+
           </div>
 
           <SuppleTextarea
@@ -261,17 +323,17 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
               <SuppleInput
                 name="gstRate"
                 placeholder="GST Rate (%)"
-                type="number"
+                type="string"
                 className="h-[45px]" />
               <SuppleInput
                 name="cgstRate"
                 placeholder="CGST Rate (%)"
-                type="number"
+                type="string"
                 className="h-[45px]" />
               <SuppleInput
                 name="sgstRate"
                 placeholder="SGST Rate (%)"
-                type="number"
+                type="string"
                 className="h-[45px]" />
             </div>
             <Button type="submit" className="bg-[#E7F6F6]  text-[#11A8A5] hover:text-white">Save Changes</Button>
@@ -282,7 +344,7 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
 
 
       <SuppleForm
-      onSubmit={handleSubmit}
+      onSubmit={handleAccountInfo}
       onError={handleError}
       defaultValues={defaultValues}
       className="mx-auto space-y-10"
@@ -292,8 +354,16 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
         <div className="space-y-4 p-6 bg-white dark:bg-[#161616]">
           <h2 className="text-lg font-normal text-[#333333] dark:text-white">Account Settings</h2>
           <div className="grid md:grid-cols-2 gap-4">
-            <PasswordInput name="currentPassword" label="Current Password" />
-            <PasswordInput name="newPassword" label="New Password" />
+            <SuppleInput
+            name="oldPassword"
+            label="Old Password"
+            placeholder="Old password"
+            className="h-[45px]" />                                                           
+            <SuppleInput
+              name="newPassword"
+              label="New Password"
+              placeholder="New password"
+              className="h-[45px]" />
           </div>
           <Button type="submit" className="bg-[#E7F6F6] text-[#11A8A5] hover:text-white">
             Save Changes
