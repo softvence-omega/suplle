@@ -43,6 +43,20 @@ const RestaurantProfileForm: React.FC = () => {
   const restaurantState = useAppSelector((state) => state.fetchRestaurant);
   console.log(restaurantState.data, "restaurantState in restaurant profile form");
   const { description, restaurantName, tagline,logo,coverPhoto } = restaurantState.data ?? {};
+  console.log(restaurantName, "restaurantName in restaurant profile form");
+  const [formDefaults, setFormDefaults] = useState(defaultValues);
+
+  useEffect(() => {
+  if (restaurantState.data) {
+    setFormDefaults({
+      ...defaultValues,
+      restaurantName: restaurantState.data.restaurantName || "",
+      tagline: restaurantState.data.tagline || "",
+      description: restaurantState.data.description || "",
+      // ...other fields
+    });
+  }
+}, [restaurantState.data]);
   // const data = restaurantState.restaurants;
   // const loading = restaurantState.loading;
   // const error = restaurantState.error;
@@ -139,9 +153,12 @@ console.log(formDataObject);
 };
 
 const handleBussinessInfo = async (data: typeof defaultValues) => {
+  
   try {
     const token = Cookies.get("accessToken");
     if (!token) throw new Error("No token found");
+
+    
 
     const requestData = {
       businessName: data.businessName,
@@ -217,9 +234,10 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
   return (
     <div>
     <SuppleForm
+     key={formDefaults.restaurantName}
       onSubmit={handleRestaurantInfo}
       onError={handleError}
-      defaultValues={defaultValues}
+      defaultValues={formDefaults}
       className="mx-auto space-y-10"
     >
       {/* Restaurant Info */}
@@ -230,7 +248,8 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
             <SuppleInput
               name="restaurantName"
               label="Restaurant Name"
-              placeholder={restaurantName}
+              // placeholder={restaurantName}
+              // defaultValue={restaurantName ? restaurantName : ""}
               className="h-[45px]" />
 
             <SuppleFileUpload
@@ -246,7 +265,8 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
             <SuppleInput
               name="tagline"
               label="Tagline"
-              placeholder={tagline}
+              // placeholder={tagline}
+              defaultValue={tagline}
               className="h-[45px]" />
 
             <SuppleFileUpload
@@ -274,7 +294,8 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
           <SuppleTextarea
             name="description"
             label="Description"
-            placeholder={description}
+            // placeholder={description}
+            defaultValue={description}
             rows={5} />
 
           <Button type="submit" className="bg-[#E7F6F6]  text-[#11A8A5] hover:text-white">Save Changes</Button>
@@ -375,5 +396,4 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
     </div>
   );
 };
-
 export default RestaurantProfileForm;
