@@ -154,8 +154,9 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
 
 
   return (
+    <div>
     <SuppleForm
-      onSubmit={handleSubmit}
+      onSubmit={handleRestaurantInfo}
       onError={handleError}
       defaultValues={defaultValues}
       className="mx-auto space-y-10"
@@ -218,7 +219,14 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
           
         </div>
       </div>
+      </SuppleForm>
 
+      <SuppleForm
+      onSubmit={handleBussinessInfo}
+      onError={handleError}
+      defaultValues={defaultValues}
+      className="mx-auto space-y-10"
+    >
       {/* Business Info */}
       <div className="shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-md">
         <div className="space-y-4 p-6 bg-white dark:bg-[#161616]">
@@ -270,7 +278,15 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
           </div>
         </div>
       </div>
+      </SuppleForm>
 
+
+      <SuppleForm
+      onSubmit={handleSubmit}
+      onError={handleError}
+      defaultValues={defaultValues}
+      className="mx-auto space-y-10"
+    >
       {/* Account Settings */}
       <div className="shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-md">
         <div className="space-y-4 p-6 bg-white dark:bg-[#161616]">
@@ -286,6 +302,7 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
       </div>
 
     </SuppleForm>
+    </div>
   );
 };
 

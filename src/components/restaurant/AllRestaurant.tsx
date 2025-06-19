@@ -35,7 +35,7 @@ const AllRestaurant = () => {
 
   const dispatch = useAppDispatch();
   const { restaurants, loading, error } = useAppSelector(
-    (state) => state.restaurants
+    (state) => state.restaurant
   );
 
   useEffect(() => {

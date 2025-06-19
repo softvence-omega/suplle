@@ -27,7 +27,7 @@ const Pending = () => {
   };
 
   const dispatch = useAppDispatch();
-  const { restaurants, loading, error } = useAppSelector((state) => state.restaurants);
+  const { restaurants, loading, error } = useAppSelector((state) => state.restaurant);
 
   useEffect(() => {
     dispatch(fetchRestaurants());
