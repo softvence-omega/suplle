@@ -43,9 +43,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
               </span>
             </div>
           </div>
-          <p className="text-sm font-normal text-[#7D7D7D] dark:text-[#FFFFFF]">
+          {/* <p className="text-sm font-normal text-[#7D7D7D] dark:text-[#FFFFFF]">
             {order.table} • {order.orderType}
-          </p>
+          </p> */}
         </div>
         <span
           className={`text-xs bg-[#E7F3FF] text-[#203849] px-3 py-1 rounded-full dark:text-[#FFFFFF] dark:bg-[#030303] ${
