@@ -11,13 +11,7 @@ import owner3 from "../../../assets/ownerset3.jpg"
 import Cookies from "js-cookie";
 import { fetchRestaurantById } from "@/store/features/restaurant/fetchrestaurantSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-
-
-// const coverImages = [
-//   owner1,
-//   owner2,
-//   owner3,
-// ];
+import { toast } from "react-toastify";
 
 const defaultValues = {
   restaurantName: "",
@@ -25,6 +19,8 @@ const defaultValues = {
   tagline: "",
   coverUpload: "",
   description: "",
+
+  // Business info
   businessName: "",
   businessEmail: "",
   businessPhone: "",
@@ -32,133 +28,144 @@ const defaultValues = {
   gstRate: "",
   cgstRate: "",
   sgstRate: "",
+
+  // Account info
   currentPassword: "",
   newPassword: "",
   oldPassword: "",
 };
+
 
 const RestaurantProfileForm: React.FC = () => {
   const [coverImages, setCoverImages] = useState<string[]>([owner1, owner2, owner3]);
   const dispatch = useAppDispatch()
   const restaurantState = useAppSelector((state) => state.fetchRestaurant);
   console.log(restaurantState.data, "restaurantState in restaurant profile form");
-  const { description, restaurantName, tagline,logo,coverPhoto } = restaurantState.data ?? {};
+  const { description, restaurantName, tagline } = restaurantState.data ?? {};
   console.log(restaurantName, "restaurantName in restaurant profile form");
   const [formDefaults, setFormDefaults] = useState(defaultValues);
+  const [businessFormDefaults, setBusinessFormDefaults] = useState(defaultValues);
+
+  const businessEmail = Cookies.get("user") ? JSON.parse(Cookies.get("user") || "{}").email : "";
 
   useEffect(() => {
-  if (restaurantState.data) {
-    setFormDefaults({
-      ...defaultValues,
-      restaurantName: restaurantState.data.restaurantName || "",
-      tagline: restaurantState.data.tagline || "",
-      description: restaurantState.data.description || "",
-      // ...other fields
-    });
-  }
-}, [restaurantState.data]);
-  // const data = restaurantState.restaurants;
-  // const loading = restaurantState.loading;
-  // const error = restaurantState.error;
+    if (restaurantState.data) {
+      setFormDefaults({
+        ...defaultValues,
+        restaurantName: restaurantState.data.restaurantName || "",
+        tagline: restaurantState.data.tagline || "",
+        description: restaurantState.data.description || "",
+      });
 
-  //  console.log(data, "data in restaurant profile form")
+      // Business form data setting
+      setBusinessFormDefaults({
+        ...defaultValues,
+        businessName: restaurantState.data.restaurantName || "",
+        businessEmail: businessEmail || "",
+        businessPhone: restaurantState.data.phone || "",
+        address: restaurantState.data.restaurantAddress || "",
+        gstRate: restaurantState.data.taxInfo?.gstRate || "",
+        cgstRate: restaurantState.data.taxInfo?.cgstRate || "",
+        sgstRate: restaurantState.data.taxInfo?.sgstRate || "",
+      });
+    }
+  }, [restaurantState.data]);
 
   const userString = Cookies.get("user");
   const user = userString ? JSON.parse(userString) : null;
   const restaurantId = user?.restuarant;
   console.log(restaurantId, "restaurantId in restaurant profile form");
 
-  
-
   useEffect(() => {
     if (restaurantId) {
       dispatch(fetchRestaurantById(restaurantId));
     }
-  }, [dispatch, restaurantId])
+  }, [dispatch, restaurantId]);
 
   const handleError = (error: unknown) => {
     console.error("Form Error:", error);
   };
- const handleRestaurantInfo = async (data: typeof defaultValues) => {
-  try {
-    const token = Cookies.get("accessToken");
-    if (!token) throw new Error("No token found");
 
-    const userString = Cookies.get("user");
-    const user = userString ? JSON.parse(userString) : null;
-    const restaurantId = user?.restuarant;
+  const handleRestaurantInfo = async (data: typeof defaultValues) => {
+    try {
+      const token = Cookies.get("accessToken");
+      if (!token) throw new Error("No token found");
 
-    if (!restaurantId) throw new Error("No restaurant ID found");
+      const userString = Cookies.get("user");
+      const user = userString ? JSON.parse(userString) : null;
+      const restaurantId = user?.restuarant;
 
-    const payload = {
-      restaurantName: data.restaurantName,
-      tagline: data.tagline,
-      description: data.description,
-      logo: data.logo,
-      coverUpload: data.coverUpload,
-    }
-    console.log(payload, "payload in handleRestaurantInfo");
+      if (!restaurantId) throw new Error("No restaurant ID found");
 
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(payload));
-    if (data.logo) formData.append("logo", data.logo);
-    if (data.coverUpload) {
-  formData.append("coverPhoto", data.coverUpload);
+      const payload = {
+        restaurantName: data.restaurantName,
+        tagline: data.tagline,
+        description: data.description,
+        logo: data.logo,
+        coverUpload: data.coverUpload,
+      };
+      console.log(payload, "payload in handleRestaurantInfo");
 
-  // Add preview image to coverImages
-  if (
-    data.coverUpload &&
-    typeof data.coverUpload !== "string" &&
-    typeof data.coverUpload === "object" &&
-    typeof window !== "undefined" &&
-    typeof window.Blob !== "undefined" &&
-    ((data.coverUpload as any) instanceof window.Blob)
-  ) {
-    const newCoverPreview = URL.createObjectURL(data.coverUpload as Blob);
-    setCoverImages((prev) => [...prev, newCoverPreview]);
-  }
-}
-const formDataObject: { [key: string]: any } = {};
-formData.forEach((value, key) => {
-  formDataObject[key] = value;
-});
-console.log(formDataObject);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(payload));
+      if (data.logo) formData.append("logo", data.logo);
+      if (data.coverUpload) {
+        formData.append("coverPhoto", data.coverUpload);
 
-    const res = await fetch(
-      `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/update-restaurant`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: ` ${token}`,
-        },
-        body: formData,
+        // Add preview image to coverImages
+        if (
+          data.coverUpload &&
+          typeof data.coverUpload !== "string" &&
+          typeof data.coverUpload === "object" &&
+          typeof window !== "undefined" &&
+          typeof window.Blob !== "undefined" &&
+          ((data.coverUpload as any) instanceof window.Blob)
+        ) {
+          const newCoverPreview = URL.createObjectURL(data.coverUpload as Blob);
+          setCoverImages((prev) => [...prev, newCoverPreview]);
+        }
       }
-    );
+      const formDataObject: { [key: string]: any } = {};
+      formData.forEach((value, key) => {
+        formDataObject[key] = value;
+      });
+      console.log(formDataObject);
 
-    const result = await res.json();
-    if (!res.ok) throw new Error(result.message || "Failed to update restaurant");
+      const res = await fetch(
+        `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/update-restaurant`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: ` ${token}`,
+          },
+          body: formData,
+        }
+      );
 
-    console.log("Update Success:", result);
-    console.log("Restaurant Info Updated Successfully",1);
-  } catch (error) {
-    console.error("Update Failed:", error);
-  }
-  useEffect(() => {
-  return () => {
-    coverImages.forEach((img) => {
-      if (img.startsWith("blob:")) URL.revokeObjectURL(img);
-    });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message || "Failed to update restaurant");
+
+      toast.success("Restaurant Info Updated Successfully"); // <-- Success toast
+      console.log("Update Success:", result);
+    } catch (error: any) {
+      toast.error(error.message || "Update Failed"); // <-- Error toast
+      console.error("Update Failed:", error);
+    }
   };
-}, [coverImages]);
-};
+
+  useEffect(() => {
+    return () => {
+      coverImages.forEach((img) => {
+        if (img.startsWith("blob:")) URL.revokeObjectURL(img);
+      });
+    };
+  }, [coverImages]);
 
 const handleBussinessInfo = async (data: typeof defaultValues) => {
   
   try {
     const token = Cookies.get("accessToken");
     if (!token) throw new Error("No token found");
-
-    
 
     const requestData = {
       businessName: data.businessName,
@@ -192,8 +199,10 @@ const handleBussinessInfo = async (data: typeof defaultValues) => {
 
     if (!res.ok) throw new Error(result.message || "Failed to update business info");
 
+   toast.success("Business Info Updated Successfully"); // <-- Success toast
     console.log("Business Info Updated Successfully");
-  } catch (error) {
+  } catch (error: any) {
+    toast.error(error.message || "Update Failed"); // <-- Error toast
     console.error("Update Failed:", error);
   }
 };
@@ -224,8 +233,10 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
     const result = await res.json();
     if (!res.ok) throw new Error(result.message || "Password change failed");
 
+  toast.success("Password changed successfully"); // <-- Success toast
     console.log("Password changed successfully");
-  } catch (error) {
+  } catch (error: any) {
+    toast.error(error.message || "Password Change Failed"); // <-- Error toast
     console.error("Password Change Failed:", error);
   }
 };
@@ -234,7 +245,7 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
   return (
     <div>
     <SuppleForm
-     key={formDefaults.restaurantName}
+     key={`restaurant-${formDefaults.restaurantName}`}
       onSubmit={handleRestaurantInfo}
       onError={handleError}
       defaultValues={formDefaults}
@@ -305,11 +316,12 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
       </SuppleForm>
 
       <SuppleForm
-      onSubmit={handleBussinessInfo}
-      onError={handleError}
-      defaultValues={defaultValues}
-      className="mx-auto space-y-10"
-    >
+       key={`business-${businessFormDefaults.businessName}`}
+        onSubmit={handleBussinessInfo}
+        onError={handleError}
+        defaultValues={businessFormDefaults}
+        className="mx-auto space-y-10"
+      >
       {/* Business Info */}
       <div className="shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-md">
         <div className="space-y-4 p-6 bg-white dark:bg-[#161616]">
@@ -318,14 +330,16 @@ const handleAccountInfo = async (data: typeof defaultValues) => {
             <SuppleInput
               name="businessName"
               label="Business Name"
-              placeholder="Business Name"
+              // placeholder="Business Name"
               className="h-[45px]" />
             <SuppleInput
               name="businessEmail"
               label="Business Email"
-              placeholder="Business Email"
+              // placeholder="Business Email"
               type="email"
-              className="h-[45px]" />
+              className="h-[45px] cursor-not-allowed"
+              readOnly
+              />
             <SuppleInput
               name="businessPhone"
               label="Business Phone Number"
