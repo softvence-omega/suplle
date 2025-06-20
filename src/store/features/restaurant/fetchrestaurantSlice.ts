@@ -35,6 +35,10 @@ export interface RestaurantMenu {
 }
 
 export interface Restaurant {
+  taxInfo: any;
+  businessPhone: string;
+  businessEmail: string;
+  businessName: string;
   _id: string;
   owner: string;
   restaurantName: string;
