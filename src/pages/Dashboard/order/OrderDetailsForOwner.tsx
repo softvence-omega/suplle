@@ -5,6 +5,11 @@
 //   note?: string;
 // }
 
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { fetchOrderById } from "@/store/features/orders/orderSlice";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 const itemData = [
   {
     orderId: "ORD-2024-001",
@@ -57,6 +62,20 @@ const OrderDetailsForOwner = () => {
 
   const discount = subtotal * (discountPercent / 100);
   const total = subtotal - discount;
+
+  const { current } = useAppSelector((state) => state.orders);
+
+  const dispatch = useAppDispatch();
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOrderById(id));
+    }
+  }, [dispatch, id]);
+
+  console.log(current, "data in previewwwwwww");
 
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white shadow rounded-xl space-y-6 dark:bg-primary-dark">

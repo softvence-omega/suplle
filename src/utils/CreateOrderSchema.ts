@@ -8,6 +8,12 @@ export const createOrderSchema = z.object({
   payment: z.enum(["cash", "card"], {
     required_error: "Payment method is required",
   }),
+  menus: z.array(
+    z.object({
+      menu: z.string(),
+      quantity: z.number().min(1),
+    })
+  ),
 });
 
 export type CreateOrderFormData = z.infer<typeof createOrderSchema>;

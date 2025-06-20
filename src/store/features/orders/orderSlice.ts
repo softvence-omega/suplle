@@ -1,7 +1,28 @@
 // src/redux/slices/orderSlice.ts
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { Order } from "@/Types/OrderTypes";
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
+
+interface OrderState {
+  data: Order[];
+  current?: Order;
+  loading: boolean;
+  updating: boolean;
+  error: string | null;
+}
+
+const initialState: OrderState = {
+  data: [],
+  current: undefined,
+  loading: false,
+  updating: false,
+  error: null,
+};
 
 export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
@@ -30,16 +51,76 @@ export const fetchOrders = createAsyncThunk(
   }
 );
 
+// Fetch single order
+export const fetchOrderById = createAsyncThunk(
+  "orders/fetchById",
+  async (id: string, thunkAPI) => {
+    try {
+      const token = Cookies.get("accessToken");
+      const res = await axios.get(
+        `https://suplle-server-v2-2.onrender.com/api/v1/order/single-order/${id}`,
+        { headers: { Authorization: token } }
+      );
+      return res.data.data[0];
+    } catch (err: unknown) {
+      if (err && typeof err === "object" && "response" in err) {
+        const error = err as {
+          response?: { data?: { message?: string } };
+          message?: string;
+        };
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to fetch order"
+        );
+      }
+      return thunkAPI.rejectWithValue("Failed to fetch order");
+    }
+  }
+);
+
+export const updateOrder = createAsyncThunk(
+  "orders/createOrders",
+  async (
+    { id, updatedPayload }: { id: string; updatedPayload: Order },
+    thunkAPI
+  ) => {
+    try {
+      const token = Cookies.get("accessToken");
+
+      const res = await axios.put(
+        `https://suplle-server-v2-2.onrender.com/api/v1/order/update-order/${id}`,
+        updatedPayload,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      return res?.data?.data;
+    } catch (err: unknown) {
+      let errorMessage = "Failed to update order";
+      if (err && typeof err === "object" && "response" in err) {
+        const error = err as {
+          response?: { data?: { message?: string } };
+          message?: string;
+        };
+        errorMessage =
+          error.response?.data?.message || error.message || errorMessage;
+      }
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "orders",
-  initialState: {
-    data: [],
-    loading: false,
-    error: null as string | null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      //fetch all
       .addCase(fetchOrders.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -52,6 +133,41 @@ const orderSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch orders";
+      })
+      //fetch single
+      .addCase(fetchOrderById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchOrderById.fulfilled,
+        (state, action: PayloadAction<Order>) => {
+          state.current = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchOrderById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      //update order
+      .addCase(updateOrder.pending, (s) => {
+        s.updating = true;
+        s.error = null;
+      })
+      .addCase(updateOrder.fulfilled, (state, action: PayloadAction<Order>) => {
+        const updated = action.payload;
+        state.data = state.data.map((o) =>
+          o._id === updated._id ? updated : o
+        );
+        if (state.current?._id === updated._id) {
+          state.current = updated;
+        }
+        state.updating = false;
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.updating = false;
+        state.error = action.payload as string;
       });
   },
 });
