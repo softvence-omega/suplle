@@ -1,73 +1,17 @@
-// interface OrderItem {
-//   name: string;
-//   quantity: number;
-//   priceEach: number;
-//   note?: string;
-// }
-
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { fetchOrderById } from "@/store/features/orders/orderSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-const itemData = [
-  {
-    orderId: "ORD-2024-001",
-    table: "B1",
-    type: "Dine in",
-    date: "2024-02-10",
-    time: "14:30",
-    status: "Delivered",
-    items: [
-      {
-        name: "Margherita Pizza",
-        quantity: 2,
-        priceEach: 14.99,
-        note: "Extra Cheese",
-      },
-      {
-        name: "Caesar salad",
-        quantity: 2,
-        priceEach: 14.99,
-        note: "Dressing on side",
-      },
-      {
-        name: "Chicken Alfredo",
-        quantity: 2,
-        priceEach: 14.99,
-        note: "Dressing on side",
-      },
-    ],
-    subtotal: 45.97,
-    discountPercent: 10,
-    paymentStatus: "Paid",
-    paymentMethod: "Card",
-  },
-];
-
+import { MdGroup, MdOutlineAccessTime } from "react-icons/md";
+import { IoPersonSharp } from "react-icons/io5";
+import { FaLocationDot } from "react-icons/fa6";
+import { GiFireplace } from "react-icons/gi";
 const OrderDetailsForOwner = () => {
-  const {
-    orderId,
-    table,
-    type,
-    date,
-    time,
-    status,
-    items,
-    subtotal,
-    discountPercent,
-    paymentStatus,
-    paymentMethod,
-  } = itemData[0];
-
-  const discount = subtotal * (discountPercent / 100);
-  const total = subtotal - discount;
-
-  const { current } = useAppSelector((state) => state.orders);
-
   const dispatch = useAppDispatch();
-
   const { id } = useParams();
+
+  // Extract loading, error, and order from Redux state
+  const { loading, error, current: order } = useAppSelector((state) => state.orders);
 
   useEffect(() => {
     if (id) {
@@ -75,7 +19,41 @@ const OrderDetailsForOwner = () => {
     }
   }, [dispatch, id]);
 
-  console.log(current, "data in previewwwwwww");
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
+  if (!order) return <div>No order found.</div>;
+  console.log(order);
+
+  // Map API fields to UI fields
+  const {
+    orderId,
+    table,
+    orderType,
+    createdAt,
+    status,
+    menus,
+    total,
+    paymentMethod,
+    customerName,
+    customerPhone,
+    specialRequest,
+    floor,
+    person,
+  } = order;
+
+  // For compatibility with your UI
+  const items = menus?.map((item: any) => ({
+    name: item.menu?.itemName,
+    quantity: item.quantity,
+    priceEach: item.menu?.price,
+    size: item.menu?.size,
+  })) || [];
+
+  // If you want to show subtotal/discount, you can calculate here if needed
+  const subtotal = items.reduce((sum, item) => sum + (item.priceEach * item.quantity), 0);
+  const discountPercent = 0; // Set this if you have discount logic
+  const discount = subtotal * (discountPercent / 100);
+  const totalPrice = subtotal - discount;
 
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white shadow rounded-xl space-y-6 dark:bg-primary-dark">
@@ -87,12 +65,28 @@ const OrderDetailsForOwner = () => {
           Delivery Status : <span className="text-green-400">{status}</span>
         </p>
       </div>
-      <div className="text-sm text-[#7D7D7D] flex items-center gap-4 dark:text-white">
-        <span>🍴 {type}</span>
-        <span>📍 Table {table}</span>
-        <span>📅 {date}</span>
-        <span>🕒 {time}</span>
+      <div className="text-sm text-[#7D7D7D] flex flex-wrap gap-4 dark:text-white">
+        <span>🍴 {orderType}</span>
+        {/* <span className="flex flex-row items-center justify-center gap-2"><FaLocationDot /> Table {table?.capacity}</span> */}
+        {/* <span ><GiFireplace /> Floor {floor?.floorName}</span> */}
+        <span className="flex flex-row items-center justify-center gap-2"><MdGroup className="text-lg"/> Person: {person}</span>
+        <span className="flex flex-row items-center justify-center gap-2"><IoPersonSharp className="text-md"/> Customer: {customerName} ({customerPhone})</span>
+        <span className="flex flex-row items-center justify-center gap-2"><MdOutlineAccessTime /> {new Date(createdAt)
+            .toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
+            .replace(",", " -")}</span>
       </div>
+      {specialRequest && (
+        <div className="text-sm text-[#7D7D7D] dark:text-white">
+          <strong>Special Request:</strong> {specialRequest}
+        </div>
+      )}
 
       <div>
         <h3 className="font-normal text-black border-b pb-1 mb-3 dark:text-white">
@@ -108,18 +102,16 @@ const OrderDetailsForOwner = () => {
                 <p className="font-normal text-black text-lg dark:text-white">
                   {item.name} x {item.quantity}
                 </p>
-                {item.note && (
-                  <p className="text-sm text-[#7D7D7D] font-normal dark:text-white">
-                    Note : {item.note}
-                  </p>
-                )}
+                <p className="text-sm text-[#7D7D7D] font-normal dark:text-white">
+                  Size: {item.size}
+                </p>
               </div>
               <div className="text-right">
                 <p className="font-normal text-black text-lg dark:text-white">
                   ${(item.quantity * item.priceEach).toFixed(2)}
                 </p>
                 <p className="text-sm text-[#7D7D7D] font-normal dark:text-white">
-                  ${item.priceEach.toFixed(2)} each
+                  ${item.priceEach?.toFixed(2)} each
                 </p>
               </div>
             </li>
@@ -151,21 +143,13 @@ const OrderDetailsForOwner = () => {
         </div>
         <div className="mt-3 border-t pt-3 flex justify-between font-semibold">
           <span>Total</span>
-          <span>${total.toFixed(2)}</span>
+          <span>${totalPrice.toFixed(2)}</span>
         </div>
         <div className="mt-2 text-sm">
           <div className="flex justify-between dark:text-white">
-            <span>Payment Status</span>
+            <span>Payment Method</span>
             <span className="text-[#7AC29C] font-normal text-sm">
-              {paymentStatus}
-            </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm font-normal text-[#7D7D7D] dark:text-white">
-              Payment Method
-            </span>
-            <span className="text-sm font-semibold text-black dark:text-white">
-              {paymentMethod}
+              {paymentMethod?.type}
             </span>
           </div>
         </div>
