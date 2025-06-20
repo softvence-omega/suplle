@@ -160,7 +160,7 @@ const RestaurantProfileForm: React.FC = () => {
       });
     };
   }, [coverImages]);
-
+``
 const handleBussinessInfo = async (data: typeof defaultValues) => {
   
   try {

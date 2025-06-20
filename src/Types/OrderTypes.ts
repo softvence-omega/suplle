@@ -53,4 +53,13 @@ export interface Order {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
+  type: string; // e.g., "dine-in", "take-away"
+  date: string; // or Date
+  time: string; // or Date,
+  items: OrderMenuItem[];   
+  subtotal: number;
+  discountPercent: number;
+  createdAtFormatted: string; // Formatted date string,
+  capacity: number; // Number of people the table can accommodate
+  floorName: string; // Name of the floor
 }

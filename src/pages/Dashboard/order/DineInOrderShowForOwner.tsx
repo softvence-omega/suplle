@@ -17,7 +17,7 @@ import { fetchOrders } from "@/store/features/orders/orderSlice";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import type { Order } from "@/components/dashboard/dashboardItem/data/Type";
+
 
 function DineInOrderShowForOwner() {
   const { register } = useForm();
@@ -29,7 +29,7 @@ function DineInOrderShowForOwner() {
   const { data } = useAppSelector((state) => state.orders);
 
   const dineInOrders = data.filter(
-    (order: Order) => order.orderType === "dine in"
+    (order) => order.orderType === "dine in"
   );
 
   useEffect(() => {
@@ -107,7 +107,7 @@ function DineInOrderShowForOwner() {
       <div className="mt-6">
         {viewMode === "grid" ? (
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {dineInOrders.map((order: Order) => (
+            {dineInOrders.map((order: any) => (
               <OrderCard key={order._id} order={order} />
             ))}
           </div>
@@ -128,7 +128,7 @@ function DineInOrderShowForOwner() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-[#161616] ">
-                {dineInOrders.map((order: Order) => (
+                {dineInOrders.map((order: any) => (
                   <OrderListRow key={order._id} order={order} />
                 ))}
               </tbody>

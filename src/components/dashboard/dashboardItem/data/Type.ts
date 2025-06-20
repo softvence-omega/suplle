@@ -110,3 +110,19 @@ export interface Order {
   createdAtFormatted: string;
   updatedAtFormatted: string;
 }
+
+export interface Order {
+  _id: string;
+  table: string;
+  orderType: string;
+  items: {
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
+  total: number;
+  deliveryStatus: string;
+  createdAtFormatted: string;
+  updatedAtFormatted: string;
+}
+
