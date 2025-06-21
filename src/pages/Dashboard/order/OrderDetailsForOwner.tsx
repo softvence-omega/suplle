@@ -37,7 +37,7 @@ const OrderDetailsForOwner = () => {
   } = order;
 
   // For compatibility with your UI
-  const items = menus?.map((item: any) => ({
+  const items = menus?.map((item) => ({
     name: item.menu?.itemName,
     quantity: item.quantity,
     priceEach: item.menu?.price,

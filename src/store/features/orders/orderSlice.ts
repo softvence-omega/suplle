@@ -173,6 +173,3 @@ const orderSlice = createSlice({
 });
 
 export default orderSlice.reducer;
-
-//https://suplle-server-v2-2.onrender.com/api/v1/order/all-order
-//orders/fetchOrders
