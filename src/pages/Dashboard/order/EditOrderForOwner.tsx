@@ -51,8 +51,11 @@ const EditOrderForOwner = () => {
   // const [orders, setOrders] = useState([]);
 
   const { menus } = useAppSelector((state) => state.fetchMenu);
-  const { user } = useAppSelector((state) => state.auth);
+  // const { user } = useAppSelector((state) => state.auth);
   const { current } = useAppSelector((state) => state.orders);
+
+  const userString = Cookies.get("user");
+  const user = userString ? JSON.parse(userString) : null;
 
   console.log(current, "data of orders in update mahim");
 
@@ -140,7 +143,10 @@ const EditOrderForOwner = () => {
       methods.reset({
         customerName: current.customerName || "",
         customerPhone: current.customerPhone || "",
-        table: current.table || "",
+        table:
+          typeof current.table === "string"
+            ? current.table
+            : current.table?._id || "",
         floor: current.floor || "",
         // payment: current.paymentMethod?.type || ""
         menus: menusForForm,
