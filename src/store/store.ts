@@ -7,10 +7,10 @@ import menuReducer from "../store/features/menu/menuSlice";
 import fetchMenuReducer from "../store/features/menu/fetchMenuSlice";
 import orderReducer from "../store/features/orders/orderSlice";
 import userReducer from "../store/features/user/userSlice";
-import fetchRestaurantReducer from "../store/features/restaurant/fetchrestaurantSlice"
-
-
+import fetchRestaurantReducer from "../store/features/restaurant/fetchrestaurantSlice";
 import restaurantReducer from "../store/features/restaurant/restaurantSlice";
+import subscriptionReducer from "../store/features/admin/subscriptionPlan";
+
 export const store = configureStore({
   reducer: {
     sidebar: sidebarReducer,
@@ -21,7 +21,8 @@ export const store = configureStore({
     orders: orderReducer,
     users: userReducer,
     restaurant: restaurantReducer,
-    fetchRestaurant: fetchRestaurantReducer
+    fetchRestaurant: fetchRestaurantReducer,
+    subscriptionPlan: subscriptionReducer,
   },
 });
 

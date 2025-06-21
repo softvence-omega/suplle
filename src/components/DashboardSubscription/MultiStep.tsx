@@ -1,22 +1,37 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Check } from "lucide-react";
-import StepOne from "./StepOne";
+// import StepOne from "./StepOne";
 import { cn } from "@/lib/utils";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
+import StepTwoPointFive from "./StepTwoPointFive";
 // import QrDesign from "./QrDesign";
 
 const steps = [
-  { label: "Qr Codes", description: "Select your QR code" },
+  // { label: "Qr Codes", description: "Select your QR code" },
   { label: "Standard Plan", description: "Purchase your plan" },
+  { label: "Select Month", description: "Select your preferred month" },
   { label: "Payment Details", description: "Complete Purchase" },
 ];
 
 export default function MultiStep() {
   const [currentStep, setCurrentStep] = useState(0);
-  const stepComponents = [<StepOne />, <StepTwo />, <StepThree />];
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<string>("1");
+  const [clientSecret, setClientSecret] = useState("");
+  const stepComponents = [
+    <StepTwo selectedId={selectedPlanId} setSelectedId={setSelectedPlanId} />,
+    <StepTwoPointFive
+      planId={selectedPlanId}
+      month={selectedMonth}
+      setMonth={setSelectedMonth}
+      setClientSecret={setClientSecret}
+    />,
+    <StepThree clientSecret={clientSecret} />,
+  ];
 
+  // console.log(subscriptions);
   return (
     <>
       <div className="w-full max-w-3xl px-4">
@@ -57,7 +72,7 @@ export default function MultiStep() {
         </div>
 
         {/* Step Content (Optional) */}
-        <div className="mt-10 space-y-1 ">
+        {/* <div className="mt-10 space-y-1 ">
           <p className="text-gray-900 dark:text-white  font-normal">
             Purchase QR Codes & Subscription
           </p>
@@ -65,7 +80,7 @@ export default function MultiStep() {
             Generate branded QR codes for your tables and unlock powerful
             restaurant management features
           </p>
-        </div>
+        </div> */}
         {/* ELEMENTS */}
         {/* Render step-specific child */}
         <motion.div
