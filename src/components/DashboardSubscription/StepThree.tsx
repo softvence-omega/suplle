@@ -2,7 +2,11 @@ import type React from "react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const StepThree = () => {
+interface StepThreeProps {
+  clientSecret: string;
+}
+
+const StepThree = ({ clientSecret }: StepThreeProps) => {
   const [showSubscription, setShowSubscription] = useState(false);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +26,8 @@ const StepThree = () => {
       setShowSubscription(true);
     }
   };
+
+  console.log(clientSecret, "oooooooooo");
   return (
     <div className="mt-10 space-y-7">
       <div
