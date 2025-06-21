@@ -40,19 +40,29 @@ export const ViewUserDialog = ({
     try {
       setLoading(true);
       const token = Cookies.get("accessToken");
-      await axios.delete(
+
+      const response = await axios.delete(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/users/delete-user/${selectedUser.id}`,
         {
           headers: { Authorization: token },
         }
       );
-      setUsers((prev) => prev.filter((u) => u.id !== selectedUser.id));
+
+      console.log("Delete response:", response.data);
+
+      // Remove from UI
+      setUsers((prev) =>
+        prev.filter((u) => u.id !== selectedUser.id && u.id !== selectedUser.id)
+      );
+
       toast.success("User deleted successfully");
       setIsConfirmOpen(false);
       onOpenChange(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to delete user:", error);
-      toast.error("Failed to delete user");
+      const errorMessage =
+        error?.response?.data?.message || "Failed to delete user";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -131,7 +141,11 @@ export const ViewUserDialog = ({
             <Button variant="outline" onClick={() => setIsConfirmOpen(false)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDeleteUser} disabled={loading}>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteUser}
+              disabled={loading}
+            >
               {loading ? "Deleting..." : "Confirm"}
             </Button>
           </div>
