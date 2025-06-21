@@ -1,3 +1,4 @@
+
 import type {
   FieldValues,
   UseFormRegister,
@@ -17,6 +18,8 @@ interface InputComponentProps<T extends FieldValues> {
   type?: string;
   labelClassName?: string;
   inputClassName?: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const InputComponent = <T extends FieldValues>({
@@ -30,6 +33,8 @@ const InputComponent = <T extends FieldValues>({
   errors,
   placeholder,
   type,
+  value,
+  onChange,
   ...props
 }: InputComponentProps<T>) => {
   const error = errors ? errors[name] : undefined;
@@ -41,7 +46,7 @@ const InputComponent = <T extends FieldValues>({
       >
         {label}
       </label>
-      <div className="relative w-full">
+      <div className="relative w-full flex flex-row gap-2">
         {/* Display Icon if provided */}
         <input
           {...props} // Spread other props like placeholder, type, etc.
@@ -54,11 +59,14 @@ const InputComponent = <T extends FieldValues>({
           placeholder={placeholder || "Type here"}
           type={type || "text"}
         />
+        
       </div>
+      
       {error?.message && (
         <p className="text-red-500 text-sm">{String(error.message)}</p>
       )}
       {/* Display error message */}
+      
     </div>
   );
 };

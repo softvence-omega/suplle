@@ -14,6 +14,8 @@ export interface OrderMenuItem {
   menu: MenuRef;
   quantity: number;
   _id: string;
+  itemName: string;
+  capacity?: string | TableRef// Optional, if applicable
 }
 
 export interface Restaurant {
