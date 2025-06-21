@@ -28,13 +28,12 @@ const DeleteUserButton = ({ userId, onDeleteSuccess }: DeleteUserButtonProps) =>
   const handleDelete = async () => {
     setLoading(true);
     try {
-      // Dispatch thunk, unwrap() throws if rejected
       await dispatch(deleteUser(userId)).unwrap();
       toast.success("User deleted successfully");
       onDeleteSuccess?.();
       setOpen(false);
     } catch (error: any) {
-      toast.error(error || "Failed to delete user");
+      toast.error(error?.message || "Failed to delete user");
     } finally {
       setLoading(false);
     }
@@ -43,13 +42,13 @@ const DeleteUserButton = ({ userId, onDeleteSuccess }: DeleteUserButtonProps) =>
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button
-          className="text-red-600 hover:text-red-800 disabled:opacity-50"
+        {/* ⚠️ Use <span> instead of <button> to avoid nesting inside another button */}
+        <span
+          className="text-red-600 hover:text-red-800 cursor-pointer"
           title="Delete User"
-          disabled={loading}
         >
           <Trash2 className="h-4 w-4" />
-        </button>
+        </span>
       </DialogTrigger>
 
       <DialogContent>
