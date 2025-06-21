@@ -12,7 +12,7 @@ const StepTwoPointFive = ({
   setMonth: (m: string) => void;
   setClientSecret: (secret: string) => void;
 }) => {
-  const [selectMonth, setSelectMonth] = useState("1");
+  const [, setSelectMonth] = useState("1");
 
   console.log(planId);
 
