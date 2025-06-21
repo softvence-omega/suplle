@@ -4,8 +4,6 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MdGroup, MdOutlineAccessTime } from "react-icons/md";
 import { IoPersonSharp } from "react-icons/io5";
-import { FaLocationDot } from "react-icons/fa6";
-import { GiFireplace } from "react-icons/gi";
 const OrderDetailsForOwner = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -27,17 +25,14 @@ const OrderDetailsForOwner = () => {
   // Map API fields to UI fields
   const {
     orderId,
-    table,
     orderType,
     createdAt,
     status,
     menus,
-    total,
     paymentMethod,
     customerName,
     customerPhone,
     specialRequest,
-    floor,
     person,
   } = order;
 
