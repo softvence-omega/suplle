@@ -1,7 +1,8 @@
+import type { Order } from "@/Types/OrderTypes";
 import React from "react";
 import { FaUserFriends, FaEye, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import type { Order } from "../dashboard/dashboardItem/data/Type";
+// import type { Order } from "../dashboard/dashboardItem/data/Type";
 
 const statusStyles: Record<string, string> = {
   pending: "bg-blue-100 text-blue-800",

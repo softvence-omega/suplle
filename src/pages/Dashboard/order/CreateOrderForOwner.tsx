@@ -47,7 +47,10 @@ const CreateOrderForOwner = () => {
   // const [orders, setOrders] = useState([]);
 
   const { menus } = useAppSelector((state) => state.fetchMenu);
-  const { user } = useAppSelector((state) => state.auth);
+  // const { user } = useAppSelector((state) => state.auth);
+  const userString = Cookies.get("user");
+  const user = userString ? JSON.parse(userString) : null;
+  console.log(user, "userFromCookies");
 
   useEffect(() => {
     dispatch(fetchMenus());

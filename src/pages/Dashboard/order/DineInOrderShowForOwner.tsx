@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/select";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { fetchOrders } from "@/store/features/orders/orderSlice";
+import type { Order } from "@/Types/OrderTypes";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
 
 function DineInOrderShowForOwner() {
   const { register } = useForm();
@@ -28,9 +28,7 @@ function DineInOrderShowForOwner() {
 
   const { data } = useAppSelector((state) => state.orders);
 
-  const dineInOrders = data.filter(
-    (order) => order.orderType === "dine in"
-  );
+  const dineInOrders = data.filter((order) => order.orderType === "dine in");
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -107,7 +105,7 @@ function DineInOrderShowForOwner() {
       <div className="mt-6">
         {viewMode === "grid" ? (
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {dineInOrders.map((order: any) => (
+            {dineInOrders.map((order: Order) => (
               <OrderCard key={order._id} order={order} />
             ))}
           </div>
@@ -128,7 +126,7 @@ function DineInOrderShowForOwner() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-[#161616] ">
-                {dineInOrders.map((order: any) => (
+                {dineInOrders.map((order: Order) => (
                   <OrderListRow key={order._id} order={order} />
                 ))}
               </tbody>

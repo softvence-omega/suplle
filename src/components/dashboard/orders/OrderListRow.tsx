@@ -1,7 +1,7 @@
 import React from "react";
 import { Eye, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { Order } from "../dashboardItem/data/Type";
+import type { Order } from "@/Types/OrderTypes";
 
 const statusStyles: Record<string, string> = {
   pending: "bg-blue-100 text-blue-800",
@@ -30,7 +30,11 @@ const OrderListRow: React.FC<OrderCardProps> = ({ order }) => {
   return (
     <tr className="border-b text-sm text-[#2A3342] dark:text-[#FFFFFF] ">
       <td className="py-3 px-4 font-medium">{order._id}</td>
-      <td className="py-3 px-4">{order.table}</td>
+      <td>
+        {typeof order.table === "string"
+          ? order.table
+          : order.table?.name || order.table?._id || ""}
+      </td>
       <td className="py-3 px-4 font-semibold">{order.orderType}</td>
       <td className="py-3 px-4">
         {order?.menus?.map((item, index) => (

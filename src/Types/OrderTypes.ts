@@ -35,11 +35,18 @@ export interface Restaurant {
   __v: number;
 }
 
+export interface TableRef {
+  _id: string;
+  name: string;
+  capacity?: number;
+  // ...other fields if needed
+}
+
 export interface Order {
   paymentMethod: PaymentMethod;
   _id: string;
   restaurant: Restaurant;
-  table: string;
+  table: string | TableRef;
   floor: string;
   orderId: string;
   person: number;
@@ -56,10 +63,12 @@ export interface Order {
   type: string; // e.g., "dine-in", "take-away"
   date: string; // or Date
   time: string; // or Date,
-  items: OrderMenuItem[];   
+  items: OrderMenuItem[];
   subtotal: number;
   discountPercent: number;
   createdAtFormatted: string; // Formatted date string,
+  updatedAtFormatted?: string;
   capacity: number; // Number of people the table can accommodate
   floorName: string; // Name of the floor
+  deliveryStatus?: string;
 }

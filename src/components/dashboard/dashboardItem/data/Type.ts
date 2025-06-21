@@ -94,7 +94,7 @@ export interface Order {
   _id: string;
   orderId: string;
   orderType: string;
-  table: string;
+  table: string | { name?: string; _id?: string };
   person: number;
   status: string;
   menus: OrderMenu[];
@@ -113,7 +113,7 @@ export interface Order {
 
 export interface Order {
   _id: string;
-  table: string;
+  table: string | { name?: string; _id?: string };
   orderType: string;
   items: {
     name: string;
@@ -125,4 +125,3 @@ export interface Order {
   createdAtFormatted: string;
   updatedAtFormatted: string;
 }
-
