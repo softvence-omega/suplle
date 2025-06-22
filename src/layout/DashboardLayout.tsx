@@ -5,7 +5,7 @@ import personImg from "@/assets/person.jpg";
 import NotificationIcon from "@/components/icons/NotificationIcon";
 import MessageIcon from "@/components/icons/MessageIcon";
 import { useState, useEffect, useRef } from "react";
-import OwnerSiderBar from "@/features/Sidebar/DashboardSideBar";
+import OwnerSiderBar from "@/features/Sidebar/OwnerSiderBar";
 import TourGuide from "@/components/tour/TourGuide";
 import Cookies from "js-cookie";
 
