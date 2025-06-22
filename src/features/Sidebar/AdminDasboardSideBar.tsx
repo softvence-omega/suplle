@@ -57,7 +57,7 @@ const AdminDashboardSideBar = ({
             <div>
               <div
                 onClick={() => toggleDarkMode("dark")}
-                className={`moon text-white hover:text-green-700 cursor-pointer ${
+                className={`moon text-white  cursor-pointer ${
                   darkMode ? "hidden" : ""
                 }`}
               >
@@ -166,6 +166,7 @@ const AdminDashboardSideBar = ({
             </div>
           </div>
         ) : (
+          // Default grid icon for desktop
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -182,6 +183,7 @@ const AdminDashboardSideBar = ({
           </svg>
         )}
       </div>
+
 
       {/* Desktop sidebar content */}
       {!isMobile && (
