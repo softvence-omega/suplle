@@ -18,7 +18,7 @@ export const DesignGrid: React.FC<DesignGridProps> = ({
 }) => {
   if (designs.length === 0) {
     return (
-      <div className="mt-6 p-8 text-center bg-white rounded-lg shadow-sm">
+      <div className="mt-6 md:p-8 text-center bg-white rounded-lg shadow-sm">
         <p className="text-gray-500">No designs found in this category.</p>
       </div>
     );

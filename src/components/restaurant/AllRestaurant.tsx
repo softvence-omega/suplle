@@ -13,7 +13,6 @@ import { TfiPencilAlt } from "react-icons/tfi";
 import { toast } from "react-toastify";
 import Pagination from "@/utils/Pagination";
 
-
 type Restaurant = {
   _id: string;
   logo: string;
@@ -28,26 +27,27 @@ type Restaurant = {
 const AllRestaurant = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showDetailsData, setShowDetailsData] = useState<Restaurant | null>(
-    null
-  );
+  const [showDetailsData, setShowDetailsData] = useState<Restaurant | null>(null);
   const [showUpdateData, setShowUpdateData] = useState<Restaurant | null>(null);
   const [updateLoading, setUpdateLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedRestaurants, setPaginatedRestaurants] = useState<Restaurant[]>([]);
 
+  const itemsPerPage = 10;
+
   const dispatch = useAppDispatch();
-  const { restaurants, loading, error } = useAppSelector(
-    (state) => state.restaurant
-  );
+  const { restaurants, loading, error } = useAppSelector((state) => state.restaurant);
 
   useEffect(() => {
     dispatch(fetchRestaurants());
   }, [dispatch]);
 
-  const handleClosePreviewModal = () => setShowPreviewModal(false);
-  const handleCloseUpdateModal = () => setShowUpdateModal(false);
+  // ✅ Handle Pagination Locally
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setPaginatedRestaurants(restaurants.slice(startIndex, endIndex));
+  }, [restaurants, currentPage]);
 
   const handleShowDetailsData = (restaurant: Restaurant) => {
     setShowDetailsData(restaurant);
@@ -59,14 +59,10 @@ const AllRestaurant = () => {
     setShowUpdateModal(true);
   };
 
-  const setShowModal = (open: boolean) => {
-    setShowPreviewModal(open);
-    setShowUpdateModal(open);
-  };
-
   return (
     <div className="space-y-4 mt-7">
       <h1 className="font-rubik text-sm sm:text-[18px]">All Restaurants</h1>
+
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : error ? (
@@ -88,15 +84,9 @@ const AllRestaurant = () => {
                       </h1>
                     </div>
                   </TableCell>
-                  <TableCell className="text-center">
-                    {restaurant.status}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {restaurant.phone}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {restaurant.restaurantAddress}
-                  </TableCell>
+                  <TableCell className="text-center">{restaurant.status}</TableCell>
+                  <TableCell className="text-center">{restaurant.phone}</TableCell>
+                  <TableCell className="text-center">{restaurant.restaurantAddress}</TableCell>
                   <TableCell colSpan={3}>
                     <div className="flex items-center justify-end space-x-4">
                       <button
@@ -119,13 +109,13 @@ const AllRestaurant = () => {
             </TableBody>
           </Table>
 
-          {/* ✅ Pagination */}
+          {/* ✅ Pagination Component (without onPageChange) */}
           <Pagination
             data={restaurants}
-            itemsPerPage={10}
+            itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            onPageChange={(items) => setPaginatedRestaurants(items as Restaurant[])}
+            onPageChange={() => {}}
           />
         </>
       )}
@@ -133,8 +123,8 @@ const AllRestaurant = () => {
       {/* 📦 Preview Modal */}
       <Modal
         open={showPreviewModal}
-        onOpenChange={handleClosePreviewModal}
-        trigger="Close"
+        onOpenChange={(open) => setShowPreviewModal(open)}
+        trigger={<span />}
         title="Restaurant Details"
       >
         {showDetailsData && (
@@ -158,8 +148,8 @@ const AllRestaurant = () => {
       {/* ✏️ Update Modal */}
       <Modal
         open={showUpdateModal}
-        onOpenChange={handleCloseUpdateModal}
-        trigger={<button style={{ display: "none" }} />}
+        onOpenChange={(open) => setShowUpdateModal(open)}
+        trigger={<span />}
         title="Update Restaurant Info"
       >
         {showUpdateData && (
@@ -187,7 +177,7 @@ const AllRestaurant = () => {
                 ).unwrap();
 
                 toast.success("Restaurant updated successfully");
-                setShowModal(false);
+                setShowUpdateModal(false);
                 dispatch(fetchRestaurants());
               } catch (err) {
                 toast.error(`Update failed: ${err}`);

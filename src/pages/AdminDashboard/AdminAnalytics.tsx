@@ -59,7 +59,7 @@ const AdminAnalytics = () => {
   const [selectedFilter, setSelectedFilter] = useState("12 months");
   return (
     <div>
-      <div className="space-y-5">
+      <div className="space-y-5 overflow-hidden">
         <div>
           <SectionHeader
             title="Key Metrics"

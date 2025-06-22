@@ -26,6 +26,20 @@ type UserCookie = {
   role: string;
   image: string | null;
 };
+// ✅ Role display mapping
+const getDisplayRole = (role: string | undefined): string => {
+  switch (role) {
+    case "restaurant_owner":
+      return "Owner";
+    case "admin":
+      return "Admin";
+    case "staff":
+      return "Staff";
+    default:
+      return role || "Unknown";
+  }
+};
+
 
 const AdminDashboardLayout = () => {
   const navigate = useNavigate();
@@ -77,7 +91,7 @@ const AdminDashboardLayout = () => {
       <header className="fixed w-full z-30 flex bg-green-100 dark:bg-primary-dark p-2 items-center justify-between h-16 px-10">
         {/* Logo */}
         <div
-          className={`logo ${!sidebarOpen ? "ml-12" : ""} flex items-center`}
+          className={`logo ${!sidebarOpen ? "ml-12" : ""} md:flex md:items-center ml-12`}
         >
           <img src={sidebarlogo} width={100} height={40} alt="Logo" />
         </div>
@@ -124,7 +138,7 @@ const AdminDashboardLayout = () => {
 
             {/* Notification Popup */}
             {showNotificationPopup && (
-              <div className="absolute top-full mt-2 right-0 bg-white text-black dark:bg-primary-dark border dark:border-white dark:text-white p-4 rounded shadow-lg w-64 max-h-96 overflow-y-auto z-50">
+              <div className="absolute top-full mt-2 md:right-0 bg-white text-black dark:bg-primary-dark border dark:border-white dark:text-white p-4 rounded shadow-lg w-64 max-h-96 overflow-y-auto z-50">
                 <h4 className="font-semibold mb-2">Notifications</h4>
                 <ul className="space-y-2 text-sm">
                   {notifications.map((notif, index, arr) => (
@@ -160,7 +174,7 @@ const AdminDashboardLayout = () => {
                   {user?.name || "Admin User"}
                 </span>
                 <span className="text-gray-500 dark:text-gray-300">
-                  {user?.role || "Admin"}
+               {getDisplayRole(user?.role)}
                 </span>
               </div>
             </div>
@@ -179,7 +193,7 @@ const AdminDashboardLayout = () => {
                       {user?.name }
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300">
-                      {user?.role }
+                      {getDisplayRole(user?.role)}
                     </p>
                   </div>
                 </div>
