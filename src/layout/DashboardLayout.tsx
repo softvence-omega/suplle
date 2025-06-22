@@ -1,5 +1,5 @@
 import { useThemeStore } from "@/store/useThemeStore";
-import {  Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import sidebarlogo from "@/assets/siderbarlogo.png";
 import personImg from "@/assets/person.jpg";
 import NotificationIcon from "@/components/icons/NotificationIcon";
@@ -28,6 +28,20 @@ type UserCookie = {
   image: string | null;
 };
 
+// ✅ Role display mapping
+const getDisplayRole = (role: string | undefined): string => {
+  switch (role) {
+    case "restaurant_owner":
+      return "Owner";
+    case "admin":
+      return "Admin";
+    case "staff":
+      return "Staff";
+    default:
+      return role || "Unknown";
+  }
+};
+
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
@@ -38,7 +52,7 @@ const DashboardLayout = () => {
 
   const popupRef = useRef<HTMLDivElement>(null);
   const [showUserPopup, setShowUserPopup] = useState(false);
-const userPopupRef = useRef<HTMLDivElement>(null);
+  const userPopupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cookieData = Cookies.get("user");
@@ -51,20 +65,20 @@ const userPopupRef = useRef<HTMLDivElement>(null);
     }
   }, []);
 
-useEffect(() => {
-  const handleClickOutside = (e: MouseEvent) => {
-    if (
-      popupRef.current && !popupRef.current.contains(e.target as Node) &&
-      userPopupRef.current && !userPopupRef.current.contains(e.target as Node)
-    ) {
-      setShowPopup(false);
-      setShowUserPopup(false);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        popupRef.current && !popupRef.current.contains(e.target as Node) &&
+        userPopupRef.current && !userPopupRef.current.contains(e.target as Node)
+      ) {
+        setShowPopup(false);
+        setShowUserPopup(false);
+      }
+    };
 
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -73,7 +87,7 @@ useEffect(() => {
       {/* Header */}
       <header className="fixed w-full z-30 flex bg-green-100 dark:bg-primary-dark p-2 items-center justify-between h-16 px-10">
         {/* Logo */}
-        <div className={`logo ${!sidebarOpen ? "ml-12" : ""} flex items-center`}>
+        <div className={`logo ${!sidebarOpen ? "ml-12 " : ""} md:flex md:items-center ml-12`}>
           <img src={sidebarlogo} width={100} height={40} alt="Logo" />
         </div>
 
@@ -103,107 +117,105 @@ useEffect(() => {
         </div>
 
         {/* Icons + Profile */}
-<div className="flex items-center gap-4">
-  {/* Message Icon */}
-  <div
-    className="bg-green-200 dark:bg-green-100 size-8 flex justify-center items-center rounded-xl cursor-pointer"
-  
-  >
-    <MessageIcon size={20} color="#202020" />
-  </div>
+        <div className="flex items-center gap-4">
+          {/* Message Icon */}
+          <div className="bg-green-200 dark:bg-green-100 size-8 flex justify-center items-center rounded-xl cursor-pointer">
+            <MessageIcon size={20} color="#202020" />
+          </div>
 
-  {/* Notification Icon */}
-  <div
-    className="bg-green-200 dark:bg-green-100 size-8 flex justify-center items-center rounded-xl cursor-pointer relative"
-    onClick={() => setShowPopup((prev) => !prev)}
-    ref={popupRef}
-  >
-    <NotificationIcon size={20} color="#202020" />
+          {/* Notification Icon */}
+          <div
+            className="bg-green-200 dark:bg-green-100 size-8 flex justify-center items-center rounded-xl cursor-pointer relative"
+            onClick={() => setShowPopup((prev) => !prev)}
+            ref={popupRef}
+          >
+            <NotificationIcon size={20} color="#202020" />
 
-   {/* Notification Popup */}
-{showPopup && (
-  <div className="absolute top-full mt-2 right-0 bg-white text-black dark:bg-primary-dark border dark:border-white dark:text-white p-4 rounded shadow-lg w-64 max-h-96 overflow-y-auto z-50">
-    <h4 className="font-semibold mb-2">Notifications</h4>
-    <ul className="space-y-2 text-sm">
-      {notifications.map((notif, index, arr) => (
-        <li
-          key={notif.id}
-          className={`pb-2 px-2 py-2 rounded transition-colors duration-200 ${
-            index !== arr.length - 1 ? "border-b border-gray-300" : ""
-          } hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer`}
-        >
-          {notif.message}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
-  </div>
+            {/* Notification Popup */}
+            {showPopup && (
+              <div className="absolute top-full mt-2 md:right-0 bg-white text-black dark:bg-primary-dark border dark:border-white dark:text-white p-4 rounded shadow-lg w-64 max-h-96 overflow-y-auto z-50">
+                <h4 className="font-semibold mb-2">Notifications</h4>
+                <ul className="space-y-2 text-sm">
+                  {notifications.map((notif, index, arr) => (
+                    <li
+                      key={notif.id}
+                      className={`pb-2 px-2 py-2 rounded transition-colors duration-200 ${
+                        index !== arr.length - 1 ? "border-b border-gray-300" : ""
+                      } hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer`}
+                    >
+                      {notif.message}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
+          {/* Profile Info with Name + Role */}
+          <div className="relative" ref={userPopupRef}>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => setShowUserPopup((prev) => !prev)}
+            >
+              <img
+                src={user?.image || personImg}
+                alt="profile"
+                className="shadow rounded-full object-cover w-8 h-8"
+              />
+              <div className="hidden sm:flex flex-col text-sm leading-tight">
+                <span className="font-semibold text-gray-800 dark:text-white">{user?.name}</span>
+                <span className="text-gray-500 dark:text-gray-300">
+                  {getDisplayRole(user?.role)}
+                </span>
+              </div>
+            </div>
 
-{/* Profile Info with Name + Role */}
-<div className="relative" ref={userPopupRef}>
-  <div
-    className="flex items-center gap-2 cursor-pointer"
-    onClick={() => setShowUserPopup((prev) => !prev)}
-  >
-    <img
-      src={user?.image || personImg}
-      alt="profile"
-      className="shadow rounded-full object-cover w-8 h-8"
-    />
-    <div className="hidden sm:flex flex-col text-sm leading-tight">
-      <span className="font-semibold text-gray-800 dark:text-white">{user?.name }</span>
-      <span className="text-gray-500 dark:text-gray-300">{user?.role}</span>
-    </div>
-  </div>
+            {/* user Popup */}
+            {showUserPopup && (
+              <div className="absolute right-0 mt-3 w-56 bg-white dark:bg-primary-dark border dark:border-white rounded shadow-lg z-50 p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <img
+                    src={user?.image || personImg}
+                    alt="User"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800 dark:text-white">
+                      {user?.name}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-300">
+                      {getDisplayRole(user?.role)}
+                    </p>
+                  </div>
+                </div>
 
-  {/* user Popup */}
- {showUserPopup && (
-  <div className="absolute right-0 mt-3 w-56 bg-white dark:bg-primary-dark border dark:border-white rounded shadow-lg z-50 p-4">
-    <div className="flex items-center gap-3 mb-3">
-      <img
-        src={user?.image || personImg}
-        alt="User"
-        className="w-10 h-10 rounded-full object-cover"
-      />
-      <div>
-        <p className="text-sm font-semibold text-gray-800 dark:text-white">
-          {user?.name }
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-300">
-          {user?.role }
-        </p>
-      </div>
-    </div>
-
-   <div className="space-y-3 text-sm">
-  <button className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
-      onClick={() => navigate("reset-password")}
-  >
-     Reset Password
-  </button>
-  <button className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
-    onClick={() => navigate("/dashboard/settings")}
-    >
-     Settings
-  </button>
-  <button
-    className="w-full  px-4 py-2 bg-primary text-center text-white  rounded-md cursor-pointer hover:opacity-50 "
-    onClick={() => {
-      Cookies.remove("user");
-      window.location.href = "/login"; // or use `navigate("/login")` if you’re using React Router hooks
-    }}
-  >
-   Logout
-  </button>
-</div>
-
-  </div>
-)}
-
-</div>
-</div>
+                <div className="space-y-3 text-sm">
+                  <button
+                    className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
+                    onClick={() => navigate("reset-password")}
+                  >
+                    Reset Password
+                  </button>
+                  <button
+                    className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
+                    onClick={() => navigate("/dashboard/settings")}
+                  >
+                    Settings
+                  </button>
+                  <button
+                    className="w-full px-4 py-2 bg-primary text-center text-white rounded-md cursor-pointer hover:opacity-50"
+                    onClick={() => {
+                      Cookies.remove("user");
+                      window.location.href = "/login";
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </header>
 
       {/* Sidebar */}

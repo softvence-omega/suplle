@@ -44,7 +44,7 @@ const RecentyActivityItem: React.FC<OrderItemProps> = ({ item, onClick }) => {
         {item.time}
       </div>
 
-      <div className="w-full md:w-auto flex justify-end md:justify-center">
+      <div className="w-full md:w-auto flex justify-end lg:justify-center">
         <ChevronRight className="h-6 w-6 text-[#333333] dark:text-[#FFFFFF]" />
       </div>
     </div>
