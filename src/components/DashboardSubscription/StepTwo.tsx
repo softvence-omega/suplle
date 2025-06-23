@@ -14,9 +14,9 @@ const StepTwo = ({
   const { subscriptions } = useAppSelector((state) => state.subscriptionPlan);
 
   // State to keep track of selected subscription
-  const [planId, setPlanId] = useState<string | null>(null);
+  const [, setPlanId] = useState<string | null>(null);
 
-  console.log(planId, "selectedID");
+  // console.log(planId, "selectedID");
 
   const handleClick = (id: string) => {
     setSelectedId(id);

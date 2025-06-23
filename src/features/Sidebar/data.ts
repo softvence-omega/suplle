@@ -9,6 +9,7 @@ import SettingIcon from "@/components/icons/SettingIcon";
 import RestaurantIcon from "@/components/icons/RestaurantIcon";
 import QRCodeIcon from "@/components/icons/QRCodeIcon";
 import DollarIcon from "@/components/icons/DollerIcon";
+import QrCodeIcon from "@/components/icons/QRCodeIcon";
 import { generateRandomId } from "@/utils/utils";
 
 export const adminSeiderBarData = [
@@ -123,6 +124,12 @@ export const ownerSeiderBarData = [
     label: "Subscriptions",
     icon: DollarIcon,
     url: "/dashboard/subscriptions",
+  },
+  {
+    id: generateRandomId(),
+    label: "Qr Code",
+    icon: QrCodeIcon,
+    url: "/dashboard/buy-subscription",
   },
   {
     id: generateRandomId(),
