@@ -7,6 +7,8 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepTwoPointFive from "./StepTwoPointFive";
 // import QrDesign from "./QrDesign";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 const steps = [
   // { label: "Qr Codes", description: "Select your QR code" },
@@ -20,6 +22,9 @@ export default function MultiStep() {
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string>("1");
   const [clientSecret, setClientSecret] = useState("");
+
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
   const stepComponents = [
     <StepTwo selectedId={selectedPlanId} setSelectedId={setSelectedPlanId} />,
     <StepTwoPointFive
@@ -28,7 +33,9 @@ export default function MultiStep() {
       setMonth={setSelectedMonth}
       setClientSecret={setClientSecret}
     />,
-    <StepThree clientSecret={clientSecret} />,
+    <Elements stripe={stripePromise} options={{ clientSecret }}>
+      {clientSecret && <StepThree />}
+    </Elements>,
   ];
 
   // console.log(subscriptions);
@@ -108,7 +115,11 @@ export default function MultiStep() {
           onClick={() =>
             setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1))
           }
-          disabled={currentStep === steps.length - 1}
+          disabled={
+            (currentStep === 0 && !selectedPlanId) ||
+            (currentStep === 1 && !clientSecret) || // << disable when no month confirmed
+            currentStep === steps.length - 1
+          }
           className={cn(
             "px-8 font-light cursor-pointer py-2 bg-green-600 text-white rounded hover:bg-green-600 transition",
             currentStep === 2 && "hidden"

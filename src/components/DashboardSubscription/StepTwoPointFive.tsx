@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const StepTwoPointFive = ({
   planId,
@@ -12,7 +12,8 @@ const StepTwoPointFive = ({
   setMonth: (m: string) => void;
   setClientSecret: (secret: string) => void;
 }) => {
-  const [, setSelectMonth] = useState("1");
+  const [selectMonth, setSelectMonth] = useState("1");
+  const [loading, setLoading] = useState(false);
 
   console.log(planId);
 
@@ -23,10 +24,37 @@ const StepTwoPointFive = ({
 
   const token = Cookies.get("accessToken");
 
-  useEffect(() => {
-    if (planId && month) {
-      // Example API call
-      fetch(
+  // useEffect(() => {
+  //   if (planId && month) {
+  //     // Example API call
+  //     fetch(
+  //       "https://suplle-server-v2-2.onrender.com/api/v1/subscription/create-subscription-intent",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: token ?? "",
+  //         },
+  //         body: JSON.stringify({
+  //           planId,
+  //           months: Number(month),
+  //         }),
+  //       }
+  //     )
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log("API response in mmmmmmmmmm:", data);
+  //         setClientSecret(data.clientSecret);
+  //       });
+  //   }
+  // }, [planId, month, setClientSecret, token]);
+  const handleFetchIntent = async () => {
+    if (!planId || !selectMonth) return;
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(
         "https://suplle-server-v2-2.onrender.com/api/v1/subscription/create-subscription-intent",
         {
           method: "POST",
@@ -36,17 +64,20 @@ const StepTwoPointFive = ({
           },
           body: JSON.stringify({
             planId,
-            months: Number(month),
+            months: Number(selectMonth),
           }),
         }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("API response in mmmmmmmmmm:", data);
-          setClientSecret(data.clientSecret);
-        });
+      );
+
+      const data = await res.json();
+      setClientSecret(data.clientSecret);
+      setMonth(selectMonth); // officially apply month selection
+    } catch (err) {
+      console.error("Failed to create payment intent", err);
+    } finally {
+      setLoading(false);
     }
-  }, [planId, month, setClientSecret, token]);
+  };
 
   //   console.log(selectMonth, "monthhhhhhhhhh");
 
@@ -66,6 +97,13 @@ const StepTwoPointFive = ({
           </option>
         ))}
       </select>
+      <button
+        disabled={!selectMonth || !planId || loading}
+        onClick={handleFetchIntent}
+        className="mt-4 px-4 py-2 bg-primary text-white rounded"
+      >
+        {loading ? "Loading..." : "Confirm Month"}
+      </button>
     </div>
   );
 };
