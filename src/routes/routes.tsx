@@ -55,7 +55,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/otp" element={<OTP />} />
       <Route path="/forgot-password" element={<ForgetPasword />} />
-   
+
       {/* dahboard routes for owner ************************************************************* */}
       <Route
         path="dashboard"
@@ -93,7 +93,6 @@ const AppRoutes = () => {
         <Route path="analytics" element={<AnalyticsAndReport />} />
         <Route path="subscriptions" element={<SubscriptionsForOwner />} />
         <Route path="buy-subscription" element={<BuySubscription />} />
-        <Route path="subscriptions/choose-design" element={<QrDesign />} />
         <Route path="settings" element={<SettingForOwner />} />
         <Route path="reset-password" element={<ResetPassword />} />
       </Route>
@@ -125,7 +124,7 @@ const AppRoutes = () => {
         {/* analytics routes */}
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscription />} />
-
+        <Route path="subscriptions/choose-design" element={<QrDesign />} />
         <Route path="notification" element={<AdminNotification />} />
         <Route path="setting" element={<AdminSetting />} />
       </Route>

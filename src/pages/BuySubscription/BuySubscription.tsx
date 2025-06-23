@@ -4,9 +4,10 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { useState } from "react";
+import QrAllDesign from "./QrAllDesign";
 const BuySubscription = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const stepComponents = [<StepTwo />, <StepThree />];
+  const stepComponents = [<QrAllDesign />, <StepThree />];
   const steps = [
     { label: "Standard Plan", description: "Purchase your plan" },
     { label: "Payment Details", description: "Complete Purchase" },
