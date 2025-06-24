@@ -42,7 +42,7 @@ const getDisplayRole = (role: string | undefined): string => {
 
 
 const AdminDashboardLayout = () => {
-  const navigate = useNavigate();
+
   const { theme, toggleTheme } = useThemeStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notifications] = useState<Notification[]>(fakeNotifications);
@@ -200,12 +200,12 @@ const AdminDashboardLayout = () => {
 
                 <div className="space-y-3 text-sm">
                
-                  <button
+                  {/* <button
                     className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
                     onClick={() => navigate("/dashboard/settings")}
                   >
                      Settings
-                  </button>
+                  </button> */}
                   <button
                     className="w-full px-4 py-2 bg-primary text-center text-white rounded-md cursor-pointer hover:opacity-50"
                     onClick={() => {
