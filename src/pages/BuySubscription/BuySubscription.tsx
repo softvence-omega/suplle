@@ -1,15 +1,27 @@
-import StepThree from "@/components/DashboardSubscription/StepThree";
-import StepTwo from "@/components/DashboardSubscription/StepTwo";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import QrAllDesign from "./QrAllDesign";
+import TableQuantity from "./TableQuantity";
+import QrPayment from "./QrPayment";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 const BuySubscription = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const stepComponents = [<QrAllDesign />, <StepThree />];
+  const [selectedId, setSelectedId] = useState("");
+
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  const stepComponents = [
+    <QrAllDesign setSelectId={setSelectedId} />,
+    <TableQuantity selectId={selectedId} />,
+    <Elements stripe={stripePromise}>
+      <QrPayment />,
+    </Elements>,
+  ];
   const steps = [
-    { label: "Standard Plan", description: "Purchase your plan" },
+    { label: "Select QR Design", description: "Purchase your plan" },
+    { label: "Table Quantity", description: "How much table you want?" },
     { label: "Payment Details", description: "Complete Purchase" },
   ];
 
@@ -42,7 +54,7 @@ const BuySubscription = () => {
                     : "bg-white border-cyan-300 text-cyan-400"
                 } transition-colors duration-300`}
               >
-                {index < currentStep ? <Check size={16} /> : index}
+                {index < currentStep ? <Check size={16} /> : index + 1}
               </div>
               <div className="mt-2 text-sm font-semibold text-gray-800 dark:text-green-100 dark:font-light">
                 {step.label}
@@ -91,8 +103,7 @@ const BuySubscription = () => {
           }
           disabled={currentStep === steps.length - 1}
           className={cn(
-            "px-8 font-light cursor-pointer py-2 bg-green-600 text-white rounded hover:bg-green-600 transition",
-            currentStep === 1 && "hidden"
+            "px-8 font-light cursor-pointer py-2 bg-green-600 text-white rounded hover:bg-green-600 transition"
           )}
         >
           Next
