@@ -1,5 +1,5 @@
 import { useThemeStore } from "@/store/useThemeStore";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import sidebarlogo from "@/assets/siderbarlogo.png";
 import personImg from "@/assets/person.jpg";
 import NotificationIcon from "@/components/icons/NotificationIcon";
