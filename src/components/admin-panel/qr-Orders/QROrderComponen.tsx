@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import {
   // fetchPendingQrOrders,
   changeQrOrderStatus,
+  fetchAllOrders,
   fetchQrOrdersByStatus,
 } from "@/store/features/admin/qrOrderSlice";
 
@@ -14,17 +15,22 @@ import {
 //   "cancel",
 // ];
 
-const statusTabs = ["pending", "approved", "processing"];
+const statusTabs = ["all", "pending", "approved", "processing"];
+const status = ["pending", "processing", "approved", "completed", "cancel"];
 
 const QROrderComponent: React.FC = () => {
   const dispatch = useAppDispatch();
   const { orders, loading, error } = useAppSelector((state) => state.qrOrders);
   const [activeTab, setActiveTab] = useState("pending");
 
-  console.log(activeTab, "tabbbbbb");
+  // console.log(activeTab, "tabbbbbb");
 
   useEffect(() => {
-    dispatch(fetchQrOrdersByStatus(activeTab));
+    if (activeTab === "all") {
+      dispatch(fetchAllOrders());
+    } else {
+      dispatch(fetchQrOrdersByStatus(activeTab));
+    }
   }, [dispatch, activeTab]);
 
   // useEffect(() => {
@@ -86,7 +92,7 @@ const QROrderComponent: React.FC = () => {
                     }
                     className="border rounded px-2 py-1"
                   >
-                    {statusTabs.map((status) => (
+                    {status.map((status) => (
                       <option key={status} value={status}>
                         {status}
                       </option>

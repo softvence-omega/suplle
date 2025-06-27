@@ -7,21 +7,56 @@ import TableQuantity from "./TableQuantity";
 import QrPayment from "./QrPayment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import PurchaseQrCode from "./PurchaseQrCode";
+
+export interface PurchaseDetails {
+  _id: string;
+  qrCodeDesign: string;
+  tableQuantity: number;
+  price: number;
+  status: string;
+  createdAt: string;
+  // add more fields if needed
+}
+
+// interface PurchaseResponse {
+//   success: boolean;
+//   status: number;
+//   message: string;
+//   data: PurchaseDetails;
+// }
+
 const BuySubscription = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedId, setSelectedId] = useState("");
+  const [purchaseDetails, setPurchaseDetails] =
+    useState<PurchaseDetails | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | undefined>();
 
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
   const stepComponents = [
     <QrAllDesign setSelectId={setSelectedId} />,
-    <TableQuantity selectId={selectedId} />,
-    <Elements stripe={stripePromise}>
-      <QrPayment />,
-    </Elements>,
+    <TableQuantity
+      selectId={selectedId}
+      setPurchaseDetails={setPurchaseDetails}
+      setClientSecret={setClientSecret}
+    />,
+    <PurchaseQrCode
+      purchaseDetails={purchaseDetails}
+      setClientSecret={setClientSecret}
+    />,
+    clientSecret ? (
+      <Elements stripe={stripePromise} options={{ clientSecret }}>
+        <QrPayment />
+      </Elements>
+    ) : (
+      <div>Please complete previous steps to proceed to payment.</div>
+    ),
   ];
   const steps = [
     { label: "Select QR Design", description: "Purchase your plan" },
     { label: "Table Quantity", description: "How much table you want?" },
+    { label: "Qr Code Purchase", description: "Purchase QR code" },
     { label: "Payment Details", description: "Complete Purchase" },
   ];
 

@@ -52,13 +52,13 @@ export const fetchAllOrders = createAsyncThunk(
     }
   }
 );
-export const fetchPendingQrOrders = createAsyncThunk(
+export const fetchAllQrOrders = createAsyncThunk(
   "qrOrder/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/get-all-qr-code-purchase?status=pending",
+        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/get-all-qr-code-purchase",
         {
           headers: {
             Authorization: token ? token : "",
@@ -108,7 +108,7 @@ export const changeQrOrderStatus = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1//qr-code-purchase/qr-purchase-decision-by-admin",
+        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/qr-purchase-decision-by-admin",
         { id, status },
         {
           headers: {
@@ -130,6 +130,37 @@ export const changeQrOrderStatus = createAsyncThunk(
   }
 );
 
+// payment intent
+export const qrPaymentIntent = createAsyncThunk(
+  "qrOrder/qrPaymentIntent",
+  async (
+    { qrCodeDesignPurchaseId }: { qrCodeDesignPurchaseId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const token = Cookies.get("accessToken");
+      const response = await axios.post(
+        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/create-qr-code-intent",
+        { qrCodeDesignPurchaseId },
+        {
+          headers: {
+            Authorization: token ? token : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(
+          error.response.data?.message || "Payment intent failed"
+        );
+      }
+      return rejectWithValue("Payment intent failed");
+    }
+  }
+);
+
 const qrOrderSlice = createSlice({
   name: "qrOrder",
   initialState,
@@ -137,15 +168,15 @@ const qrOrderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Fetch
-      .addCase(fetchPendingQrOrders.pending, (state) => {
+      .addCase(fetchAllQrOrders.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPendingQrOrders.fulfilled, (state, action) => {
+      .addCase(fetchAllQrOrders.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
       })
-      .addCase(fetchPendingQrOrders.rejected, (state, action) => {
+      .addCase(fetchAllQrOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
@@ -157,7 +188,7 @@ const qrOrderSlice = createSlice({
         state.loading = false;
         state.orders = action.payload;
       })
-      .addCase(fetchPendingQrOrders.rejected, (state, action) => {
+      .addCase(fetchQrOrdersByStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const StepTwoPointFive = ({
   planId,
@@ -68,7 +69,15 @@ const StepTwoPointFive = ({
           }),
         }
       );
-
+      toast.info("Creating payment intent...");
+      if (!res.ok) {
+        const errorData = await res.json();
+        toast.error(
+          `Error: ${errorData.message || "Failed to create payment intent"}`
+        );
+        return;
+      }
+      toast.success("Payment intent created successfully");
       const data = await res.json();
       setClientSecret(data.clientSecret);
       setMonth(selectMonth); // officially apply month selection
@@ -100,7 +109,7 @@ const StepTwoPointFive = ({
       <button
         disabled={!selectMonth || !planId || loading}
         onClick={handleFetchIntent}
-        className="mt-4 px-4 py-2 bg-primary text-white rounded"
+        className="mt-4 px-4 py-2 bg-primary text-white rounded cursor-pointer"
       >
         {loading ? "Loading..." : "Confirm Month"}
       </button>
