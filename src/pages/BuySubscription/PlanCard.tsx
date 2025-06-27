@@ -1,19 +1,27 @@
 import React from "react";
 
-import type { Design } from "./data/type";
+export interface PlanCard {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl?: string | File; // updated to allow File type here
+  status: "available" | "comingSoon" | "unavailable";
+  category?: string;
+  price?: number;
+}
 
 interface DesignCardProps {
-  design: Design;
+  design: PlanCard;
   onEdit: () => void;
   onStatusChange: () => void;
   statusChangeLabel: string;
 }
 
-export const DesignCard: React.FC<DesignCardProps> = ({
+const PlanCard: React.FC<DesignCardProps> = ({
   design,
-  onEdit,
-  onStatusChange,
-  statusChangeLabel,
+  //   onEdit,
+  //   onStatusChange,
+  //   statusChangeLabel,
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md md:p-6 p-2 dark:bg-[#161616] ">
@@ -48,7 +56,7 @@ export const DesignCard: React.FC<DesignCardProps> = ({
           </div>
         )}
 
-        <div className=" flex justify-center gap-4 items-center ">
+        {/* <div className=" flex justify-center gap-4 items-center ">
           <button
             onClick={onEdit}
             className="px-6 py-2  bg-primary text-white rounded-md  md:text-base text-sm dark:bg-[#030303] dark:text-primary hover:opacity-50 transition-opacity cursor-pointer"
@@ -62,8 +70,10 @@ export const DesignCard: React.FC<DesignCardProps> = ({
           >
             {statusChangeLabel}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 };
+
+export default PlanCard;

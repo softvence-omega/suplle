@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
-
 // Base URL for all requests
 const BASE_URL = "https://suplle-server-v2-2.onrender.com/api/v1";
 
