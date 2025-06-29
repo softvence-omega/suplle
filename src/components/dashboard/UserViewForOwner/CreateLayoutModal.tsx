@@ -22,8 +22,8 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
     zoneType: z.string().min(1, { message: "Zone type is required" }),
     tableName: z.string().min(1, { message: "Table name is required" }),
     tableSetting: z.string().min(1, { message: "Table setting is required" }),
-    seatingCapability: z
-      .coerce.number()
+    seatingCapability: z.coerce
+      .number()
       .min(1, { message: "Seating capability is required" }),
   });
 
@@ -31,12 +31,12 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
     setLoading(true);
     setError(null);
 
-    const token = Cookies.get("accessToken"); 
+    const token = Cookies.get("accessToken");
     if (!token) {
-    console.error("No token found in cookies");
-   
-    return;
-  }
+      console.error("No token found in cookies");
+
+      return;
+    }
 
     const payload = {
       zoneName: data.zoneName,
@@ -46,32 +46,29 @@ const CreateLayoutModal = ({ ButtonText }: { ButtonText: string }) => {
       seatingCapacity: data.seatingCapability,
     };
 
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/zone/create-zone`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
 
-
-try {
-  const res = await axios.post(
-    `${import.meta.env.VITE_BACKEND_BASE_URL}/zone/create-zone`,
-    payload,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
+      alert("Zone created successfully");
+      setOpen(false);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Failed to create zone");
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setLoading(false);
     }
-  );
-
-  alert("Zone created successfully");
-  setOpen(false);
-} catch (err: any) {
-  if (axios.isAxiosError(err)) {
-    setError(err.response?.data?.message || "Failed to create zone");
-  } else {
-    setError("Something went wrong");
-  }
-} finally {
-  setLoading(false);
-}
-
   };
 
   const closeModal = () => {

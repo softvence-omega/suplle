@@ -98,7 +98,7 @@ const EditOrderForOwner = () => {
 
   // Fetch floors on mount
   useEffect(() => {
-    fetch("https://suplle-server-v2-2.onrender.com/api/v1/floor/all-floor", {
+    fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/floor/all-floor`, {
       headers: {
         Authorization: `${token}`,
         // "Content-Type": "application/json",
@@ -115,7 +115,9 @@ const EditOrderForOwner = () => {
   useEffect(() => {
     if (selectedFloor) {
       fetch(
-        `https://suplle-server-v2-2.onrender.com/api/v1/table/get-all-table/${selectedFloor}`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/table/get-all-table/${selectedFloor}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -383,7 +385,9 @@ const EditOrderForOwner = () => {
 
                     try {
                       const response = await axios.put(
-                        `https://suplle-server-v2-2.onrender.com/api/v1/order/update-order/${id}`,
+                        `${
+                          import.meta.env.VITE_BACKEND_BASE_URL
+                        }/order/update-order/${id}`,
                         payload,
                         {
                           headers: {

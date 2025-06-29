@@ -36,7 +36,7 @@ const FloorManagement: React.FC<FloorManagementProps> = ({
     try {
       setIsFetching(true);
       const res = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/floor/all-floor",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/floor/all-floor`,
         {
           headers: {
             Authorization: token || "",
@@ -71,7 +71,7 @@ const FloorManagement: React.FC<FloorManagementProps> = ({
     try {
       setIsLoading(true);
       const res = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1/floor/create-floor",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/floor/create-floor`,
         { floorName: trimmedName },
         {
           headers: {

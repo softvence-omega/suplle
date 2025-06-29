@@ -24,7 +24,9 @@ const PurchaseQrCode = ({
       try {
         const token = localStorage.getItem("accessToken") || "";
         const res = await axios.get(
-          `https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/get-single-qr-purchase/${latestDetails._id}`,
+          `${
+            import.meta.env.VITE_BACKEND_BASE_URL
+          }/qr-code-purchase/get-single-qr-purchase/${latestDetails._id}`,
           { headers: { Authorization: token } }
         );
         if (res.data?.data?.status) {

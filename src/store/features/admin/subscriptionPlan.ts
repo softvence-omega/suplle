@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
-// Base URL for all requests
-const BASE_URL = "https://suplle-server-v2-2.onrender.com/api/v1";
+// Base URL for all requests;
 
 // Interface
 interface Subscription {
@@ -44,7 +43,9 @@ export const fetchSubscriptions = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axios.get(
-        `${BASE_URL}/subscriptionPlan/get-all-subscriptionPlan?isDeleted=false`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/subscriptionPlan/get-all-subscriptionPlan?isDeleted=false`,
         {
           headers: {
             Authorization: `${token}`,
@@ -68,7 +69,9 @@ export const addSubscription = createAsyncThunk(
   async (payload: SubscriptionPayload, thunkAPI) => {
     try {
       const res = await axios.post(
-        `${BASE_URL}/subscriptionPlan/create-subscriptionPlan`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/subscriptionPlan/create-subscriptionPlan`,
         payload,
         {
           headers: {
@@ -96,7 +99,9 @@ export const updateSubscription = createAsyncThunk(
   ) => {
     try {
       const res = await axios.patch(
-        `${BASE_URL}/subscriptionPlan/update-subscriptionPlan//${id}`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/subscriptionPlan/update-subscriptionPlan//${id}`,
         data,
         {
           headers: {
@@ -121,7 +126,9 @@ export const deleteSubscription = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       await axios.delete(
-        `${BASE_URL}/subscriptionPlan/delete-subscriptionPlan/${id}`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/subscriptionPlan/delete-subscriptionPlan/${id}`,
         {
           headers: {
             Authorization: `${token}`,

@@ -85,7 +85,7 @@ export const fetchMenus = createAsyncThunk(
       const token = Cookies.get("accessToken");
 
       const response = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/menus/all-menu",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/menus/all-menu`,
         {
           headers: {
             Authorization: `${token}`,

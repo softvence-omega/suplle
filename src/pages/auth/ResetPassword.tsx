@@ -9,76 +9,75 @@ import { toast } from "react-toastify";
 const ResetPassword = () => {
   const navigate = useNavigate();
 
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState(false);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
 
+    const formData = new FormData(e.target as HTMLFormElement);
+    const oldPassword = formData.get("oldPassword") as string;
+    const newPassword = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setError(null);
-
-  const formData = new FormData(e.target as HTMLFormElement);
-  const oldPassword = formData.get("oldPassword") as string;
-  const newPassword = formData.get("password") as string;
-  const confirmPassword = formData.get("confirmPassword") as string;
-
-  if (newPassword !== confirmPassword) {
-    setError("Passwords do not match.");
-    return;
-  }
-
-  const userCookie = Cookies.get("user");
-  const Token = Cookies.get("accessToken");
-
-  if (!userCookie || !Token) {
-    setError("Authentication failed. Please login again.");
-    return;
-  }
-
-  let email = "";
-  try {
-    const parsedUser = JSON.parse(userCookie);
-    email = parsedUser.email;
-  } catch (err) {
-    setError("Invalid user session.");
-    return;
-  }
-
-  try {
-    setLoadingState(true);
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/reset-password`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: Token, 
-      },
-      body: JSON.stringify({
-        email,
-        oldPassword,
-        newPassword,
-      }),
-    });
-// console.log("eitty",res)
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.message || "Something went wrong.");
-    } else {
-      toast.success("Password changed successfully!");
-      navigate("/login");
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setError("Network error. Try again.");
-  } finally {
-    setLoadingState(false);
-  }
-};
 
+    const userCookie = Cookies.get("user");
+    const Token = Cookies.get("accessToken");
+
+    if (!userCookie || !Token) {
+      setError("Authentication failed. Please login again.");
+      return;
+    }
+
+    let email = "";
+    try {
+      const parsedUser = JSON.parse(userCookie);
+      email = parsedUser.email;
+    } catch {
+      setError("Invalid user session.");
+      return;
+    }
+
+    try {
+      setLoadingState(true);
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/reset-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: Token,
+          },
+          body: JSON.stringify({
+            email,
+            oldPassword,
+            newPassword,
+          }),
+        }
+      );
+      // console.log("eitty",res)
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Something went wrong.");
+      } else {
+        toast.success("Password changed successfully!");
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Network error. Try again.");
+    } finally {
+      setLoadingState(false);
+    }
+  };
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center dark:from-[#030303] dark:to-[#030303]">
@@ -93,32 +92,43 @@ const handleSubmit = async (e: React.FormEvent) => {
           <div className="text-[#9B9FA8] space-y-6">
             {/* Old Password */}
             <div>
-              <label className="text-[#484B52] dark:text-white text-sm" htmlFor="oldPassword">
+              <label
+                className="text-[#484B52] dark:text-white text-sm"
+                htmlFor="oldPassword"
+              >
                 Old Password
               </label>
               <div className="relative w-full">
-                <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2" size={18} color="#CDCDCD" />
-                   <input
-                id="oldPassword"
-                name="oldPassword"
-                   type={showPassword ? "text" : "password"}
-                placeholder="Enter old password"
-                required
+                <LockIcon
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                  size={18}
+                  color="#CDCDCD"
+                />
+                <input
+                  id="oldPassword"
+                  name="oldPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter old password"
+                  required
                   className="border border-[#B6B6B6] rounded-lg py-[13px] pl-10 pr-10 w-full focus:outline-none"
-                  
-              />
-
+                />
               </div>
-             
             </div>
 
             {/* New Password */}
             <div>
-              <label className="text-[#484B52] dark:text-white text-sm" htmlFor="password">
+              <label
+                className="text-[#484B52] dark:text-white text-sm"
+                htmlFor="password"
+              >
                 New Password
               </label>
               <div className="relative w-full">
-                <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2" size={18} color="#CDCDCD" />
+                <LockIcon
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                  size={18}
+                  color="#CDCDCD"
+                />
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -131,18 +141,29 @@ const handleSubmit = async (e: React.FormEvent) => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                 >
-                  {showPassword ? <EyeOffIcon size={18} color="#CDCDCD" /> : <EyeIcon size={18} color="#CDCDCD" />}
+                  {showPassword ? (
+                    <EyeOffIcon size={18} color="#CDCDCD" />
+                  ) : (
+                    <EyeIcon size={18} color="#CDCDCD" />
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label className="text-[#484B52] dark:text-white text-sm" htmlFor="confirmPassword">
+              <label
+                className="text-[#484B52] dark:text-white text-sm"
+                htmlFor="confirmPassword"
+              >
                 Confirm Password
               </label>
               <div className="relative w-full">
-                <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2" size={18} color="#CDCDCD" />
+                <LockIcon
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                  size={18}
+                  color="#CDCDCD"
+                />
                 <input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
@@ -155,13 +176,20 @@ const handleSubmit = async (e: React.FormEvent) => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                 >
-                  {showConfirmPassword ? <EyeOffIcon size={18} color="#CDCDCD" /> : <EyeIcon size={18} color="#CDCDCD" />}
+                  {showConfirmPassword ? (
+                    <EyeOffIcon size={18} color="#CDCDCD" />
+                  ) : (
+                    <EyeIcon size={18} color="#CDCDCD" />
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Submit */}
-            <PrimaryButton className="w-full text-base font-medium cursor-pointer" type="submit">
+            <PrimaryButton
+              className="w-full text-base font-medium cursor-pointer"
+              type="submit"
+            >
               {loadingState ? "Updating..." : "Change Password"}
             </PrimaryButton>
 

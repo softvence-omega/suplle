@@ -35,7 +35,7 @@ export const addCategory = createAsyncThunk(
       const formData = new FormData();
       formData.append("data", JSON.stringify({ categoryName }));
       const response = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1/categories/create-category",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/categories/create-category`,
         formData,
         {
           headers: {
@@ -55,14 +55,13 @@ export const addCategory = createAsyncThunk(
   }
 );
 
-// ✅ GET: Fetch all categories
 export const fetchCategories = createAsyncThunk(
   "category/fetchCategories",
   async (_, { rejectWithValue }) => {
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/categories/all-category",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/categories/all-category`,
         {
           headers: {
             Authorization: `${token}`,

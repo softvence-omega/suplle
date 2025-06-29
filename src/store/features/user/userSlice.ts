@@ -1,6 +1,10 @@
 // src/store/features/user/userSlice.ts
 
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -51,17 +55,28 @@ const mapToUserList = (data: any[]): User[] =>
     }));
 
 // Thunk: Fetch all users
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async (_, thunkAPI) => {
-  try {
-    const token = Cookies.get("accessToken");
-    const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`, {
-      headers: { Authorization: token },
-    });
-    return mapToUserList(res.data.data.result);
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to fetch users");
+export const fetchUsers = createAsyncThunk(
+  "users/fetchUsers",
+  async (_, thunkAPI) => {
+    try {
+      const token = Cookies.get("accessToken");
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      return mapToUserList(res.data.data.result);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        return thunkAPI.rejectWithValue(
+          err.response.data?.message || "Failed to fetch users"
+        );
+      }
+      return thunkAPI.rejectWithValue("Failed to fetch users");
+    }
   }
-});
+);
 
 // Thunk: Create user
 export const createUser = createAsyncThunk(
@@ -98,8 +113,13 @@ export const createUser = createAsyncThunk(
         image: created.image,
         createdAt: created.createdAt,
       } as User;
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to create user");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message || "Failed to create user"
+        );
+      }
+      return thunkAPI.rejectWithValue("Failed to create user");
     }
   }
 );
@@ -137,51 +157,70 @@ export const editUser = createAsyncThunk<
         createdAt: updated.createdAt,
       };
     } else {
-      return thunkAPI.rejectWithValue(res.data.message || "Failed to update user");
+      return thunkAPI.rejectWithValue(
+        res.data.message || "Failed to update user"
+      );
     }
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.response?.data?.message || "Update failed");
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Update failed"
+      );
+    }
+    return thunkAPI.rejectWithValue("Update failed");
   }
 });
 
 // Thunk: Delete user
-export const deleteUser = createAsyncThunk<string, string, { rejectValue: string }>(
-  "users/deleteUser",
-  async (userId, thunkAPI) => {
-    try {
-      const token = Cookies.get("accessToken");
+export const deleteUser = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("users/deleteUser", async (userId, thunkAPI) => {
+  try {
+    const token = Cookies.get("accessToken");
 
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/users/delete-user/${userId}`,
-        { headers: { Authorization: token } }
-      );
+    const res = await axios.delete(
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/users/delete-user/${userId}`,
+      { headers: { Authorization: token } }
+    );
 
-      if (res.status === 200) {
-        return userId;
-      } else {
-        return thunkAPI.rejectWithValue("Failed to delete user");
-      }
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message || "Delete failed");
+    if (res.status === 200) {
+      return userId;
+    } else {
+      return thunkAPI.rejectWithValue("Failed to delete user");
     }
+  } catch (err: any) {
+    return thunkAPI.rejectWithValue(
+      err.response?.data?.message || "Delete failed"
+    );
   }
-);
+});
 
 // Thunk: Fetch owner users
-export const fetchOwnerUsers = createAsyncThunk<User[], void, { rejectValue: string }>(
-  "users/fetchOwnerUsers",
-  async (_, thunkAPI) => {
-    try {
-      const token = Cookies.get("accessToken");
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users-owner`, {
+export const fetchOwnerUsers = createAsyncThunk<
+  User[],
+  void,
+  { rejectValue: string }
+>("users/fetchOwnerUsers", async (_, thunkAPI) => {
+  try {
+    const token = Cookies.get("accessToken");
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/users/all-users-owner`,
+      {
         headers: { Authorization: token },
-      });
-      return mapToUserList(res.data.data.result);
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to fetch users");
+      }
+    );
+    return mapToUserList(res.data.data.result);
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to fetch users"
+      );
     }
+    return thunkAPI.rejectWithValue("Failed to fetch users");
   }
-);
+});
 
 // Slice
 const userSlice = createSlice({
@@ -256,14 +295,20 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchOwnerUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
-        state.loading = false;
-        state.users = action.payload;
-      })
-      .addCase(fetchOwnerUsers.rejected, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
+      .addCase(
+        fetchOwnerUsers.fulfilled,
+        (state, action: PayloadAction<User[]>) => {
+          state.loading = false;
+          state.users = action.payload;
+        }
+      )
+      .addCase(
+        fetchOwnerUsers.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      );
   },
 });
 
