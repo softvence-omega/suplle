@@ -31,7 +31,7 @@ export const fetchOrders = createAsyncThunk(
       const token = Cookies.get("accessToken");
       console.log("Fetching orders with token:", token);
       const response = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/order/all-order",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/order/all-order`,
         {
           headers: {
             Authorization: `${token}`,
@@ -58,7 +58,7 @@ export const fetchOrderById = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const res = await axios.get(
-        `https://suplle-server-v2-2.onrender.com/api/v1/order/single-order/${id}`,
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/order/single-order/${id}`,
         { headers: { Authorization: token } }
       );
       return res.data.data[0];
@@ -89,7 +89,7 @@ export const updateOrder = createAsyncThunk(
       const token = Cookies.get("accessToken");
 
       const res = await axios.put(
-        `https://suplle-server-v2-2.onrender.com/api/v1/order/update-order/${id}`,
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/order/update-order/${id}`,
         updatedPayload,
         {
           headers: {

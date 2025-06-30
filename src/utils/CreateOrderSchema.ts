@@ -14,6 +14,9 @@ export const createOrderSchema = z.object({
       quantity: z.number().min(1),
     })
   ),
+  status: z.enum(["pending", "inProgress", "delivered", "cancel"], {
+    required_error: "Order status is required",
+  }),
 });
 
 export type CreateOrderFormData = z.infer<typeof createOrderSchema>;

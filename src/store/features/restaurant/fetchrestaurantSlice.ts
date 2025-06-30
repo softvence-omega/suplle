@@ -5,10 +5,11 @@ import axios from "axios";
 export const fetchRestaurantById = createAsyncThunk(
   "restaurant/fetchById",
   async (id, thunkAPI) => {
-    
     try {
       const res = await axios.get(
-        `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/single-restaurant/${id}`
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/restaurant/single-restaurant/${id}`
       );
       return res.data.data; // Adjust based on actual API response shape
     } catch (error: any) {
@@ -56,7 +57,6 @@ export interface Restaurant {
   updatedAt: string;
   __v: number;
 }
-
 
 export interface RestaurantState {
   data: Restaurant | null;

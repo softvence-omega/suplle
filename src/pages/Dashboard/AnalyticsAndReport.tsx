@@ -20,25 +20,29 @@ const AnalyticsAndReport = () => {
     totalCustomers: 0,
   });
 
-  const [monthlyRevenueData, setMonthlyRevenueData] = useState([]);
+  const [monthlyRevenueData, setMonthlyRevenueData] = useState<
+    { month: string; sales: number }[]
+  >([]);
   const token = Cookies.get("accessToken");
 
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
         const res = await axios.get(
-          "https://suplle-server-v2-2.onrender.com/api/v1/analytics/all-analytics",
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/analytics/all-analytics`,
           {
             headers: {
               Authorization: token,
             },
           }
         );
-// console.log("eitty", res)
+        // console.log("eitty", res)
         const data = res.data.data;
         const monthlyAll = data?.revenue?.monthlyAll || [];
 
-        const formattedData = monthlyAll.map((item: any) => ({
+        type MonthlyRevenue = { month: string; revenue: number };
+
+        const formattedData = (monthlyAll as MonthlyRevenue[]).map((item) => ({
           month: item.month,
           sales: item.revenue,
         }));

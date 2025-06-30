@@ -34,7 +34,9 @@ const QrAllDesign: React.FC<QrAllDesignProps> = ({ setSelectId }) => {
   useEffect(() => {
     const token = Cookies.get("accessToken");
     fetch(
-      "https://suplle-server-v2-2.onrender.com/api/v1/QrCodeDesign/get-all-QrCodeDesign?status=Available",
+      `${
+        import.meta.env.VITE_BACKEND_BASE_URL
+      }/QrCodeDesign/get-all-QrCodeDesign?status=Available`,
       {
         headers: {
           Authorization: token || "",

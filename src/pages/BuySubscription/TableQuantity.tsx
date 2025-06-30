@@ -29,7 +29,9 @@ const TableQuantity = ({
     };
     try {
       const response = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/qr-code-purchase",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/qr-code-purchase/qr-code-purchase`,
         payload,
         {
           headers: {

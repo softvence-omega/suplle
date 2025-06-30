@@ -10,7 +10,13 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 
 const workDaysOptions = [
-  "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 ];
 
 const userStatus = [
@@ -19,7 +25,13 @@ const userStatus = [
 ];
 
 const roleOptions = [
-  "manager",  "waiter", "takeaway", "chef", "cashier", "maintenance","staff",
+  "manager",
+  "waiter",
+  "takeaway",
+  "chef",
+  "cashier",
+  "maintenance",
+  "staff",
 ];
 
 // Zod schema
@@ -27,13 +39,25 @@ const schema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone must be at least 10 digits"),
-  role: z.enum([
-    "manager",  "waiter", "dine in","takeaway", "chef", "cashier", "maintenance","staff"
-  ], { required_error: "Role is required" }),
+  role: z.enum(
+    [
+      "manager",
+      "waiter",
+      "dine in",
+      "takeaway",
+      "chef",
+      "cashier",
+      "maintenance",
+      "staff",
+    ],
+    { required_error: "Role is required" }
+  ),
   workDays: z.array(z.string()).min(1, "Select at least one work day"),
   workTimeStart: z.string().min(1, "Start time is required"),
   workTimeEnd: z.string().min(1, "End time is required"),
-  status: z.enum(["Active", "Inactive"], { required_error: "Status is required" }),
+  status: z.enum(["Active", "Inactive"], {
+    required_error: "Status is required",
+  }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -73,7 +97,7 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
     }
 
     const formatTime = (time: string) => {
-      return time.replace(/\./g, ':').replace(/\s+/g, ' ').trim();
+      return time.replace(/\./g, ":").replace(/\s+/g, " ").trim();
     };
 
     const payload = {
@@ -93,15 +117,23 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
     formData.append("data", JSON.stringify(payload));
 
     try {
-      await axios.post("https://suplle-server-v2-2.onrender.com/api/v1/staff/create-staff", formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/staff/create-staff`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       toast.success("Staff created successfully!");
       closeModal();
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong");
+      }
     } finally {
       setLoading(false);
     }
@@ -148,74 +180,154 @@ const CreateUserModal = ({ ButtonText }: { ButtonText: string }) => {
       title="Add New Staff Member"
       description="Fill in the details below to create a new staff member account"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="max-h-[75vh] overflow-y-auto px-1 sm:px-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-h-[75vh] overflow-y-auto px-1 sm:px-4"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block font-medium mb-1" htmlFor="name">Name</label>
-            <input id="name" {...register("name")} placeholder="Name" type="text" className={inputClass} />
-            {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>}
+            <label className="block font-medium mb-1" htmlFor="name">
+              Name
+            </label>
+            <input
+              id="name"
+              {...register("name")}
+              placeholder="Name"
+              type="text"
+              className={inputClass}
+            />
+            {errors.name && (
+              <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>
+            )}
           </div>
           <div>
-            <label className="block font-medium mb-1" htmlFor="email">Email</label>
-            <input id="email" {...register("email")} placeholder="Email" type="email" className={inputClass} />
-            {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
+            <label className="block font-medium mb-1" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              {...register("email")}
+              placeholder="Email"
+              type="email"
+              className={inputClass}
+            />
+            {errors.email && (
+              <p className="text-red-600 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="block font-medium mb-1" htmlFor="phone">Phone</label>
-            <input id="phone" {...register("phone")} placeholder="Phone" type="tel" className={inputClass} />
-            {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone.message}</p>}
+            <label className="block font-medium mb-1" htmlFor="phone">
+              Phone
+            </label>
+            <input
+              id="phone"
+              {...register("phone")}
+              placeholder="Phone"
+              type="tel"
+              className={inputClass}
+            />
+            {errors.phone && (
+              <p className="text-red-600 text-sm mt-1">
+                {errors.phone.message}
+              </p>
+            )}
           </div>
           <div>
-            <label className="block font-medium mb-1" htmlFor="role">Role</label>
+            <label className="block font-medium mb-1" htmlFor="role">
+              Role
+            </label>
             <select id="role" {...register("role")} className={inputClass}>
-              <option value="" disabled hidden>Select Role</option>
+              <option value="" disabled hidden>
+                Select Role
+              </option>
               {roleOptions.map((role) => (
-                <option key={role} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</option>
+                <option key={role} value={role}>
+                  {role.charAt(0).toUpperCase() + role.slice(1)}
+                </option>
               ))}
             </select>
-            {errors.role && <p className="text-red-600 text-sm mt-1">{errors.role.message}</p>}
+            {errors.role && (
+              <p className="text-red-600 text-sm mt-1">{errors.role.message}</p>
+            )}
           </div>
         </div>
 
         <label className="block font-medium text-sm mb-1 mt-6">Work Days</label>
         <WorkDaysCheckboxGroup />
         {errors.workDays && (
-          <p className="text-red-600 text-sm mt-1">{errors.workDays.message as string}</p>
+          <p className="text-red-600 text-sm mt-1">
+            {errors.workDays.message as string}
+          </p>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="block font-medium mb-1" htmlFor="workTimeStart">Work Start Time</label>
-            <input id="workTimeStart" {...register("workTimeStart")} placeholder="9:00 AM" type="text" className={inputClass} />
+            <label className="block font-medium mb-1" htmlFor="workTimeStart">
+              Work Start Time
+            </label>
+            <input
+              id="workTimeStart"
+              {...register("workTimeStart")}
+              placeholder="9:00 AM"
+              type="text"
+              className={inputClass}
+            />
             {errors.workTimeStart && (
-              <p className="text-red-600 text-sm mt-1">{errors.workTimeStart.message}</p>
+              <p className="text-red-600 text-sm mt-1">
+                {errors.workTimeStart.message}
+              </p>
             )}
           </div>
           <div>
-            <label className="block font-medium mb-1" htmlFor="workTimeEnd">Work End Time</label>
-            <input id="workTimeEnd" {...register("workTimeEnd")} placeholder="5:00 PM" type="text" className={inputClass} />
+            <label className="block font-medium mb-1" htmlFor="workTimeEnd">
+              Work End Time
+            </label>
+            <input
+              id="workTimeEnd"
+              {...register("workTimeEnd")}
+              placeholder="5:00 PM"
+              type="text"
+              className={inputClass}
+            />
             {errors.workTimeEnd && (
-              <p className="text-red-600 text-sm mt-1">{errors.workTimeEnd.message}</p>
+              <p className="text-red-600 text-sm mt-1">
+                {errors.workTimeEnd.message}
+              </p>
             )}
           </div>
         </div>
 
         <div className="mt-6">
-          <label className="block font-medium mb-1" htmlFor="status">Status</label>
+          <label className="block font-medium mb-1" htmlFor="status">
+            Status
+          </label>
           <select id="status" {...register("status")} className={inputClass}>
-            <option value="" disabled hidden>Select Status</option>
+            <option value="" disabled hidden>
+              Select Status
+            </option>
             {userStatus.map((status) => (
-              <option key={status.value} value={status.value}>{status.label}</option>
+              <option key={status.value} value={status.value}>
+                {status.label}
+              </option>
             ))}
           </select>
-          {errors.status && <p className="text-red-600 text-sm mt-1">{errors.status.message}</p>}
+          {errors.status && (
+            <p className="text-red-600 text-sm mt-1">{errors.status.message}</p>
+          )}
         </div>
 
         <div className="flex items-center space-x-2 justify-end mt-8">
-          <Button onClick={closeModal} type="button" variant="outline" className="bg-[#E7F6F6] dark:bg-[#E7F6F6] dark:text-[#161616]">
+          <Button
+            onClick={closeModal}
+            type="button"
+            variant="outline"
+            className="bg-[#E7F6F6] dark:bg-[#E7F6F6] dark:text-[#161616]"
+          >
             Cancel
           </Button>
           <Button type="submit" className="pl-8 pr-8" disabled={loading}>

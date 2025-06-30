@@ -1,6 +1,6 @@
 // src/redux/slices/restaurantSlice.ts
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import Cookies from "js-cookie";
 
 export interface Restaurant {
@@ -13,7 +13,7 @@ export interface Restaurant {
   logo: string;
   coverPhoto: string;
   images: string[];
-  status: 'approved' | 'pending' | 'rejected'; // Adjust if there are more statuses
+  status: "approved" | "pending" | "rejected"; // Adjust if there are more statuses
   isDeleted: boolean;
   owner: string;
   menus: string[];
@@ -36,16 +36,19 @@ const initialState: RestaurantState = {
 
 // 👉 Replace the URL with your actual Postman-tested API endpoint
 export const fetchRestaurants = createAsyncThunk(
-  'restaurants/fetchRestaurants',
+  "restaurants/fetchRestaurants",
   async (_, thunkAPI) => {
     try {
-      const token =  Cookies.get("accessToken");
+      const token = Cookies.get("accessToken");
       console.log(token, "token in restaurant slice");
-      const response = await axios.get('https://suplle-server-v2-2.onrender.com/api/v1/restaurant/all-restaurant', {
-  headers: {
-    Authorization: `${token}`
-  }
-});
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/restaurant/all-restaurant`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
       console.log(response?.data?.data, "response in restaurant slice");
       return response.data?.data || []; // Ensure this matches expected structure
     } catch (error: unknown) {
@@ -60,7 +63,7 @@ export const fetchRestaurants = createAsyncThunk(
 );
 
 const restaurantSlice = createSlice({
-  name: 'restaurants',
+  name: "restaurants",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -80,9 +83,7 @@ const restaurantSlice = createSlice({
   },
 });
 
-
 // Update thunk
-
 
 type RestaurantUpdatePayload = {
   id: string;
@@ -92,49 +93,49 @@ type RestaurantUpdatePayload = {
   logo?: string;
 };
 
-
 export const editRestaurant = createAsyncThunk<
   Restaurant,
   RestaurantUpdatePayload,
   { rejectValue: string }
->("restaurants/updateRestaurant", async ({ id, restaurantName, phone, restaurantAddress, logo }, thunkAPI) => {
-  try {
-    const token = Cookies.get("accessToken");
+>(
+  "restaurants/updateRestaurant",
+  async ({ id, restaurantName, phone, restaurantAddress, logo }, thunkAPI) => {
+    try {
+      const token = Cookies.get("accessToken");
 
-    const formData = new FormData();
-    formData.append("data", JSON.stringify({ restaurantName, phone, restaurantAddress }));
-    if (logo) formData.append("logo", logo); // only append if logo exists
+      const formData = new FormData();
+      formData.append(
+        "data",
+        JSON.stringify({ restaurantName, phone, restaurantAddress })
+      );
+      if (logo) formData.append("logo", logo); // only append if logo exists
 
-    const res = await axios.put(
-      `https://suplle-server-v2-2.onrender.com/api/v1/restaurant/update-restaurant-admin/${id}`,
-      formData,
-      {
-        headers: { Authorization: token },
+      const res = await axios.put(
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/restaurant/update-restaurant-admin/${id}`,
+        formData,
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      if (res.data.success) {
+        return res.data.data;
+      } else {
+        return thunkAPI.rejectWithValue(
+          res.data.message || "Failed to update restaurant"
+        );
       }
-    );
-
-    if (res.data.success) {
-      return res.data.data;
-    } else {
-      return thunkAPI.rejectWithValue(res.data.message || "Failed to update restaurant");
+    } catch (err: unknown) {
+      let errorMessage = "Update failed";
+      if (err && typeof err === "object" && "response" in err) {
+        const errorObj = err as { response?: { data?: { message?: string } } };
+        errorMessage = errorObj.response?.data?.message || errorMessage;
+      }
+      return thunkAPI.rejectWithValue(errorMessage);
     }
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.response?.data?.message || "Update failed");
   }
-});
-
-
-(builder: import('@reduxjs/toolkit').ActionReducerMapBuilder<RestaurantState>) => {
-  builder
-    .addCase(editRestaurant.fulfilled, (state: RestaurantState, action: import('@reduxjs/toolkit').PayloadAction<Restaurant>) => {
-      const updated: Restaurant = action.payload;
-      const index: number = state.restaurants.findIndex((r: Restaurant) => r._id === updated._id);
-      if (index !== -1) {
-        state.restaurants[index] = updated;
-      }
-    });
-}
-
-
+);
 
 export default restaurantSlice.reducer;

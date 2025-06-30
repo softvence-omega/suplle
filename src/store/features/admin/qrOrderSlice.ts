@@ -36,7 +36,9 @@ export const fetchAllOrders = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/get-all-qr-code-purchase",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/qr-code-purchase/get-all-qr-code-purchase`,
         {
           headers: {
             Authorization: token ? token : "",
@@ -58,7 +60,9 @@ export const fetchAllQrOrders = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.get(
-        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/get-all-qr-code-purchase",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/qr-code-purchase/get-all-qr-code-purchase`,
         {
           headers: {
             Authorization: token ? token : "",
@@ -81,7 +85,9 @@ export const fetchQrOrdersByStatus = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.get(
-        `https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/get-all-qr-code-purchase?status=${status}`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/qr-code-purchase/get-all-qr-code-purchase?status=${status}`,
         {
           headers: {
             Authorization: token ? token : "",
@@ -108,7 +114,9 @@ export const changeQrOrderStatus = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/qr-purchase-decision-by-admin",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/qr-code-purchase/qr-purchase-decision-by-admin`,
         { id, status },
         {
           headers: {
@@ -140,7 +148,9 @@ export const qrPaymentIntent = createAsyncThunk(
     try {
       const token = Cookies.get("accessToken");
       const response = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1/qr-code-purchase/create-qr-code-intent",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/qr-code-purchase/create-qr-code-intent`,
         { qrCodeDesignPurchaseId },
         {
           headers: {

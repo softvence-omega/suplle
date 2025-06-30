@@ -29,7 +29,7 @@ const StepTwoPointFive = ({
   //   if (planId && month) {
   //     // Example API call
   //     fetch(
-  //       "https://suplle-server-v2-2.onrender.com/api/v1/subscription/create-subscription-intent",
+  //       "${import.meta.env.VITE_BACKEND_BASE_URL}/subscription/create-subscription-intent",
   //       {
   //         method: "POST",
   //         headers: {
@@ -56,7 +56,9 @@ const StepTwoPointFive = ({
 
     try {
       const res = await fetch(
-        "https://suplle-server-v2-2.onrender.com/api/v1/subscription/create-subscription-intent",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/subscription/create-subscription-intent`,
         {
           method: "POST",
           headers: {

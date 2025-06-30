@@ -1,4 +1,4 @@
-import  { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import qrCode from "../../assets/demoQR.png";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { IoMenu, IoClose } from "react-icons/io5";
@@ -55,13 +55,18 @@ const RestaurantLayout = () => {
 
       try {
         const res = await axios.get(
-          `https://suplle-server-v2-2.onrender.com/api/v1/table/get-all-table/${selectedFloor._id}`,
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/table/get-all-table/${
+            selectedFloor._id
+          }`,
           { headers: { Authorization: token } }
         );
 
         if (res.data?.success) {
+          interface ApiTable {
+            qrCodeUrl?: string;
+          }
           const fetchedTables = res.data.data.result.map(
-            (table: any, index: number) => ({
+            (table: ApiTable, index: number) => ({
               id: index + 1,
               qrCode: table.qrCodeUrl || qrCode,
             })
@@ -116,7 +121,9 @@ const RestaurantLayout = () => {
 
     try {
       const res = await axios.post(
-        "https://suplle-server-v2-2.onrender.com/api/v1/table/create-table-with-qrcode",
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/table/create-table-with-qrcode`,
         {
           numTables: Number(numTables),
           capacity: Number(capacity),
@@ -131,11 +138,16 @@ const RestaurantLayout = () => {
       );
 
       if (res.data?.success) {
-        const createdTables = res.data.data.map((table: any, index: number) => ({
-          // Continue id after existing tables length
-          id: tables.length + index + 1,
-          qrCode: table.qrCodeUrl || qrCode,
-        }));
+        interface CreatedTable {
+          qrCodeUrl?: string;
+        }
+        const createdTables = res.data.data.map(
+          (table: CreatedTable, index: number) => ({
+            // Continue id after existing tables length
+            id: tables.length + index + 1,
+            qrCode: table.qrCodeUrl || qrCode,
+          })
+        );
 
         // Merge new tables with existing ones
         setTables((prevTables) => {
@@ -183,7 +195,9 @@ const RestaurantLayout = () => {
             "fixed md:relative top-0 right-0 h-full w-3/4 md:w-auto",
             "p-4 md:p-0 z-50 transform transition-transform duration-300 ease-in-out",
             "shadow-lg md:shadow-none bg-white dark:bg-gray-900",
-            isSidebarOpen ? "translate-x-0" : "translate-x-full md:translate-x-0"
+            isSidebarOpen
+              ? "translate-x-0"
+              : "translate-x-full md:translate-x-0"
           )}
         >
           <button
@@ -195,7 +209,10 @@ const RestaurantLayout = () => {
             <IoClose size={24} />
           </button>
 
-          <FloorManagement selectedFloor={selectedFloor} setSelectedFloor={setSelectedFloor} />
+          <FloorManagement
+            selectedFloor={selectedFloor}
+            setSelectedFloor={setSelectedFloor}
+          />
 
           <TableProperties
             numTables={numTables}

@@ -59,6 +59,13 @@ const EditOrderForOwner = () => {
 
   console.log(current, "data of orders in update mahim");
 
+  const statusOptions = [
+    { value: "pending", label: "Pending" },
+    { value: "delivered", label: "Delivered" },
+    { value: "cancel", label: "Cancelled" },
+    { value: "inProgress", label: "Processing" },
+  ];
+
   useEffect(() => {
     dispatch(fetchMenus());
   }, [dispatch]);
@@ -88,6 +95,7 @@ const EditOrderForOwner = () => {
       floor: "",
       payment: "card",
       menus: [],
+      status: "pending",
     },
   });
 
@@ -98,7 +106,7 @@ const EditOrderForOwner = () => {
 
   // Fetch floors on mount
   useEffect(() => {
-    fetch("https://suplle-server-v2-2.onrender.com/api/v1/floor/all-floor", {
+    fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/floor/all-floor`, {
       headers: {
         Authorization: `${token}`,
         // "Content-Type": "application/json",
@@ -115,7 +123,9 @@ const EditOrderForOwner = () => {
   useEffect(() => {
     if (selectedFloor) {
       fetch(
-        `https://suplle-server-v2-2.onrender.com/api/v1/table/get-all-table/${selectedFloor}`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/table/get-all-table/${selectedFloor}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -304,6 +314,18 @@ const EditOrderForOwner = () => {
                 />
               ))}
             </div>
+            <SuppleSelect
+              name="status"
+              label="Order Status"
+              placeholder="Select Status"
+              required
+            >
+              {statusOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SuppleSelect>
             {/* Right Side  */}
             <div className="md:w-1/3 w-full dark:bg-primary-dark bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md">
               <p className="text-base font-medium text-[#021433] dark:text-white">
@@ -378,12 +400,14 @@ const EditOrderForOwner = () => {
                       paymentMethod: {
                         type: methods.getValues("payment"),
                       },
-                      status: "delivered",
+                      status: methods.getValues("status") || "pending",
                     };
 
                     try {
                       const response = await axios.put(
-                        `https://suplle-server-v2-2.onrender.com/api/v1/order/update-order/${id}`,
+                        `${
+                          import.meta.env.VITE_BACKEND_BASE_URL
+                        }/order/update-order/${id}`,
                         payload,
                         {
                           headers: {

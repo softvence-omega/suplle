@@ -63,6 +63,13 @@ const CreateOrderForOwner = () => {
   const [tables, setTables] = useState([]);
   // const [selectedFloor, setSelectedFloor] = useState("");
 
+  const statusOptions = [
+    { value: "pending", label: "Pending" },
+    { value: "delivered", label: "Delivered" },
+    { value: "cancel", label: "Cancelled" },
+    { value: "inProgress", label: "Processing" },
+  ];
+
   const token = Cookies.get("accessToken");
 
   //form
@@ -83,7 +90,7 @@ const CreateOrderForOwner = () => {
 
   // Fetch floors on mount
   useEffect(() => {
-    fetch("https://suplle-server-v2-2.onrender.com/api/v1/floor/all-floor", {
+    fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/floor/all-floor`, {
       headers: {
         Authorization: `${token}`,
         // "Content-Type": "application/json",
@@ -100,7 +107,9 @@ const CreateOrderForOwner = () => {
   useEffect(() => {
     if (selectedFloor) {
       fetch(
-        `https://suplle-server-v2-2.onrender.com/api/v1/table/get-all-table/${selectedFloor}`,
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/table/get-all-table/${selectedFloor}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -229,6 +238,18 @@ const CreateOrderForOwner = () => {
                 />
               ))}
             </div>
+            <SuppleSelect
+              name="status"
+              label="Order Status"
+              placeholder="Select Status"
+              required
+            >
+              {statusOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SuppleSelect>
             {/* Right Side  */}
             <div className="md:w-1/3 w-full dark:bg-primary-dark bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md">
               <p className="text-base font-medium text-[#021433] dark:text-white">
@@ -303,12 +324,14 @@ const CreateOrderForOwner = () => {
                       paymentMethod: {
                         type: methods.getValues("payment"),
                       },
-                      status: "delivered",
+                      status: "pending",
                     };
 
                     try {
                       const response = await axios.post(
-                        "https://suplle-server-v2-2.onrender.com/api/v1/orders/create-order",
+                        `${
+                          import.meta.env.VITE_BACKEND_BASE_URL
+                        }/orders/create-order`,
                         payload,
                         {
                           headers: {

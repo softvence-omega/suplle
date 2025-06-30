@@ -51,7 +51,7 @@ export const updateMenu = createAsyncThunk<
       //   formData.append("image", formData.image);
 
       const response = await axios.put(
-        `https://suplle-server-v2-2.onrender.com/api/v1/menus/update-menu/${menuId}`,
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/menus/update-menu/${menuId}`,
         payload,
         {
           headers: {

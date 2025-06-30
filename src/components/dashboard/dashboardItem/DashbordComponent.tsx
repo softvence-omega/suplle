@@ -1,209 +1,220 @@
-import FoodCard from "@/components/dashboard/ManageMenu/FoodCard";
-import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
-import { Link } from "react-router-dom";
-import RestaurantHeader from "./RestaruntHeader";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { useEffect } from "react";
-import { fetchMenus } from "@/store/features/menu/fetchMenuSlice";
+import { Button } from "@/components/ui/button";
+import SectionHeader from "@/components/ui/sectionHeader";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { switchAccount } from "@/store/features/Switch Account/switchAccount";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-// Types
-export type MenuSectionItem = {
-  title: string;
-  size: string;
-  price: string;
-  description: string;
-  imageSrc: string;
-  available: boolean;
-};
-
-export type MenuSection = {
-  title: string;
-  items: MenuSectionItem[];
-};
-
-// Menu Data
-const menuSections: MenuSection[] = [
-  {
-    title: "Starters",
-    items: [
-      {
-        title: "Cheeseburger",
-        size: "Small Size",
-        price: "20",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: true,
-      },
-      {
-        title: "Bacon Burger",
-        size: "Large",
-        price: "10",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: false,
-      },
-      {
-        title: "Swiss Burger",
-        size: "Medium",
-        price: "15",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: true,
-      },
-      {
-        title: "Beef Burger",
-        size: "Small Size",
-        price: "12",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/burger.jpg",
-        available: true,
-      },
-    ],
-  },
-  {
-    title: "Main Course",
-    items: [
-      {
-        title: "Eggplant",
-        size: "Small Size",
-        price: "25",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: true,
-      },
-      {
-        title: "Cheeseburger",
-        size: "Small Size",
-        price: "30",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: true,
-      },
-      {
-        title: "Fish and Chips",
-        size: "Small Size",
-        price: "25",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: false,
-      },
-      {
-        title: "Baked Ziti",
-        size: "Small Size",
-        price: "35",
-        description: "Satisfy your cravings with our best-selling Cheeseburger",
-        imageSrc: "/src/assets/menu-items/pizza.jpg",
-        available: true,
-      },
-    ],
-  },
-  {
-    title: "Drinks",
-    items: [
-      {
-        title: "Classic Mojito",
-        size: "Small Size",
-        price: "25",
-        description: "A refreshing blend of mint leaves served over ice",
-        imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: true,
-      },
-      {
-        title: "Berry Smoothie",
-        size: "Small Size",
-        price: "30",
-        description:
-          "A healthy, fruity drink made with strawberries and yogurt",
-        imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: true,
-      },
-      {
-        title: "Pina Colada",
-        size: "Small Size",
-        price: "25",
-        description: "A tropical cocktail made with rum and coconut cream",
-        imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: false,
-      },
-      {
-        title: "Lemonade Fizz",
-        size: "Small Size",
-        price: "35",
-        description: "A zesty and sparkling lemonade made with fresh lemons",
-        imageSrc: "/src/assets/menu-items/smoothie.png",
-        available: true,
-      },
-    ],
-  },
-];
-
-// Section Title Component
-const SectionTitle = ({ title }: { title: string }) => {
-  return (
-    <motion.h2
-      className="text-lg font-bold text-gray-800 dark:text-gray-50 mb-3 ml-1"
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      {title}
-    </motion.h2>
-  );
-};
+interface Restaurant {
+  _id: string;
+  restaurantName: string;
+  restaurantAddress?: string;
+}
 
 const DashbordComponent = () => {
-  const { menus } = useAppSelector((state) => state.fetchMenu);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({
+    restaurantName: "",
+    restaurantAddress: "",
+    phone: "",
+    tagline: "",
+    description: "",
+  });
+  const [creating, setCreating] = useState(false);
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
-  console.log("Menus in dashboard page:", menus);
 
   useEffect(() => {
-    dispatch(fetchMenus());
-  }, [dispatch]);
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    const user = Cookies.get("user");
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    try {
+      const parsedUser = JSON.parse(user);
+      // Fetch the latest user data from the backend
+      axios
+        .get(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/users/single-user/${
+            parsedUser._id
+          }`,
+          {
+            headers: {
+              Authorization: Cookies.get("accessToken") || "",
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          const restaurantArr = res.data?.data?.restaurant || [];
+          setRestaurants(Array.isArray(restaurantArr) ? restaurantArr : []);
+        })
+        .catch(() => {
+          setRestaurants([]);
+        });
+    } catch {
+      setRestaurants([]);
+    }
+  }, [navigate]);
+
+  console.log(restaurants, "restaurants in alimmmmmmmmmmm");
+
+  const handleSelect = async (restaurantId: string) => {
+    const user = Cookies.get("user");
+    if (!user) return;
+    const parsedUser = JSON.parse(user);
+    if (!parsedUser.email) return;
+    try {
+      setLoading(true);
+      await dispatch(
+        switchAccount({ email: parsedUser.email, restaurantId })
+      ).unwrap();
+      navigate(`/dashboard/menu/add`);
+    } catch {
+      alert("Failed to switch account. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleCreateRestaurant = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCreating(true);
+    try {
+      const token = Cookies.get("accessToken");
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/restaurant/create-restaurant`,
+        form,
+        {
+          headers: {
+            Authorization: token ? token : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setShowModal(false);
+      setForm({
+        restaurantName: "",
+        restaurantAddress: "",
+        phone: "",
+        tagline: "",
+        description: "",
+      });
+      // Optionally, refresh restaurant list here
+      window.location.reload();
+    } catch {
+      alert("Failed to create restaurant. Please try again.");
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
     <>
-      <RestaurantHeader name="Urban Bistro" address="123 Main Street" />
-      <div className="flex flex-col">
-        {menuSections.map((section: MenuSection, index: number) => (
-          <div key={index} className="mb-8">
-            <SectionTitle title={section.title} />
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
-              variants={container}
-              initial="hidden"
-              animate="show"
+      <SectionHeader
+        title="All Restaurant"
+        rightContent={
+          <Button onClick={() => setShowModal(true)}>Create Restaurant</Button>
+        }
+      />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-lg bg-opacity-30 z-50">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-opacity-40">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
+            <button
+              className="absolute top-2 right-3 text-xl"
+              onClick={() => setShowModal(false)}
+              aria-label="Close"
             >
-              {menus.map((item, itemIndex) => (
-                <FoodCard
-                  key={itemIndex}
-                  item={item}
-                  // title={item.itemName}
-                  // size={item.size}
-                  // price={item.price.toString()}
-                  // description={item.description}
-                  // imageSrc={item.image}
-                />
-              ))}
-            </motion.div>
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-4">Create Restaurant</h2>
+            <form onSubmit={handleCreateRestaurant} className="space-y-3">
+              <input
+                name="restaurantName"
+                value={form.restaurantName}
+                onChange={handleInputChange}
+                placeholder="Restaurant Name"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+              <input
+                name="restaurantAddress"
+                value={form.restaurantAddress}
+                onChange={handleInputChange}
+                placeholder="Restaurant Address"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleInputChange}
+                placeholder="Phone"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+              <input
+                name="tagline"
+                value={form.tagline}
+                onChange={handleInputChange}
+                placeholder="Tagline"
+                required
+                className="w-full border rounded px-3 py-2"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleInputChange}
+                placeholder="Description"
+                required
+                className="w-full border rounded px-3 py-2"
+                rows={3}
+              />
+              <Button type="submit" className="w-full mt-2" disabled={creating}>
+                {creating ? "Creating..." : "Create"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+        {restaurants.length === 0 && (
+          <div className="text-gray-500 col-span-full">
+            No restaurants found.
+          </div>
+        )}
+        {restaurants.map((restaurant) => (
+          <div
+            key={restaurant._id}
+            className="cursor-pointer border rounded-lg p-4 shadow hover:shadow-lg transition bg-primary/30 h-[120px]"
+            onClick={() => handleSelect(restaurant._id)}
+          >
+            <h3 className="font-bold text-lg">{restaurant.restaurantName}</h3>
+            {restaurant.restaurantAddress && (
+              <p className="text-gray-500 text-sm">
+                {restaurant.restaurantAddress}
+              </p>
+            )}
           </div>
         ))}
       </div>
-      <Link
-        to="/dashboard/menu/add"
-        className="bg-[#11A8A5] text-white px-4 py-2 rounded-md mt-4  transition duration-200 ease-in-out flex items-center w-36 gap-2 hover:bg-[#0A7B78] active:scale-95"
-      >
-        <Plus /> <span>Add Menu</span>
-      </Link>
     </>
   );
 };

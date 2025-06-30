@@ -11,6 +11,7 @@ import fetchRestaurantReducer from "../store/features/restaurant/fetchrestaurant
 import restaurantReducer from "../store/features/restaurant/restaurantSlice";
 import subscriptionReducer from "../store/features/admin/subscriptionPlan";
 import qrOrdersReducer from "../store/features/admin/qrOrderSlice";
+import switchAccountReducer from "../store/features/Switch Account/switchAccount";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     fetchRestaurant: fetchRestaurantReducer,
     subscriptionPlan: subscriptionReducer,
     qrOrders: qrOrdersReducer,
+    switchAccount: switchAccountReducer,
   },
 });
 

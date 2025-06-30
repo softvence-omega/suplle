@@ -1,5 +1,5 @@
 import { useThemeStore } from "@/store/useThemeStore";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import sidebarlogo from "@/assets/siderbarlogo.png";
 import personImg from "@/assets/person.jpg";
 import NotificationIcon from "@/components/icons/NotificationIcon";
@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import AdminDashboardSideBar from "@/features/Sidebar/AdminDasboardSideBar";
 import TourGuide from "@/components/tour/TourGuide";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/hooks/useRedux";
 
 type Notification = {
   id: number;
@@ -26,7 +27,7 @@ type UserCookie = {
   role: string;
   image: string | null;
 };
-// ✅ Role display mapping
+
 const getDisplayRole = (role: string | undefined): string => {
   switch (role) {
     case "restaurant_owner":
@@ -40,9 +41,7 @@ const getDisplayRole = (role: string | undefined): string => {
   }
 };
 
-
 const AdminDashboardLayout = () => {
-
   const { theme, toggleTheme } = useThemeStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notifications] = useState<Notification[]>(fakeNotifications);
@@ -52,6 +51,12 @@ const AdminDashboardLayout = () => {
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const userPopupRef = useRef<HTMLDivElement>(null);
+
+  const selectedRestaurant = useAppSelector(
+    (state) => state.switchAccount.selectedRestaurant
+  );
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cookieData = Cookies.get("user");
@@ -91,7 +96,9 @@ const AdminDashboardLayout = () => {
       <header className="fixed w-full z-30 flex bg-green-100 dark:bg-primary-dark p-2 items-center justify-between h-16 px-10">
         {/* Logo */}
         <div
-          className={`logo ${!sidebarOpen ? "ml-12" : ""} md:flex md:items-center ml-12`}
+          className={`logo ${
+            !sidebarOpen ? "ml-12" : ""
+          } md:flex md:items-center ml-12`}
         >
           <img src={sidebarlogo} width={100} height={40} alt="Logo" />
         </div>
@@ -174,7 +181,11 @@ const AdminDashboardLayout = () => {
                   {user?.name || "Admin User"}
                 </span>
                 <span className="text-gray-500 dark:text-gray-300">
-               {getDisplayRole(user?.role)}
+                  {getDisplayRole(user?.role)}
+                </span>
+                <span className="text-gray-500 dark:text-gray-300">
+                  {selectedRestaurant?.restaurantName ||
+                    "No Restaurant Selected"}
                 </span>
               </div>
             </div>
@@ -190,7 +201,7 @@ const AdminDashboardLayout = () => {
                   />
                   <div>
                     <p className="text-sm font-semibold text-gray-800 dark:text-white">
-                      {user?.name }
+                      {user?.name}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300">
                       {getDisplayRole(user?.role)}
@@ -199,13 +210,12 @@ const AdminDashboardLayout = () => {
                 </div>
 
                 <div className="space-y-3 text-sm">
-               
-                  {/* <button
+                  <button
                     className="w-full text-left text-gray-700 dark:text-gray-200 hover:underline"
                     onClick={() => navigate("/dashboard/settings")}
                   >
-                     Settings
-                  </button> */}
+                    Settings
+                  </button>
                   <button
                     className="w-full px-4 py-2 bg-primary text-center text-white rounded-md cursor-pointer hover:opacity-50"
                     onClick={() => {
