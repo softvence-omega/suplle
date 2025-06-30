@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import OwnerSiderBar from "@/features/Sidebar/OwnerSiderBar";
 import TourGuide from "@/components/tour/TourGuide";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/hooks/useRedux";
 
 type Notification = {
   id: number;
@@ -54,6 +55,12 @@ const DashboardLayout = () => {
   const [showUserPopup, setShowUserPopup] = useState(false);
   const userPopupRef = useRef<HTMLDivElement>(null);
 
+  const selectedRestaurant = useAppSelector(
+    (state) => state.switchAccount.selectedRestaurant
+  );
+
+  console.log("Selected Restaurant:", selectedRestaurant);
+
   useEffect(() => {
     const cookieData = Cookies.get("user");
     if (cookieData) {
@@ -68,8 +75,10 @@ const DashboardLayout = () => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        popupRef.current && !popupRef.current.contains(e.target as Node) &&
-        userPopupRef.current && !userPopupRef.current.contains(e.target as Node)
+        popupRef.current &&
+        !popupRef.current.contains(e.target as Node) &&
+        userPopupRef.current &&
+        !userPopupRef.current.contains(e.target as Node)
       ) {
         setShowPopup(false);
         setShowUserPopup(false);
@@ -87,34 +96,20 @@ const DashboardLayout = () => {
       {/* Header */}
       <header className="fixed w-full z-30 flex bg-green-100 dark:bg-primary-dark p-2 items-center justify-between h-16 px-10">
         {/* Logo */}
-        <div className={`logo ${!sidebarOpen ? "ml-12 " : ""} md:flex md:items-center ml-12`}>
+        <div
+          className={`logo ${
+            !sidebarOpen ? "ml-12 " : ""
+          } md:flex md:items-center ml-12`}
+        >
           <img src={sidebarlogo} width={100} height={40} alt="Logo" />
         </div>
 
         {/* Search Bar */}
-        <div className="hidden md:flex w-full max-w-[438px] h-[40px] px-[14px] py-[8px] items-center gap-[16px] rounded-[8px] bg-[#F6F8FB] dark:bg-primary-dark relative border dark:border-white">
-          <input
-            type="text"
-            placeholder="Search results..."
-            className="w-full bg-transparent border-none outline-none text-gray-700 dark:text-white"
-          />
-          <svg
-            className="absolute right-4 text-gray-500 dark:text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M23 21l-6-6m-5 2a7 7 0 1 0-7-7 7 7 0 0 0 7 7z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        {/* <div className="hidden md:flex w-full max-w-[438px] h-[40px] px-[14px] py-[8px] items-center gap-[16px] rounded-[8px]  dark:bg-white relative border dark:border-white">
+          <p className="text-gray-500 dark:text-gray-300">
+            {selectedRestaurant?.restaurantName || "No Restaurant Selected"}
+          </p>
+        </div> */}
 
         {/* Icons + Profile */}
         <div className="flex items-center gap-4">
@@ -140,7 +135,9 @@ const DashboardLayout = () => {
                     <li
                       key={notif.id}
                       className={`pb-2 px-2 py-2 rounded transition-colors duration-200 ${
-                        index !== arr.length - 1 ? "border-b border-gray-300" : ""
+                        index !== arr.length - 1
+                          ? "border-b border-gray-300"
+                          : ""
                       } hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer`}
                     >
                       {notif.message}
@@ -154,17 +151,23 @@ const DashboardLayout = () => {
           {/* Profile Info with Name + Role */}
           <div className="relative" ref={userPopupRef}>
             <div
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center gap-3 cursor-pointer group"
               onClick={() => setShowUserPopup((prev) => !prev)}
             >
               <img
                 src={user?.image || personImg}
                 alt="profile"
-                className="shadow rounded-full object-cover w-8 h-8"
+                className="w-9 h-9 rounded-full object-cover border border-gray-300 group-hover:ring-2 ring-primary transition"
               />
               <div className="hidden sm:flex flex-col text-sm leading-tight">
-                <span className="font-semibold text-gray-800 dark:text-white">{user?.name}</span>
-                <span className="text-gray-500 dark:text-gray-300">
+                <span className="font-semibold text-gray-800 dark:text-white">
+                  {user?.name || "No Name"}
+                </span>
+                <span className="text-gray-600 dark:text-gray-400 text-xs">
+                  {selectedRestaurant?.restaurantName ||
+                    "No Restaurant Selected"}
+                </span>
+                <span className="text-gray-500 dark:text-gray-300 text-xs">
                   {getDisplayRole(user?.role)}
                 </span>
               </div>

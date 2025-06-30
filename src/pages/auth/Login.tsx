@@ -37,7 +37,7 @@ const Login = () => {
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "restaurant_owner") {
-          navigate("/dashboard/menu/add");
+          navigate("/dashboard");
         } else if (
           role === "staff" ||
           role === "waiter" ||

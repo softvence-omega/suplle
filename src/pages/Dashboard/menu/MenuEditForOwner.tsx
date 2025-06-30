@@ -11,6 +11,7 @@ import SuppleTextarea from "@/components/Forms/SuppleTextarea";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { useParams } from "react-router-dom";
 import { updateMenu } from "@/store/features/menu/updateMenuSlice";
+import { toast } from "react-toastify";
 
 const menuItemSchema = z.object({
   itemName: z.string().min(1, "Item name is required"),
@@ -81,6 +82,7 @@ const MenuEditForOwner = () => {
     };
     // Add your API call here
     dispatch(updateMenu(payload));
+    toast.success("Menu item updated successfully");
   };
 
   const handleDeleteMenu = () => {

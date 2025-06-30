@@ -59,6 +59,13 @@ const EditOrderForOwner = () => {
 
   console.log(current, "data of orders in update mahim");
 
+  const statusOptions = [
+    { value: "pending", label: "Pending" },
+    { value: "delivered", label: "Delivered" },
+    { value: "cancel", label: "Cancelled" },
+    { value: "inProgress", label: "Processing" },
+  ];
+
   useEffect(() => {
     dispatch(fetchMenus());
   }, [dispatch]);
@@ -88,6 +95,7 @@ const EditOrderForOwner = () => {
       floor: "",
       payment: "card",
       menus: [],
+      status: "pending",
     },
   });
 
@@ -306,6 +314,18 @@ const EditOrderForOwner = () => {
                 />
               ))}
             </div>
+            <SuppleSelect
+              name="status"
+              label="Order Status"
+              placeholder="Select Status"
+              required
+            >
+              {statusOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SuppleSelect>
             {/* Right Side  */}
             <div className="md:w-1/3 w-full dark:bg-primary-dark bg-white flex flex-col gap-4 p-4 rounded-lg shadow-md">
               <p className="text-base font-medium text-[#021433] dark:text-white">
@@ -380,7 +400,7 @@ const EditOrderForOwner = () => {
                       paymentMethod: {
                         type: methods.getValues("payment"),
                       },
-                      status: "delivered",
+                      status: methods.getValues("status") || "pending",
                     };
 
                     try {

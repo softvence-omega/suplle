@@ -64,7 +64,7 @@ const FoodCard = ({
                 className="w-full h-full object-cover"
               />
               <Link
-                to={`/dashboard/menu/edit/${item.restaurant._id}/${item._id}`}
+                to={`/dashboard/menu/edit/${item.restaurant}/${item._id}`}
                 style={{ borderRadius: "45px 0px 0px 0px" }}
                 className="bg-white/90 dark:bg-[#161616] w-11 h-12 absolute bottom-0 right-0"
               >
