@@ -8,9 +8,14 @@ import FoodCategory1 from "@/components/dynamicResturants/FoodCategory1";
 import FoodList from "@/components/dynamicResturants/FoodList";
 import GoogleMap from "@/components/dynamicResturants/GoogleMap";
 import Wrapper from "@/components/shared/Wrapper";
+import Footer from "@/components/shared/Footer";
+import { useState } from "react";
 const DynamicRestaurant = () => {
+  
   const { id } = useParams();
   console.log(id);
+  const [selectedCategory, setSelectedCategory] = useState('offers')
+  const [selectedCategory1, setSelectedCategory1] = useState('Main Course')
   return (
     <div>
       <Navbar />
@@ -31,11 +36,14 @@ const DynamicRestaurant = () => {
         </div>
       </div>
       </Wrapper>
-      <FoodCategory />
-      <OfferItem/>
-      <FoodCategory1 />
-      <FoodList />
+      <FoodCategory selectedCategory={selectedCategory} 
+        setSelectedCategory={setSelectedCategory} />
+      <OfferItem selectedCategory={selectedCategory}/>
+      <FoodCategory1 selectedCategory={selectedCategory1} 
+        setSelectedCategory={setSelectedCategory1} />
+      <FoodList selectedCategory={selectedCategory1}/>
       <GoogleMap/>
+      <Footer/>
     </div>
   );
 };

@@ -1,8 +1,4 @@
 import { motion } from "framer-motion";
-// import logo1 from "../../../assets/whatSuplleLogo/1.svg";
-// import logo2 from "../../../assets/whatSuplleLogo/2.svg";
-// import logo3 from "../../../assets/whatSuplleLogo/3.svg";
-
 import SuplleCard from "./SuppleCard";
 import RestaurantIcon from "@/components/icons/RestaurantIcon";
 import CoffeeIcon from "@/components/icons/CoffeeIcon";
@@ -54,29 +50,33 @@ const itemVariants = {
 
 const WhatIsSuplle = () => {
   return (
-    <motion.div
-      className="bg-white lg:h-[675px] w-full px-24"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
+    <div className="py-10 bg-white overflow-hidden dark:bg-black">
       <motion.div
-        variants={itemVariants}
-        className="text-primary-dark text-6xl lg:mt-64 text-center"
-      >
-        🚀 What is <span className="text-primary-gradient">Suplle?</span>
-      </motion.div>
-      <motion.p className="text-center mt-8 text-2xl" variants={itemVariants}>
-        Suplle is a modern restaurant management platform built to streamline
-        operations for
-      </motion.p>
-
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16"
+        className="w-full max-w-7xl mx-auto px-4 sm:px-8"
+        initial="hidden"
+        animate="visible"
         variants={containerVariants}
       >
-        {suplleCardData.map((card) => {
-          return (
+        <motion.h2
+          variants={itemVariants}
+          className="text-primary-dark text-3xl sm:text-4xl lg:text-6xl text-center font-bold dark:text-white"
+        >
+          🚀 What is <span className="text-primary-gradient">Suplle?</span>
+        </motion.h2>
+
+        <motion.p
+          className="text-center mt-6 text-lg sm:text-xl lg:text-2xl text-gray-700 dark:text-gray-300"
+          variants={itemVariants}
+        >
+          Suplle is a modern restaurant management platform built to streamline
+          operations for
+        </motion.p>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-10 sm:mt-16"
+          variants={containerVariants}
+        >
+          {suplleCardData.map((card) => (
             <motion.div key={card.id} variants={itemVariants}>
               <SuplleCard
                 Icon={card.icon}
@@ -85,10 +85,10 @@ const WhatIsSuplle = () => {
                 description={card.description}
               />
             </motion.div>
-          );
-        })}
+          ))}
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

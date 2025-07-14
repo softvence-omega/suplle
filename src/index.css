@@ -34,13 +34,11 @@
   --color-green-700: #0c7775;
   --color-green-800: #095c5b;
   --color-green-900: #074745;
-
   --color-primary-gradient: linear-gradient(
     176deg,
     #56daab -18.78%,
     #0f9996 111.3%
   );
-
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);

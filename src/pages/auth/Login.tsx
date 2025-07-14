@@ -2,13 +2,19 @@ import logo from "@/assets/logo.png";
 import computerImage from "@/assets/Auth/computer.png";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import FacebookIcon from "@/components/icons/FacebookIcon";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 import MessageSquareIcon from "@/components/icons/MessageSquareIcon";
 import LockIcon from "@/components/icons/LockIcon";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { loginUser } from "@/store/features/auth/authSlice";
 
 const Login = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Create a new FormData object from the form
     const formData = new FormData(e.target as HTMLFormElement);
@@ -20,6 +26,45 @@ const Login = () => {
     console.log("Email:", email);
     console.log("Password:", password);
     // Here, you can send the values to an API or perform other actions
+
+    try {
+      const resultAction = await dispatch(loginUser({ email, password }));
+      if (loginUser.fulfilled.match(resultAction)) {
+        const { role } = resultAction.payload.user;
+
+        console.log(role, "roleeeeeee");
+
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (role === "restaurant_owner") {
+          navigate("/dashboard");
+        } else if (
+          role === "staff" ||
+          role === "waiter" ||
+          role === "manager" ||
+          role === "chef" ||
+          role === "dine in" ||
+          role === "cashier"
+        ) {
+          navigate("/dashboard/order/dine-in");
+        } else if (
+          role === "staff" ||
+          role === "waiter" ||
+          role === "manager" ||
+          role === "chef" ||
+          role === "take away" ||
+          role === "cashier"
+        ) {
+          navigate("/dashboard/order/take-away");
+        } else {
+          navigate("/unauthorized");
+        }
+      }
+      console.log(resultAction, "resuldfasdfasdfasf");
+      // navigate("/dashboard/menu/add");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="w-full min-h-screen bg-gradient-to-r from-[#0F9996] to-[#56DAAB] dark:bg-gradient-to-r dark:from-[#030303] dark:to-[#030303]">
@@ -108,8 +153,9 @@ const Login = () => {
                     className="w-full text-base font-medium cursor-pointer"
                     type="submit"
                   >
-                    Log In
+                    {loading ? "Loggin in..." : "Log In"}
                   </PrimaryButton>
+                  {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
               </form>
 

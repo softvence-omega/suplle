@@ -10,7 +10,7 @@ const SuppleCard = ({
   description: string;
 }) => {
   return (
-    <div className="lg:w-[524px] lg:h-[304px] flex flex-col gap-2 text-center border-[2px] border-gray-200/60 hover:border-primary p-5 rounded-2xl">
+    <div className="lg:w-full lg:h-full flex flex-col gap-2 text-center border-[2px] border-gray-200/60 hover:border-primary p-5 rounded-2xl">
       <div className="flex justify-center items-center mx-auto text-primary hover:text-white bg-primary-gray hover:bg-primary rounded-full w-24 h-24 transition-all duration-300">
         {
           <Icon
@@ -19,7 +19,7 @@ const SuppleCard = ({
           />
         }
       </div>
-      <p className="text-gray-500">{category}</p>
+      <p className="text-gray-500 dark:text-gray-300">{category}</p>
       <h1 className="text-3xl font-medium">{title}</h1>
       <p className="text-xl px-5">{description}</p>
     </div>

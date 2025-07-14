@@ -11,7 +11,7 @@ interface PopularMenuItemsProps {
 }
 
 const PopularMenuItems: React.FC<PopularMenuItemsProps> = ({
-  imageUrl,
+  // imageUrl,
   title,
   rating,
   reviewCount,
@@ -29,23 +29,32 @@ const PopularMenuItems: React.FC<PopularMenuItemsProps> = ({
       {/* Content */}
       <div className="p-3">
         {/* Title */}
-        <h3 className="text-lg font-medium text-gray-800 dark:text-[#FFFFFF]">{title}</h3>
+        <h3 className="text-lg font-medium text-gray-800 dark:text-[#FFFFFF]">
+          {title}
+        </h3>
 
         {/* Stars & Reviews */}
         <div className="flex items-center mt-1 text-sm text-gray-600">
           {/* Render stars dynamically */}
           <div className="flex text-[#DFB300] mr-2">
             {Array.from({ length: 5 }, (_, i) => (
-              <FaStar key={i} className={i < rating ? "fill-current" : "opacity-30"} />
+              <FaStar
+                key={i}
+                className={i < rating ? "fill-current" : "opacity-30"}
+              />
             ))}
           </div>
-          <span className="text-[#484B52] font-normal text-xs dark:text-[#FFFFFF]">( {reviewCount} Reviews )</span>
+          <span className="text-[#484B52] font-normal text-xs dark:text-[#FFFFFF]">
+            ( {reviewCount} Reviews )
+          </span>
         </div>
 
         {/* Likes */}
         <div className="flex items-center gap-2 mt-5 text-sm text-teal-600 bg-teal-50 px-2 py-1 rounded-full w-fit dark:bg-neutral-950">
           <FaHeart />
-          <span className="text-xs font-normal text-[#000000]dark:text-[#FFFFFF]">{likes} Like it</span>
+          <span className="text-xs font-normal text-[#000000]dark:text-[#FFFFFF]">
+            {likes} Like it
+          </span>
         </div>
       </div>
     </div>

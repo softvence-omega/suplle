@@ -1,57 +1,120 @@
-import React, { useState } from 'react';
-import TabNavigation from './TabNavigation';
-import OrderList from './OrderList';
-import type { Order, OrderStatus } from './order';
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import {
+  // fetchPendingQrOrders,
+  changeQrOrderStatus,
+  fetchAllOrders,
+  fetchQrOrdersByStatus,
+} from "@/store/features/admin/qrOrderSlice";
 
+// const statusOptions = [
+//   "pending",
+//   "approved",
+//   "processing",
+//   "completed",
+//   "cancel",
+// ];
 
-
-// Sample data for demonstration
-const mockOrders: Order[] = [
-  { id: '1023', vendor: 'Pizza Place', status: 'Pending', time: '2 min ago' },
-  { id: '1024', vendor: 'Pizza Place', status: 'Processing', time: '5 min ago' },
-  { id: '1025', vendor: 'Pizza Place', status: 'Completed', time: '10 min ago' },
-  { id: '1026', vendor: 'Pizza Place', status: 'Cancelled', time: '30 min ago' },
-  { id: '1027', vendor: 'Pizza Place', status: 'Completed', time: '10 min ago' },
-  { id: '1028', vendor: 'Pizza Place', status: 'Pending', time: '2 min ago' },
-  { id: '1029', vendor: 'Pizza Place', status: 'Cancelled', time: '30 min ago' },
-  { id: '1030', vendor: 'Pizza Place', status: 'Completed', time: '10 min ago' },
-  { id: '1031', vendor: 'Pizza Place', status: 'Processing', time: '5 min ago' },
-  { id: '1032', vendor: 'Pizza Place', status: 'Cancelled', time: '30 min ago' },
-  { id: '1033', vendor: 'Pizza Place', status: 'Processing', time: '5 min ago' },
-  { id: '1034', vendor: 'Pizza Place', status: 'Cancelled', time: '30 min ago' },
-];
+const statusTabs = ["all", "pending", "approved", "processing"];
+const status = ["pending", "processing", "approved", "completed", "cancel"];
 
 const QROrderComponent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'All' | OrderStatus>('All');
-  
-  const handleTabChange = (tab: 'All' | OrderStatus) => {
-    setActiveTab(tab);
-  };
+  const dispatch = useAppDispatch();
+  const { orders, loading, error } = useAppSelector((state) => state.qrOrders);
+  const [activeTab, setActiveTab] = useState("pending");
 
-  const handleOrderClick = (orderId: string) => {
-    console.log(`Order ${orderId} clicked`);
-    // You would typically implement order details view here
+  // console.log(activeTab, "tabbbbbb");
+
+  useEffect(() => {
+    if (activeTab === "all") {
+      dispatch(fetchAllOrders());
+    } else {
+      dispatch(fetchQrOrdersByStatus(activeTab));
+    }
+  }, [dispatch, activeTab]);
+
+  // useEffect(() => {
+  //   dispatch(fetchPendingQrOrders());
+  // }, [dispatch]);
+
+  const handleStatusChange = (id: string, status: string) => {
+    dispatch(changeQrOrderStatus({ id, status }));
   };
 
   return (
-    <div className="">
-        <div className="py-6">
-             <h2 className='md:text-2xl text-xl text-[#333333] dark:text-[#FFFFFF]'>QR Orders</h2>
-        </div>
-               
-        <div className="pb-6">
-          <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
-        </div>
-        
-        <div className=" ">
-          <OrderList 
-            orders={mockOrders} 
-            filter={activeTab} 
-            onOrderClick={handleOrderClick} 
-          />
-        </div>
+    <div className="p-4">
+      <h2 className="md:text-2xl text-xl text-[#333333] dark:text-[#FFFFFF] mb-6">
+        QR Orders
+      </h2>
+      {loading && <div>Loading...</div>}
+      {error && <div className="text-red-500">{error}</div>}
+      <div className="flex gap-4 mb-6">
+        {statusTabs.map((tab) => (
+          <button
+            key={tab}
+            className={`px-4 py-2 rounded ${
+              activeTab === tab ? "bg-primary text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
       </div>
-    
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white dark:bg-[#161616] rounded shadow">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">Order ID</th>
+              <th className="px-4 py-2">User</th>
+              <th className="px-4 py-2">Design</th>
+              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Table Qty</th>
+              <th className="px-4 py-2">Status</th>
+              <th className="px-4 py-2">Change Status</th>
+              <th className="px-4 py-2">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order._id} className="border-t">
+                <td className="px-4 py-2">{order.orderId}</td>
+                <td className="px-4 py-2">{order.user}</td>
+                <td className="px-4 py-2">{order.qrCodeDesign}</td>
+                <td className="px-4 py-2">${order.price}</td>
+                <td className="px-4 py-2">{order.tableQuantity}</td>
+                <td className="px-4 py-2 capitalize">{order.status}</td>
+                <td className="px-4 py-2">
+                  <select
+                    value={order.status}
+                    onChange={(e) =>
+                      handleStatusChange(order._id, e.target.value)
+                    }
+                    className="border rounded px-2 py-1"
+                  >
+                    {status.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td className="px-4 py-2">
+                  {new Date(order.createdAt).toLocaleString()}
+                </td>
+              </tr>
+            ))}
+            {orders.length === 0 && (
+              <tr>
+                <td colSpan={8} className="text-center py-6 text-gray-500">
+                  No orders found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
