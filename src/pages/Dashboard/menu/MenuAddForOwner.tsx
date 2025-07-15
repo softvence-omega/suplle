@@ -16,6 +16,7 @@ import {
 } from "@/store/features/category/createCategorySlice";
 import { useEffect } from "react";
 import { createMenu } from "@/store/features/menu/menuSlice";
+import { toast } from "react-toastify";
 
 // Category Form Schema
 const categorySchema = z.object({
@@ -79,6 +80,7 @@ const MenuAddForOwner = () => {
     console.log("Menu payload: ", payload);
 
     dispatch(createMenu(payload));
+    toast("Menu added successfully");
   };
 
   const handleDeleteCategory = (categoryId: string) => {
