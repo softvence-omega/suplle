@@ -49,7 +49,7 @@ const TableQuantity = ({
         setClientSecret(paymentIntentRes.payload.clientSecret);
       }
       console.log("Response:", response.data);
-      toast.success("Qr code added successfully. Please wait for approval");
+      toast.success("Qr code added successfully. Please pay for proceed.");
     } catch (error) {
       console.error("Error:", error);
     }

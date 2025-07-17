@@ -25,30 +25,6 @@ const StepTwoPointFive = ({
 
   const token = Cookies.get("accessToken");
 
-  // useEffect(() => {
-  //   if (planId && month) {
-  //     // Example API call
-  //     fetch(
-  //       "${import.meta.env.VITE_BACKEND_BASE_URL}/subscription/create-subscription-intent",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: token ?? "",
-  //         },
-  //         body: JSON.stringify({
-  //           planId,
-  //           months: Number(month),
-  //         }),
-  //       }
-  //     )
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log("API response in mmmmmmmmmm:", data);
-  //         setClientSecret(data.clientSecret);
-  //       });
-  //   }
-  // }, [planId, month, setClientSecret, token]);
   const handleFetchIntent = async () => {
     if (!planId || !selectMonth) return;
 
