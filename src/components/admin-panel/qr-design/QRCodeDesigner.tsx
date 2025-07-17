@@ -21,9 +21,9 @@ export const QRCodeDesigner: React.FC = () => {
   const [showNewDesignForm, setShowNewDesignForm] = useState(false);
 
   const tabs = [
-    { id: "available", label: "available" },
-    { id: "comingSoon", label: "coming Soon" },
-    { id: "unavailable", label: "unavailable" },
+    { id: "Available", label: "Available" },
+    { id: "ComingSoon", label: "Coming Soon" },
+    { id: "Unavailable", label: "Unavailable" },
   ];
 
   if (loading) {
@@ -48,7 +48,7 @@ export const QRCodeDesigner: React.FC = () => {
 
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-      {activeTab === "available" && (
+      {activeTab === "Available" && (
         <>
           {!showNewDesignForm && (
             <DesignGrid
@@ -80,7 +80,7 @@ export const QRCodeDesigner: React.FC = () => {
         </>
       )}
 
-      {activeTab === "comingSoon" && (
+      {activeTab === "ComingSoon" && (
         <DesignGrid
           designs={comingSoonDesigns}
           onEdit={() => {}}
@@ -89,7 +89,7 @@ export const QRCodeDesigner: React.FC = () => {
         />
       )}
 
-      {activeTab === "unavailable" && (
+      {activeTab === "Unavailable" && (
         <DesignGrid
           designs={unavailableDesigns}
           onEdit={() => {}}

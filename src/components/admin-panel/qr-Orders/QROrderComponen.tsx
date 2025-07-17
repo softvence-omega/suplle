@@ -48,12 +48,12 @@ const QROrderComponent: React.FC = () => {
       </h2>
       {loading && <div>Loading...</div>}
       {error && <div className="text-red-500">{error}</div>}
-      <div className="flex gap-4 mb-6">
+      <div className="lg:flex gap-4 mb-6">
         {statusTabs.map((tab) => (
           <button
             key={tab}
-            className={`px-4 py-2 rounded ${
-              activeTab === tab ? "bg-primary text-white" : "bg-gray-200"
+            className={`px-4 py-2 my-1 rounded ${
+              activeTab === tab ? "bg-primary text-white" : "bg-primary-dark text-white"
             }`}
             onClick={() => setActiveTab(tab)}
           >
