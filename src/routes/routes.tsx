@@ -49,7 +49,10 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/restaurant/:id" element={<DynamicRestaurant />} />
+      <Route
+        path="/restaurant/:resId/table/:tableId"
+        element={<DynamicRestaurant />}
+      />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />

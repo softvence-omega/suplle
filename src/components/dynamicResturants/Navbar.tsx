@@ -34,7 +34,7 @@ export const Navbar = () => {
   return (
     <Wrapper>
       <div className="w-full p-5">
-        <nav className="flex items-center justify-between w-full h-16 bg-white shadow-md px-4">
+        <nav className="flex items-center justify-between w-full h-16 bg-white dark:bg-secondary-dark shadow-md p-4 rounded-lg">
           {/* Logo and branding */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
@@ -42,7 +42,7 @@ export const Navbar = () => {
                 <RestaurantIcon />
               </div>
               <div className="flex flex-col">
-                <p className="text-2xl font-normal text-gray-800 ml-2 text-[]">
+                <p className="text-2xl font-normal text-gray-800 dark:text-white ml-2 ">
                   Urban Bistro
                 </p>
                 <p className="text-sm text-gray-600 ml-2">123 Main Street</p>
@@ -56,13 +56,13 @@ export const Navbar = () => {
               <Link
                 key={item.id}
                 to={item.url}
-                className="text-black text-lg px-3 py-1 rounded-xl hover:bg-primary hover:text-white"
+                className="text-black dark:text-white text-lg px-3 py-1 rounded-xl hover:bg-primary hover:text-white"
               >
                 {item.label}
               </Link>
             ))}
             <Link to="/">
-              <button className="bg-primary-dark text-white px-5 py-2 rounded-3xl">
+              <button className="bg-primary-dark hover:bg-primary cursor-pointer text-white px-5 py-2 rounded-3xl">
                 Login/Signup
               </button>
             </Link>
@@ -90,7 +90,7 @@ export const Navbar = () => {
               </Link>
             ))}
             <Link to="/" onClick={() => setMenuOpen(false)}>
-              <button className="w-full bg-primary-dark text-white px-5 py-2 rounded-3xl">
+              <button className="w-full bg-primary-dark text-white px-5 py-2 rounded-3xl cursor-pointer">
                 Login/Signup
               </button>
             </Link>

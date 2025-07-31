@@ -12,6 +12,7 @@ import restaurantReducer from "../store/features/restaurant/restaurantSlice";
 import subscriptionReducer from "../store/features/admin/subscriptionPlan";
 import qrOrdersReducer from "../store/features/admin/qrOrderSlice";
 import switchAccountReducer from "../store/features/Switch Account/switchAccount";
+import fetchMenusByRestaurant from "./features/Customer Menu/customerMenuSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     subscriptionPlan: subscriptionReducer,
     qrOrders: qrOrdersReducer,
     switchAccount: switchAccountReducer,
+    dynamicMenu: fetchMenusByRestaurant,
   },
 });
 

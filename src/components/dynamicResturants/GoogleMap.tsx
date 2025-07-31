@@ -39,7 +39,7 @@ const GoogleMap = () => {
 
   return (
     <Wrapper>
-      <div className="w-full p-3 md:p-6 bg-white">
+      <div className="w-full p-3 md:p-6 ">
         <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
           <iframe
             title="Google Map"

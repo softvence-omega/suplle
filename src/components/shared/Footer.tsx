@@ -9,7 +9,7 @@ import Wrapper from "./Wrapper";
 const Footer = () => {
   return (
     <Wrapper>
-      <footer className="bg-[#050B1E] text-white px-6 py-5">
+      <footer className="bg-[#050B1E] text-white px-6 py-5 rounded-t-lg">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Company Info */}
           <div>
