@@ -27,7 +27,6 @@ interface UserTableRowProps {
 // Table Row Component
 const UserTableRow = ({
   user,
-  index,
   serialNumber,
   onView,
   onEdit,
@@ -88,7 +87,7 @@ export default function UserTable({
     setPaginatedUsers(users.slice(startIndex, endIndex));
   }, [users, currentPage, itemsPerPage]);
 
-  const handleView = (user: User) => {
+  const handleView = () => {
     // Optional: implement view modal or details if needed
   };
 
@@ -113,12 +112,24 @@ export default function UserTable({
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-white dark:bg-primary-dark">
           <tr>
-            <th scope="col" className="px-6 py-3">Sl.</th>
-            <th scope="col" className="px-6 py-3">User Name</th>
-            <th scope="col" className="px-6 py-3">Email</th>
-            <th scope="col" className="px-6 py-3">Role</th>
-            <th scope="col" className="px-6 py-3">Status</th>
-            <th scope="col" className="px-6 py-3">Action</th>
+            <th scope="col" className="px-6 py-3">
+              Sl.
+            </th>
+            <th scope="col" className="px-6 py-3">
+              User Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Email
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Role
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>

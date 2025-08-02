@@ -9,7 +9,7 @@ interface EyeButtonProps {
 
 const EyeButton: React.FC<EyeButtonProps> = ({
   size = 20,
-  color = "white", // Default color is white
+  // color = "white", // Default color is white
   className = "",
 }) => (
   <svg
@@ -35,13 +35,27 @@ const EyeButton: React.FC<EyeButtonProps> = ({
       strokeLinejoin="round"
     />
     <defs>
-      <linearGradient id="paint0_linear_1118_20399" x1="12" y1="0.209106" x2="13.1547" y2="22.4486" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#56DAAB"/>
-        <stop offset="1" stopColor="#0F9996"/>
+      <linearGradient
+        id="paint0_linear_1118_20399"
+        x1="12"
+        y1="0.209106"
+        x2="13.1547"
+        y2="22.4486"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#56DAAB" />
+        <stop offset="1" stopColor="#0F9996" />
       </linearGradient>
-      <linearGradient id="paint1_linear_1118_20399" x1="12" y1="0.209106" x2="13.1547" y2="22.4486" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#56DAAB"/>
-        <stop offset="1" stopColor="#0F9996"/>
+      <linearGradient
+        id="paint1_linear_1118_20399"
+        x1="12"
+        y1="0.209106"
+        x2="13.1547"
+        y2="22.4486"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#56DAAB" />
+        <stop offset="1" stopColor="#0F9996" />
       </linearGradient>
     </defs>
   </svg>

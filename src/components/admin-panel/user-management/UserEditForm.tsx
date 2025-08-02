@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { User, UserStatus, UserActivity } from "./user";
+import type { User, UserRole, UserActivity } from "./user";
 import { useState, useEffect } from "react";
 
 interface UserEditFormProps {
@@ -26,7 +26,7 @@ interface UserEditFormProps {
   isOpen: boolean;
 }
 
-const roleOptions: UserStatus[] = [
+const roleOptions: UserRole[] = [
   "Staff",
   "Owner",
   "Manager",

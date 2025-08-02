@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
 import { useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import SuppleForm from "@/components/Forms/SuplleForm";
@@ -11,6 +10,7 @@ import { userRoles } from "@/constants/roles";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FieldValues } from "react-hook-form";
+import type { User } from "../dashboard/StaffViewForOwner/user-type";
 
 interface UserTableProps {
   users: User[];
@@ -90,7 +90,7 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
           {users.map((user, index) => (
             <tr key={user.id} className="bg-white border-b">
               <td className="px-6 py-4">{index + 1}</td>
-              <td className="px-6 py-4">{user.userName}</td>
+              <td className="px-6 py-4">{user.Name}</td>
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">{user.role}</td>
               <td className="px-6 py-4">
@@ -146,7 +146,7 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium">Name</label>
-                <p className="mt-1">{selectedUser.userName}</p>
+                <p className="mt-1">{selectedUser.Name}</p>
               </div>
               <div>
                 <label className="text-sm font-medium">Email</label>
@@ -192,7 +192,7 @@ export default function UserTable({ users, onEdit, onDelete }: UserTableProps) {
           onSubmit={handleEditSubmit}
           className="grid gap-2"
           defaultValues={{
-            name: selectedUser?.userName ?? "",
+            name: selectedUser?.Name ?? "",
             email: selectedUser?.email ?? "",
             role: selectedUser?.role ?? undefined,
           }}

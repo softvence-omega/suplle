@@ -10,9 +10,9 @@ import WhyChooseSuplle from "@/components/home/WhyChooseSuplle/WhyChooseSuplle";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="" style={{ backgroundColor: "#030014" }}>
       <Banner />
-       <WhatIsSuplle />
+      <WhatIsSuplle />
       <Story />
       <WhyChooseSuplle />
       <HowSuplleHelps />

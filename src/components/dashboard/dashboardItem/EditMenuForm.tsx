@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import type { MenuCategory, MenuItem } from "./data/Type";
+import type { MenuCategory, FullMenuItem } from "./data/Type";
 import SuppleForm from "@/components/Forms/SuplleForm";
 import SuppleInput from "@/components/Forms/SuppleInput";
 import SuppleTextarea from "@/components/Forms/SuppleTextarea";
@@ -11,7 +11,7 @@ import { Upload } from "lucide-react";
 
 interface EditMenuFormProps {
   categories: MenuCategory[];
-  onAddItem: (item: Omit<MenuItem, "id">) => void;
+  onAddItem: (item: Omit<FullMenuItem, "id">) => void;
   onClose: () => void;
 }
 
@@ -26,8 +26,8 @@ const CategorySelect = ({ categories }: { categories: MenuCategory[] }) => {
         {...register("category", { required: true })}
       >
         {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
+          <option key={cat._id} value={cat._id}>
+            {cat._id}
           </option>
         ))}
       </select>
@@ -40,17 +40,23 @@ const EditMenuForm: React.FC<EditMenuFormProps> = ({
   onAddItem,
   onClose,
 }) => {
-  const defaultValues: Omit<MenuItem, "id"> = {
-    name: "",
+  const defaultValues: Omit<FullMenuItem, "_id"> = {
+    itemName: "",
     description: "",
     price: 0,
     size: "",
-    category: categories[0]?.id || "",
-    available: undefined,
+    category: categories[0] || ({} as MenuCategory),
+    availability: "",
     image: "",
+    isDeleted: false,
+    like: 0,
+    rating: 0,
+    createdAt: "",
+    updatedAt: "",
+    restaurant: {} as any, // You may want to handle this properly
   };
 
-  const handleSubmit = (data: Omit<MenuItem, "id">) => {
+  const handleSubmit = (data: Omit<FullMenuItem, "id">) => {
     onAddItem(data);
     onClose();
   };

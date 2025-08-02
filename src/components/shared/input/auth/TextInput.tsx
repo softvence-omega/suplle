@@ -1,4 +1,3 @@
-
 import type {
   FieldValues,
   UseFormRegister,
@@ -8,18 +7,18 @@ import type {
 } from "react-hook-form";
 
 interface InputComponentProps<T extends FieldValues> {
-  name: Path<T>; // Name of the input field, type-safe
+  name: Path<T>;
   label: string;
   className?: string;
-  register: UseFormRegister<T>; // Register function for your form fields
+  register?: UseFormRegister<T>; // Made optional
   rules?: RegisterOptions<T, Path<T>>;
-  errors?: FieldErrors<T>; // Errors for your form fields
+  errors?: FieldErrors<T>;
   placeholder?: string;
   type?: string;
   labelClassName?: string;
   inputClassName?: string;
-  value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  value?: string; // Made optional
+  onChange?: React.ChangeEventHandler<HTMLInputElement>; // Made optional
 }
 
 const InputComponent = <T extends FieldValues>({
@@ -32,12 +31,13 @@ const InputComponent = <T extends FieldValues>({
   rules = {},
   errors,
   placeholder,
-  type,
+  type = "text",
   value,
   onChange,
   ...props
 }: InputComponentProps<T>) => {
   const error = errors ? errors[name] : undefined;
+
   return (
     <div className={`w-full ${className}`}>
       <label
@@ -47,26 +47,35 @@ const InputComponent = <T extends FieldValues>({
         {label}
       </label>
       <div className="relative w-full flex flex-row gap-2">
-        {/* Display Icon if provided */}
-        <input
-          {...props} // Spread other props like placeholder, type, etc.
-          {...register(name, rules)} // Register the input field with React Hook Form, with optional rules
-          id={name}
-          name={name}
-          className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
-            error ? "border-red-500" : ""
-          }`}
-          placeholder={placeholder || "Type here"}
-          type={type || "text"}
-        />
-        
+        {register ? (
+          <input
+            {...register(name, rules)}
+            id={name}
+            className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
+              error ? "border-red-500" : ""
+            }`}
+            placeholder={placeholder || "Type here"}
+            type={type}
+            {...props}
+          />
+        ) : (
+          <input
+            id={name}
+            name={name}
+            value={value}
+            onChange={onChange}
+            className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
+              error ? "border-red-500" : ""
+            }`}
+            placeholder={placeholder || "Type here"}
+            type={type}
+            {...props}
+          />
+        )}
       </div>
-      
       {error?.message && (
         <p className="text-red-500 text-sm">{String(error.message)}</p>
       )}
-      {/* Display error message */}
-      
     </div>
   );
 };

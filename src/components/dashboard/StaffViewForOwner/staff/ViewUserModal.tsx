@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import EyeIcon from "@/components/ui/EyeIcon";
 import { Modal } from "@/components/ui/modal";
-import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
+// import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
 import { useState } from "react";
+import type { User } from "../user-type";
 
 // Types
 interface ViewUserModalProps {
@@ -14,7 +15,7 @@ const UserDetails = ({ user }: { user: User }) => (
   <div className="grid grid-cols-2 gap-4">
     <div>
       <label className="text-sm font-medium">Name</label>
-      <p className="mt-1">{user.userName}</p>
+      <p className="mt-1">{user.Name}</p>
     </div>
     <div>
       <label className="text-sm font-medium">Email</label>

@@ -20,7 +20,7 @@ const IconAnimation = () => {
       // First icon: white → green → white
       timers.push(
         setTimeout(
-          () => setIcons((prev) => updateIcon(prev, 1, "#11a8a5")),
+          () => setIcons((prev) => updateIcon(prev, 1, "#540595")),
           200
         )
       );
@@ -31,7 +31,7 @@ const IconAnimation = () => {
       // Second icon: white → green → white
       timers.push(
         setTimeout(
-          () => setIcons((prev) => updateIcon(prev, 2, "#11a8a5")),
+          () => setIcons((prev) => updateIcon(prev, 2, "#540595")),
           500
         )
       );
@@ -42,7 +42,7 @@ const IconAnimation = () => {
       // Third icon: white → green → white
       timers.push(
         setTimeout(
-          () => setIcons((prev) => updateIcon(prev, 3, "#11a8a5")),
+          () => setIcons((prev) => updateIcon(prev, 3, "#540595")),
           800
         )
       );
@@ -80,7 +80,7 @@ const IconAnimation = () => {
         <FaChevronDown
           key={icon.id}
           className={`text-5xl transition-colors duration-200 ${
-            icon.color === "white" ? "text-white" : "text-[#22c55e]"
+            icon.color === "white" ? "text-white" : "text-[#540595]"
           }`}
         />
       ))}

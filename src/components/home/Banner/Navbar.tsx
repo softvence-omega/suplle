@@ -10,13 +10,13 @@ const Navbar = () => {
       </div>
       <div className="flex gap-3 flex-col sm:flex-row w-full sm:w-auto items-center">
         <Button
-          className="w-full sm:w-auto bg-transparent border border-primary rounded-full text-sm sm:text-base text-primary hover:text-white px-5 py-2"
+          className="w-full sm:w-auto bg-transparent border border-[#9540dadb] rounded-full text-sm sm:text-base text-[#9540dadb] hover:bg-[#9540dadb] hover:text-white px-5 py-2"
           onClick={() => navigate("/login")}
         >
           Log In
         </Button>
         <Button
-          className="w-full sm:w-auto rounded-full text-sm sm:text-base px-5 py-2"
+          className="w-full sm:w-auto rounded-full text-sm sm:text-base px-5 py-2 bg-[#9540dadb] text-white hover:bg-[#9540dadb]/70"
           onClick={() => navigate("/signup")}
         >
           Sign Up
