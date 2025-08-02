@@ -4,27 +4,32 @@ interface PricingCardProps {
   price: string;
   name: string;
   features: string[];
-  popular: boolean;
+  onUpdateClick: () => void; // Changed from setShowUpdateModal
+  onDeleteClick: () => void; // Changed from setShowDeleteModal
 }
 
-const PricingCard: React.FC<PricingCardProps> = ({ price, name, features }) => {
+const PricingCard: React.FC<PricingCardProps> = ({
+  price,
+  name,
+  features,
+  onUpdateClick,
+  onDeleteClick,
+}) => {
   return (
     <div
-      className={` flex flex-col dark:bg-[#161616]
-        rounded-lg shadow-lg bg-white overflow-hidden
-        transform transition-all duration-300 lg:hover:-translate-y-1 lg:hover:shadow-xl
-        
-      `}
+      className={`flex flex-col dark:bg-[#161616]
+          rounded-lg shadow-lg bg-white overflow-hidden
+          transform transition-all duration-300 lg:hover:-translate-y-1 lg:hover:shadow-xl`}
     >
       <div className="md:px-6 py-8 px-3 flex-grow">
-        <h3 className="text-center md:text-[40px] text-4xl font-medium bg-gradient-to-r from-[#56DAAB]   to-[#0F9996] bg-clip-text text-transparent tracking-tight dark:text-white">
+        <h3 className="text-center md:text-[40px] text-4xl font-medium bg-gradient-to-r from-[#56DAAB] to-[#0F9996] bg-clip-text text-transparent tracking-tight dark:text-white">
           {price}
           <span className="">/mth</span>
         </h3>
-        <p className="mt-3 text-center text-lg font-normal text-[#101828]">
+        <p className="mt-3 text-center text-lg font-normal text-[#101828] dark:text-gray-400">
           {name}
         </p>
-        <ul className="mt-7 space-y-4">
+        <ul className="mt-7 h-[140px] space-y-4">
           {features.map((feature, index) => (
             <li key={index} className="flex items-start">
               <div className="h-[20px] w-[20px] rounded-full bg-[#D1FADF] flex items-center justify-center dark:bg-black">
@@ -37,8 +42,8 @@ const PricingCard: React.FC<PricingCardProps> = ({ price, name, features }) => {
                     fill="none"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M9.65476 0.839288L3.57995 6.70199L1.96792 4.97966C1.67097 4.69968 1.20433 4.68271 0.864951 4.92027C0.53406 5.16632 0.440732 5.59902 0.644357 5.94688L2.55334 9.05216C2.74 9.34063 3.0624 9.5188 3.42723 9.5188C3.77509 9.5188 4.10598 9.34063 4.29264 9.05216C4.59808 8.6534 10.4268 1.70469 10.4268 1.70469C11.1904 0.924131 10.2656 0.236897 9.65476 0.830803V0.839288Z"
                       fill="currentColor"
                     />
@@ -54,15 +59,18 @@ const PricingCard: React.FC<PricingCardProps> = ({ price, name, features }) => {
         </ul>
       </div>
 
-      <div className="px-6 pb-8 w-full flex justify-center items-center mt-auto">
-        {/* Light Mode Button */}
-        <button className="w-full px-4 py-2 bg-gradient-to-b from-[#56DAAB] to-[#0F9996] text-white rounded-md md:text-base text-sm dark:hidden cursor-pointer hover:opacity-70 transition-opacity">
-          Get started
+      <div className="px-6 pb-8 w-full flex justify-center items-center gap-4 mt-auto">
+        <button
+          className="w-full px-4 py-2 bg-gradient-to-b from-[#56DAAB] to-[#0F9996] text-white rounded-md md:text-base text-sm cursor-pointer hover:opacity-70 transition-opacity"
+          onClick={onUpdateClick} // Changed to use callback
+        >
+          Edit
         </button>
-
-        {/* Dark Mode Button */}
-        <button className="w-full px-4 py-2 bg-[#030303] text-white rounded-md md:text-base text-sm hidden dark:block cursor-pointer">
-          Get started
+        <button
+          className="w-full px-4 py-2 bg-red-500/90 dark:bg-red-500/60 text-white rounded-md md:text-base text-sm cursor-pointer hover:opacity-70 transition-opacity"
+          onClick={onDeleteClick} // Changed to use callback
+        >
+          Delete
         </button>
       </div>
     </div>

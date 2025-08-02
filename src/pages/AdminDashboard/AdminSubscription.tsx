@@ -80,7 +80,7 @@ const AdminSubscription = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur">
-          <div className="bg-white p-5 rounded-lg shadow-lg w-full max-w-lg relative">
+          <div className="bg-white dark:bg-primary-dark p-5 rounded-lg shadow-lg w-full max-w-lg relative">
             <button
               className="absolute top-2 right-2 text-xl text-gray-500 hover:text-gray-700"
               onClick={() => setShowModal(false)}
