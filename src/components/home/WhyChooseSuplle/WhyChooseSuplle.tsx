@@ -27,7 +27,7 @@ const whyChooseSuplleData = [
 
 const WhyChooseSuplle = () => {
   return (
-    <div className="w-full bg-[#030014] py-20 px-4 sm:px-6 lg:px-12">
+    <div className="w-full py-20 px-4 sm:px-6 lg:px-12">
       <h1 className="text-white text-3xl sm:text-4xl lg:text-6xl text-center font-bold">
         Why Choose <span className="text-primary-gradient">Suplle</span>
       </h1>

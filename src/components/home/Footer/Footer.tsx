@@ -4,7 +4,7 @@ import { IoLogoInstagram } from "react-icons/io5";
 
 const Footer = () => {
   return (
-    <div className="mt-24 px-4 bg-[#030014] sm:px-10 lg:px-24 xl:px-36 pb-12 w-full overflow-x-hidden">
+    <div className="mt-24 px-4  sm:px-10 lg:px-24 xl:px-36 pb-12 w-full overflow-x-hidden">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-primary-gradient text-3xl sm:text-4xl font-bold">
           Suplle
@@ -24,7 +24,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <hr className="mt-12 border-gray-300" />
+      <hr className="mt-12 border-[#540595]" />
       <div className="text-[#737373] text-center mt-6 text-sm sm:text-base">
         © Copyright 2025, All Rights Reserved by{" "}
         <span className="font-semibold text-primary-gradient">Suplle</span>

@@ -50,7 +50,7 @@ const itemVariants = {
 
 const WhatIsSuplle = () => {
   return (
-    <div className="py-10 bg-[#030014] overflow-hidden ">
+    <div className="py-10  overflow-hidden ">
       <motion.div
         className="w-full max-w-7xl mx-auto px-4 sm:px-8"
         initial="hidden"

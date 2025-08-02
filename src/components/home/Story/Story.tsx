@@ -30,7 +30,7 @@ const Story = () => {
   }, []);
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-12 py-10 overflow-hidden bg-[#030014]">
+    <div className="w-full px-4 sm:px-6 lg:px-12 py-10 overflow-hidden ">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
         {/* Left Side */}
         <div className="w-full lg:w-1/2">

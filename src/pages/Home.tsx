@@ -1,3 +1,4 @@
+import CursorAnimationWrapper from "@/components/CursorAnimation";
 import Banner from "@/components/home/Banner/Banner";
 import FAQ from "@/components/home/FAQ/FAQ";
 import Footer from "@/components/home/Footer/Footer";
@@ -12,14 +13,16 @@ const Home = () => {
   return (
     <div className="" style={{ backgroundColor: "#030014" }}>
       <Banner />
-      <WhatIsSuplle />
-      <Story />
-      <WhyChooseSuplle />
-      <HowSuplleHelps />
-      <FAQ />
-      <Testimonial />
-      <SignInBox />
-      <Footer />
+      <CursorAnimationWrapper>
+        <WhatIsSuplle />
+        <Story />
+        <WhyChooseSuplle />
+        <HowSuplleHelps />
+        <FAQ />
+        <Testimonial />
+        <SignInBox />
+        <Footer />
+      </CursorAnimationWrapper>
     </div>
   );
 };

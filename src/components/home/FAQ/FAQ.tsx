@@ -49,7 +49,7 @@ const FAQ = () => {
   };
 
   return (
-    <div className=" px-4 sm:px-6 bg-[#030014]">
+    <div className=" px-4 sm:px-6 ">
       <h1 className="text-white text-center text-3xl sm:text-5xl lg:text-6xl font-bold mb-7">
         Frequently Asked{" "}
         <span className="text-primary-gradient">Questions</span>
