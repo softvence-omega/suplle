@@ -4,16 +4,25 @@ import PrimaryButton from "@/components/shared/PrimaryButton";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/hooks/useRedux";
-import { addSubscription } from "@/store/features/admin/subscriptionPlan";
+import { addSubscription } from "@/store/features/admin/plan/subscriptionPlan";
 import { toast } from "react-toastify";
 
 const AdminSubscription = () => {
   const [form, setForm] = useState({
+    state: "starter" as "starter" | "pro" | "premium" | "enterprise",
     name: "",
     price: "",
+    target: "restaurant", // default value
     maxRestaurants: "",
+    maxFloor: "",
+    maxTables: "",
+    maxMenu: "",
+    maxUsers: "",
     features: [""],
-    billingCycle: "monthly",
+    billingCycle: "monthly" as "monthly" | "yearly",
+    isMenuUploadViaExcel: false,
+    isEccessSubUser: false,
+    mostPopular: false,
   });
   const [showModal, setShowModal] = useState(false);
 
@@ -33,21 +42,32 @@ const AdminSubscription = () => {
     }
   };
 
-  const addFeature = () => {
-    setForm({ ...form, features: [...form.features, ""] });
-  };
+  // const addFeature = () => {
+  //   setForm({ ...form, features: [...form.features, ""] });
+  // };
 
-  const removeFeature = (idx: number) => {
-    const newFeatures = form.features.filter((_, i) => i !== idx);
-    setForm({ ...form, features: newFeatures });
-  };
+  // const removeFeature = (idx: number) => {
+  //   const newFeatures = form.features.filter((_, i) => i !== idx);
+  //   setForm({ ...form, features: newFeatures });
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
-      ...form,
+      state: form.state,
+      name: form.name,
       price: Number(form.price),
+      target: form.target,
       maxRestaurants: Number(form.maxRestaurants),
+      maxFloor: form.state === "pro" ? null : Number(form.maxFloor),
+      maxTables: form.state === "pro" ? null : Number(form.maxTables),
+      maxMenu: Number(form.maxMenu),
+      maxUsers: Number(form.maxUsers),
+      features: form.features.filter((f) => f.trim() !== ""),
+      billingCycle: form.billingCycle,
+      isMenuUploadViaExcel: form.isMenuUploadViaExcel,
+      isEccessSubUser: form.isEccessSubUser,
+      mostPopular: form.mostPopular,
     };
     console.log("Submitting:", payload);
     setShowModal(false);
@@ -80,7 +100,7 @@ const AdminSubscription = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur">
-          <div className="bg-white p-5 rounded-lg shadow-lg w-full max-w-lg relative">
+          <div className="bg-white dark:bg-primary-dark p-5 rounded-lg shadow-lg w-full max-w-lg relative overflow-y-scroll h-[800px]">
             <button
               className="absolute top-2 right-2 text-xl text-gray-500 hover:text-gray-700"
               onClick={() => setShowModal(false)}
@@ -90,6 +110,39 @@ const AdminSubscription = () => {
             </button>
             <h1 className="text-xl font-bold mb-8">Create Subscription Plan</h1>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* State Field */}
+              <label>
+                State:
+                <select
+                  name="state"
+                  value={form.state}
+                  onChange={handleChange}
+                  required
+                  className="border rounded px-2 py-1 w-full"
+                >
+                  <option value="starter">Starter</option>
+                  <option value="pro">Pro</option>
+                  <option value="premium">Premium</option>
+                  <option value="enterprise">Enterprise</option>
+                </select>
+              </label>
+
+              {/* Target Field */}
+              <label>
+                Target:
+                <select
+                  name="target"
+                  value={form.target}
+                  onChange={handleChange}
+                  required
+                  className="border rounded px-2 py-1 w-full"
+                >
+                  <option value="restaurant">Restaurant</option>
+                  <option value="business">Business</option>
+                </select>
+              </label>
+
+              {/* Name Field */}
               <label>
                 Name:
                 <input
@@ -101,6 +154,8 @@ const AdminSubscription = () => {
                   className="border rounded px-2 py-1 w-full"
                 />
               </label>
+
+              {/* Price Field */}
               <label>
                 Price:
                 <input
@@ -112,6 +167,8 @@ const AdminSubscription = () => {
                   className="border rounded px-2 py-1 w-full"
                 />
               </label>
+
+              {/* Max Restaurants */}
               <label>
                 Max Restaurants:
                 <input
@@ -123,37 +180,67 @@ const AdminSubscription = () => {
                   className="border rounded px-2 py-1 w-full"
                 />
               </label>
+
+              {/* Max Floor (conditional) */}
+              {form.state !== "pro" && (
+                <label>
+                  Max Floors:
+                  <input
+                    type="number"
+                    name="maxFloor"
+                    value={form.maxFloor}
+                    onChange={handleChange}
+                    required={true}
+                    className="border rounded px-2 py-1 w-full"
+                  />
+                </label>
+              )}
+
+              {/* Max Tables (conditional) */}
+              {form.state !== "pro" && (
+                <label>
+                  Max Tables:
+                  <input
+                    type="number"
+                    name="maxTables"
+                    value={form.maxTables}
+                    onChange={handleChange}
+                    required={true}
+                    className="border rounded px-2 py-1 w-full"
+                  />
+                </label>
+              )}
+
+              {/* Max Menu Items */}
               <label>
-                Features:
-                {form.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center gap-2 mt-1">
-                    <input
-                      type="text"
-                      name="features"
-                      value={feature}
-                      onChange={(e) => handleChange(e, idx)}
-                      required
-                      className="border rounded px-2 py-1 flex-1"
-                    />
-                    {form.features.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeFeature(idx)}
-                        className="text-red-500"
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={addFeature}
-                  className="mt-2 text-primary"
-                >
-                  Add Feature
-                </button>
+                Max Menu Items:
+                <input
+                  type="number"
+                  name="maxMenu"
+                  value={form.maxMenu}
+                  onChange={handleChange}
+                  required
+                  className="border rounded px-2 py-1 w-full"
+                />
               </label>
+
+              {/* Max Users */}
+              <label>
+                Max Users:
+                <input
+                  type="number"
+                  name="maxUsers"
+                  value={form.maxUsers}
+                  onChange={handleChange}
+                  required
+                  className="border rounded px-2 py-1 w-full"
+                />
+              </label>
+
+              {/* Features (existing code) */}
+              {/* ... existing features code ... */}
+
+              {/* Billing Cycle */}
               <label>
                 Billing Cycle:
                 <select
@@ -167,12 +254,45 @@ const AdminSubscription = () => {
                   <option value="yearly">Yearly</option>
                 </select>
               </label>
-              <PrimaryButton
-                type="submit"
-                className="text-white px-4 py-2 rounded mt-2 bg-primary"
-              >
-                Create Plan
-              </PrimaryButton>
+
+              {/* Additional Checkboxes */}
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="isMenuUploadViaExcel"
+                  checked={form.isMenuUploadViaExcel}
+                  onChange={(e) =>
+                    setForm({ ...form, isMenuUploadViaExcel: e.target.checked })
+                  }
+                />
+                Allow menu upload via Excel
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="isEccessSubUser"
+                  checked={form.isEccessSubUser}
+                  onChange={(e) =>
+                    setForm({ ...form, isEccessSubUser: e.target.checked })
+                  }
+                />
+                Allow sub-user access
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="mostPopular"
+                  checked={form.mostPopular}
+                  onChange={(e) =>
+                    setForm({ ...form, mostPopular: e.target.checked })
+                  }
+                />
+                Mark as Most Popular
+              </label>
+
+              <PrimaryButton type="submit">Create Plan</PrimaryButton>
             </form>
           </div>
         </div>

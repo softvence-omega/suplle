@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 interface Floor {
   _id: string;
@@ -87,6 +88,7 @@ const FloorManagement: React.FC<FloorManagementProps> = ({
         setSelectedFloor(createdFloor);
         setNewFloor("");
         setIsModalOpen(false);
+        toast.success("Floor created");
       } else {
         alert("Failed to add floor. Try again.");
       }

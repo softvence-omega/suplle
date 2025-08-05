@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import RestaurantHeader from './RestaruntHeader';
-import MenuCategory from './MenuCategory';
-import { initialMenuItems, initialCategories } from './data/Data';
-import type { MenuCategory as MenuCategoryType } from './data/Type';
-import type { MenuItem as MenuItemType } from './data/Type';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import RestaurantHeader from "./RestaruntHeader";
+import MenuCategory from "./MenuCategory";
+import { initialMenuItems, initialCategories } from "./data/Data";
+import type { MenuCategory as MenuCategoryType } from "./data/Type";
+import type { FullMenuItem as MenuItemType } from "./data/Type";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const RestaurantMenu: React.FC = () => {
   const [menuItems] = useState<MenuItemType[]>(initialMenuItems);
@@ -14,7 +14,7 @@ const RestaurantMenu: React.FC = () => {
   const navigate = useNavigate();
 
   const getItemsByCategory = (categoryId: string) => {
-    return menuItems.filter(item => item.category === categoryId);
+    return menuItems.filter((item) => item.category._id === categoryId);
   };
 
   const handleAddMenu = () => {
@@ -29,13 +29,10 @@ const RestaurantMenu: React.FC = () => {
       transition={{ duration: 0.8 }}
     >
       <div>
-        <RestaurantHeader 
-          name="Urban Bistro" 
-          address="123 Main Street" 
-        />
+        <RestaurantHeader name="Urban Bistro" address="123 Main Street" />
       </div>
 
-      <motion.h2 
+      <motion.h2
         className="text-xl font-medium text-[#333333] dark:text-white mb-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -47,14 +44,14 @@ const RestaurantMenu: React.FC = () => {
       <div>
         {categories.map((category, index) => (
           <motion.div
-            key={category.id}
+            key={category._id}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 + index * 0.3, duration: 0.7 }}
           >
             <MenuCategory
-              title={category.name}
-              items={getItemsByCategory(category.id)}
+              title={category.categoryName}
+              items={getItemsByCategory(category._id)}
             />
           </motion.div>
         ))}

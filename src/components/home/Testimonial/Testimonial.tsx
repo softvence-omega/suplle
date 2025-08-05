@@ -81,12 +81,13 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="mt-20 text-center px-4 dark:bg-black dark:text-white">
+    <div className=" text-center px-4  dark:text-white">
       <p className="text-primary font-bold text-xl mb-6">
         3,940+ Happy Suplle Users
       </p>
-      <h1 className="text-4xl md:text-6xl mb-12">
-        What Our Partners Say About Suplle
+      <h1 className="ext-white text-center text-3xl sm:text-5xl lg:text-6xl font-bold mb-7">
+        What Our{" "}
+        <span className="text-primary-gradient">Partners Say About Suplle</span>
       </h1>
 
       {/* Carousel container */}
@@ -95,7 +96,7 @@ const Testimonial = () => {
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           onDragEnd={handleDragEnd}
-          className="flex gap-8"
+          className="flex gap-8 "
         >
           <AnimatePresence custom={direction}>
             {currentPair.map((testimonial, index) => (
@@ -106,7 +107,7 @@ const Testimonial = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction > 0 ? -200 : 200 }}
                 transition={{ duration: 0.5 }}
-                className="flex-1 min-w-[calc(50%-1rem)] bg-white rounded-lg p-6 dark:bg-black"
+                className="flex-1 min-w-[calc(50%-1rem)] bg-[#1e12633f] rounded-lg p-6 "
               >
                 <div className="flex flex-col md:flex-row items-center gap-8">
                   <img
@@ -120,10 +121,16 @@ const Testimonial = () => {
                         <FaStar key={i} className="w-5 h-5" />
                       ))}
                     </div>
-                    <p className="text-lg italic mb-6">{testimonial.comment}</p>
+                    <p className="text-lg italic mb-6 text-white">
+                      {testimonial.comment}
+                    </p>
                     <div className="flex items-center gap-5">
-                      <h3 className="font-bold text-xl">{testimonial.name}</h3>
-                      <p className="text-gray-600 dark:text-gray-400">{testimonial.designation}</p>
+                      <h3 className="font-bold text-xl text-white">
+                        {testimonial.name}
+                      </h3>
+                      <p className="text-gray-400 dark:text-gray-400">
+                        {testimonial.designation}
+                      </p>
                     </div>
                   </div>
                 </div>

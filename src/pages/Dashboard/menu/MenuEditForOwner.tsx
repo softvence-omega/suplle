@@ -12,6 +12,8 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { useParams } from "react-router-dom";
 import { updateMenu } from "@/store/features/menu/updateMenuSlice";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { fetchCategories } from "@/store/features/category/createCategorySlice";
 
 const menuItemSchema = z.object({
   itemName: z.string().min(1, "Item name is required"),
@@ -45,6 +47,13 @@ const MenuEditForOwner = () => {
   }>();
 
   const menuItem = menus.find((item) => item._id === menuId);
+
+  useEffect(() => {
+    // Dispatch the action to fetch categories when the component mounts
+    if (!categories || categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, categories]);
 
   // console.log("restaurant ID:", restaurantId);
 

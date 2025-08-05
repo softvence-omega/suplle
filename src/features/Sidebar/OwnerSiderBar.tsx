@@ -1,9 +1,8 @@
-
-
 import { NavLink } from "react-router-dom";
 import { ownerSeiderBarData } from "./data";
 import sidebarlogo from "@/assets/siderbarlogo.png";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -17,9 +16,14 @@ const OwnerSiderBar = ({
   toggleDarkMode,
   darkMode,
   toggleSidebar,
-
 }: SidebarProps) => {
   const [isMobile, setIsMobile] = useState(false);
+  const user = Cookies.get("user");
+  if (!user) return;
+  const parsedUser = JSON.parse(user);
+  const role = parsedUser.role;
+
+  console.log(parsedUser, "from dashboard sidebar");
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,6 +40,13 @@ const OwnerSiderBar = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const filteredSidebarData =
+    role === "dine in"
+      ? ownerSeiderBarData.filter((item) => item.label === "Dine In Order")
+      : role === "take away"
+      ? ownerSeiderBarData.filter((item) => item.label === "Takeway Order")
+      : ownerSeiderBarData;
+
   return (
     <aside
       className={`w-60 ${
@@ -46,7 +57,9 @@ const OwnerSiderBar = ({
       <div
         id="sidebarLogo"
         className={`max-toolbar ${
-          sidebarOpen && !isMobile ? "translate-x-0" : "translate-x-24 scale-x-0"
+          sidebarOpen && !isMobile
+            ? "translate-x-0"
+            : "translate-x-24 scale-x-0"
         } w-full -right-6 transition transform ease-in duration-300 flex items-center justify-between border-4 border-white bg-primary dark:bg-primary-dark absolute top-2 rounded-full h-12`}
       >
         <div className="flex pl-4 items-center space-x-2">
@@ -102,8 +115,7 @@ const OwnerSiderBar = ({
         </div>
       </div>
 
-  
-{/* Toggle button - shows dark mode toggle only in mobile */}
+      {/* Toggle button - shows dark mode toggle only in mobile */}
       <div
         onClick={toggleSidebar}
         className="-right-6 cursor-pointer transition transform ease-in-out duration-500 flex border-4 border-white bg-green-300 dark:bg-primary-dark hover:bg-green-700 absolute top-2 p-3 rounded-full text-white hover:rotate-45"
@@ -115,9 +127,7 @@ const OwnerSiderBar = ({
                 e.stopPropagation();
                 toggleDarkMode("dark");
               }}
-              className={`moon  cursor-pointer ${
-                darkMode ? "hidden" : ""
-              }`}
+              className={`moon  cursor-pointer ${darkMode ? "hidden" : ""}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +195,7 @@ const OwnerSiderBar = ({
             sidebarOpen ? "flex" : "hidden"
           } text-white mt-20 flex-col space-y-2 w-full h-[calc(100vh)]`}
         >
-          {ownerSeiderBarData.map((item) => {
+          {filteredSidebarData.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink

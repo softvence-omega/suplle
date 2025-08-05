@@ -49,20 +49,21 @@ const FAQ = () => {
   };
 
   return (
-    <div className="mt-15 px-4 sm:px-6">
-      <h1 className="text-center text-3xl sm:text-5xl lg:text-6xl font-bold mb-7">
-        Frequently asked <span className="text-primary">questions</span>
+    <div className=" px-4 sm:px-6 ">
+      <h1 className="text-white text-center text-3xl sm:text-5xl lg:text-6xl font-bold mb-7">
+        Frequently Asked{" "}
+        <span className="text-primary-gradient">Questions</span>
       </h1>
-      <p className="text-center text-base sm:text-xl text-gray-600 dark:text-gray-300">
+      <p className="text-center text-base sm:text-xl text-gray-400 dark:text-gray-300">
         Everything you need to know about the product and billing.
       </p>
 
       <div className="mt-16 max-w-screen-xl w-full mx-auto mb-24">
         {accordionData.map((item) => (
-          <div key={item.id} className="mb-5 border-b border-gray-300">
+          <div key={item.id} className="mb-5 border-b border-[#140d3b]">
             <motion.button
               initial={false}
-              className="flex justify-between items-center w-full text-lg sm:text-xl py-4"
+              className="flex justify-between text-white items-center w-full text-lg sm:text-xl py-4"
               onClick={() => toggleItem(item.id)}
             >
               {item.trigger}
@@ -72,9 +73,9 @@ const FAQ = () => {
                 animate={{ rotate: 0 }}
               >
                 {openItem === item.id ? (
-                  <CiCircleMinus className="h-7 w-7 text-primary" />
+                  <CiCircleMinus className="h-7 w-7 text-[#4b3e94]" />
                 ) : (
-                  <CiCirclePlus className="h-7 w-7 text-primary" />
+                  <CiCirclePlus className="h-7 w-7 text-[#4b3e94]" />
                 )}
               </motion.div>
             </motion.button>
@@ -101,7 +102,7 @@ const FAQ = () => {
                   }}
                   className="overflow-hidden"
                 >
-                  <div className="pb-4 text-gray-700 text-base sm:text-lg break-words">
+                  <div className="pb-4 text-gray-400 text-base sm:text-lg break-words">
                     {item.content}
                   </div>
                 </motion.div>

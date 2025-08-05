@@ -125,3 +125,19 @@ export interface Order {
   createdAtFormatted: string;
   updatedAtFormatted: string;
 }
+
+export interface SubscriptionPlanData {
+  _id: string;
+  state: string;
+  name: string;
+  price: number;
+  target: string;
+  maxRestaurants: number;
+  maxFloor: number;
+  maxTables: number;
+  maxMenu: number;
+  features: string[];
+  maxUsers: number;
+  maxQRCodes: number;
+  // ... other fields
+}

@@ -8,7 +8,8 @@ import { useState, useEffect, useRef } from "react";
 import OwnerSiderBar from "@/features/Sidebar/OwnerSiderBar";
 import TourGuide from "@/components/tour/TourGuide";
 import Cookies from "js-cookie";
-import { useAppSelector } from "@/hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { setSelectedRestaurant } from "@/store/features/Switch Account/switchAccount";
 
 type Notification = {
   id: number;
@@ -29,7 +30,7 @@ type UserCookie = {
   image: string | null;
 };
 
-// ✅ Role display mapping
+//  Role display mapping
 const getDisplayRole = (role: string | undefined): string => {
   switch (role) {
     case "restaurant_owner":
@@ -45,6 +46,7 @@ const getDisplayRole = (role: string | undefined): string => {
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { theme, toggleTheme } = useThemeStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notifications] = useState<Notification[]>(fakeNotifications);
@@ -58,6 +60,15 @@ const DashboardLayout = () => {
   const selectedRestaurant = useAppSelector(
     (state) => state.switchAccount.selectedRestaurant
   );
+
+  useEffect(() => {
+    // Check if there's a restaurant in localStorage and dispatch to store
+    const storedRestaurant = localStorage.getItem("selectedRestaurant");
+    if (storedRestaurant) {
+      const parsedRestaurant = JSON.parse(storedRestaurant);
+      dispatch(setSelectedRestaurant(parsedRestaurant));
+    }
+  }, [dispatch]);
 
   console.log("Selected Restaurant:", selectedRestaurant);
 
@@ -209,6 +220,7 @@ const DashboardLayout = () => {
                     className="w-full px-4 py-2 bg-primary text-center text-white rounded-md cursor-pointer hover:opacity-50"
                     onClick={() => {
                       Cookies.remove("user");
+                      localStorage.removeItem("selectedRestaurant");
                       window.location.href = "/login";
                     }}
                   >

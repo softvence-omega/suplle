@@ -50,7 +50,7 @@ const itemVariants = {
 
 const WhatIsSuplle = () => {
   return (
-    <div className="py-10 bg-white overflow-hidden dark:bg-black">
+    <div className="py-10  overflow-hidden ">
       <motion.div
         className="w-full max-w-7xl mx-auto px-4 sm:px-8"
         initial="hidden"
@@ -59,13 +59,13 @@ const WhatIsSuplle = () => {
       >
         <motion.h2
           variants={itemVariants}
-          className="text-primary-dark text-3xl sm:text-4xl lg:text-6xl text-center font-bold dark:text-white"
+          className="text-white text-3xl sm:text-4xl lg:text-6xl text-center font-bold dark:text-white"
         >
-          🚀 What is <span className="text-primary-gradient">Suplle?</span>
+          What is <span className="text-primary-gradient">Suplle?</span>
         </motion.h2>
 
         <motion.p
-          className="text-center mt-6 text-lg sm:text-xl lg:text-2xl text-gray-700 dark:text-gray-300"
+          className="text-center mt-6 text-lg sm:text-xl lg:text-2xl text-gray-400 dark:text-gray-300"
           variants={itemVariants}
         >
           Suplle is a modern restaurant management platform built to streamline

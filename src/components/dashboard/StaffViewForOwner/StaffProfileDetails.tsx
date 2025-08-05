@@ -9,8 +9,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type { User } from "@/pages/Dashboard/user/UserViewForOwner";
 import staffprofile from "@/assets/admin/staffprofile.png";
+import type { User } from "./user-type";
 
 type StaffDetails = User & {
   phone: string;
@@ -27,7 +27,7 @@ const StaffProfileDetails = () => {
     // Mock data - replace with actual API call in production
     const mockUser: StaffDetails = {
       id: Number(id),
-      userName: "Esther Howard",
+      Name: "Esther Howard",
       email: "esther.howard@gmail.com",
       phone: "+023 0140 2342 3",
       role: "manager",
@@ -89,7 +89,7 @@ const StaffProfileDetails = () => {
             />
           </div>
           <div className="text-center">
-            <h3 className="text-lg font-medium">{user.userName}</h3>
+            <h3 className="text-lg font-medium">{user.Name}</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {formatRole(user.role)}
             </p>
@@ -118,9 +118,7 @@ const StaffProfileDetails = () => {
               <FaRegCircleUser className="h-5 w-5 text-gray-500" />
               <h4 className="font-medium">Name</h4>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 pl-8">
-              {user.userName}
-            </p>
+            <p className="text-gray-600 dark:text-gray-400 pl-8">{user.Name}</p>
           </div>
 
           {/* Role */}

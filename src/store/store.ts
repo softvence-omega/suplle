@@ -9,9 +9,13 @@ import orderReducer from "../store/features/orders/orderSlice";
 import userReducer from "../store/features/user/userSlice";
 import fetchRestaurantReducer from "../store/features/restaurant/fetchrestaurantSlice";
 import restaurantReducer from "../store/features/restaurant/restaurantSlice";
-import subscriptionReducer from "../store/features/admin/subscriptionPlan";
+import subscriptionReducer from "./features/admin/plan/subscriptionPlan";
 import qrOrdersReducer from "../store/features/admin/qrOrderSlice";
 import switchAccountReducer from "../store/features/Switch Account/switchAccount";
+import fetchMenusByRestaurant from "./features/Customer Menu/customerMenuSlice";
+import updatePlan from "./features/admin/plan/updatePlanSlice";
+import deletePlan from "./features/admin/plan/deletePlanSlice";
+import notification from "./features/admin/recentActivity/recentActivitySlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +31,10 @@ export const store = configureStore({
     subscriptionPlan: subscriptionReducer,
     qrOrders: qrOrdersReducer,
     switchAccount: switchAccountReducer,
+    dynamicMenu: fetchMenusByRestaurant,
+    updatePlan: updatePlan,
+    deletePlan: deletePlan,
+    notification: notification,
   },
 });
 

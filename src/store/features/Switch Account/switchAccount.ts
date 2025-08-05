@@ -41,6 +41,11 @@ export const switchAccount = createAsyncThunk(
         }
       );
       // Return the loggedRestaurant object from the response
+      const loggedRestaurant = response.data.data.loggedRestaurant;
+      localStorage.setItem(
+        "selectedRestaurant",
+        JSON.stringify(loggedRestaurant)
+      );
       return response.data.data.loggedRestaurant;
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
@@ -54,7 +59,11 @@ export const switchAccount = createAsyncThunk(
 const switchAccountSlice = createSlice({
   name: "switchAccount",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedRestaurant(state, action) {
+      state.selectedRestaurant = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(switchAccount.pending, (state) => {
@@ -72,4 +81,5 @@ const switchAccountSlice = createSlice({
   },
 });
 
+export const { setSelectedRestaurant } = switchAccountSlice.actions;
 export default switchAccountSlice.reducer;

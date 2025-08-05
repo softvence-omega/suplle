@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 /* import { Eye, SquarePen } from "lucide-react"; */
 import type { User } from "./user";
 import eye from "@/assets/admin/eye.png";
-import edit from "@/assets/admin/Edit.png";
+import edit from "@/assets/admin/edit.png";
 
 interface UserItemProps {
   users: User[];
