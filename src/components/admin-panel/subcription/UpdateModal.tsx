@@ -6,6 +6,9 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 import type { SubscriptionPlanData } from "@/components/dashboard/dashboardItem/data/Type";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { updateSubscriptionPlan } from "@/store/features/admin/plan/updatePlanSlice";
+import { fetchSubscriptions } from "@/store/features/admin/plan/subscriptionPlan";
 // import SuppleInput from "@/components/Forms/SuppleInput";
 
 interface UpdateModalProps {
@@ -19,7 +22,6 @@ const UpdateModal = ({
   showUpdateModal,
   setShowUpdateModal,
   planData,
-  onSubmit,
 }: UpdateModalProps) => {
   const { control, handleSubmit, setValue } = useForm<
     Partial<SubscriptionPlanData>
@@ -39,6 +41,10 @@ const UpdateModal = ({
 
   const [newFeature, setNewFeature] = useState("");
 
+  const dispatch = useAppDispatch();
+
+  const { loading } = useAppSelector((state) => state.updatePlan);
+
   const handleAddFeature = () => {
     if (newFeature.trim()) {
       setValue("features", [
@@ -55,16 +61,31 @@ const UpdateModal = ({
     setValue("features", updatedFeatures);
   };
 
-  const onFormSubmit = (data: Partial<SubscriptionPlanData>) => {
-    onSubmit(data);
-    setShowUpdateModal(false);
+  const onFormSubmit = async (data: Partial<SubscriptionPlanData>) => {
+    try {
+      await dispatch(
+        updateSubscriptionPlan({
+          planId: planData._id, // assuming your planData has an _id field
+          planData: data,
+        })
+      ).unwrap();
+
+      await dispatch(fetchSubscriptions()).unwrap();
+
+      // If successful:
+      setShowUpdateModal(false);
+      // You might want to refresh the plans list or show a success message here
+    } catch (error) {
+      // Handle error (you might want to show an error message)
+      console.error("Failed to update plan:", error);
+    }
   };
 
   if (!showUpdateModal) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-primary-dark p-5 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-blur bg-opacity-50 backdrop-blur-md ">
+      <div className="bg-white dark:bg-primary-dark p-5 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto relative border-2 border-primary/40">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-bold">Update Plan</h1>
           <button onClick={() => setShowUpdateModal(false)}>
@@ -189,26 +210,30 @@ const UpdateModal = ({
           <div className="space-y-2">
             <Label className="text-sm font-medium">Features</Label>
             <div className="space-y-2">
-              {control._formValues.features?.map((feature, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Input
-                    value={feature}
-                    onChange={(e) => {
-                      const updatedFeatures = [...control._formValues.features];
-                      updatedFeatures[index] = e.target.value;
-                      setValue("features", updatedFeatures);
-                    }}
-                    className="flex-1"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveFeature(index)}
-                    className="text-red-500 hover:text-red-700 p-2"
-                  >
-                    <FiMinus />
-                  </button>
-                </div>
-              ))}
+              {control._formValues.features?.map(
+                (feature: string, index: number) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <Input
+                      value={feature}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const updatedFeatures: string[] = [
+                          ...(control._formValues.features as string[]),
+                        ];
+                        updatedFeatures[index] = e.target.value;
+                        setValue("features", updatedFeatures);
+                      }}
+                      className="flex-1"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFeature(index)}
+                      className="text-red-500 hover:text-red-700 p-2"
+                    >
+                      <FiMinus />
+                    </button>
+                  </div>
+                )
+              )}
             </div>
 
             <div className="flex items-center gap-2">
@@ -239,8 +264,35 @@ const UpdateModal = ({
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              disabled={loading} // Disable button while loading
             >
-              Update Plan
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Updating...
+                </span>
+              ) : (
+                "Update Plan"
+              )}
             </button>
           </div>
         </form>

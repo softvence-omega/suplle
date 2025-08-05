@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { fetchSubscriptions } from "@/store/features/admin/subscriptionPlan";
+import { fetchSubscriptions } from "@/store/features/admin/plan/subscriptionPlan";
 import { useEffect, useState, type SetStateAction, type Dispatch } from "react";
 
 const StepTwo = ({
