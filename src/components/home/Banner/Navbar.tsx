@@ -4,22 +4,20 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   return (
-    <div className="bg-black/15 w-full flex justify-between items-center px-12 py-7 rounded-[50px]">
-      <div className="text-primary-gradient text-4xl font-bold">Suplle</div>
-      <div className="flex gap-4 justify-center items-center">
+    <div className="w-full max-w-screen-xl mx-auto flex flex-col sm:flex-row justify-between items-center px-4 sm:px-8 py-4 bg-black/30 backdrop-blur-md rounded-3xl z-50">
+      <div className="text-primary-gradient text-3xl sm:text-4xl font-bold mb-2 sm:mb-0">
+        Suplle
+      </div>
+      <div className="flex gap-3 flex-col sm:flex-row w-full sm:w-auto items-center">
         <Button
-          className="bg-transparent border-1 border-primary rounded-3xl text-lg text-primary hover:text-white px-6 py-5"
-          onClick={() => {
-            navigate("/login");
-          }}
+          className="w-full sm:w-auto bg-transparent border border-[#9540dadb] rounded-full text-sm sm:text-base text-[#9540dadb] hover:bg-[#9540dadb] hover:text-white px-5 py-2"
+          onClick={() => navigate("/login")}
         >
           Log In
         </Button>
         <Button
-          className="rounded-3xl text-lg  px-6 py-5"
-          onClick={() => {
-            navigate("/signup");
-          }}
+          className="w-full sm:w-auto rounded-full text-sm sm:text-base px-5 py-2 bg-[#9540dadb] text-white hover:bg-[#9540dadb]/70"
+          onClick={() => navigate("/signup")}
         >
           Sign Up
         </Button>

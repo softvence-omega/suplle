@@ -1,4 +1,3 @@
-import UserMenu from "@/components/admin-panel/user-management/UserMenu";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,11 +9,11 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const AdminUserView = () => {
-  const [tabs, setTabs] = useState<boolean>(true);
+  const tabs = true;
 
   return (
     <div className="font-rubik">
@@ -65,7 +64,6 @@ const AdminUserView = () => {
         </div>
       </div>
       {/* TABLE */}
-      <UserMenu />
     </div>
   );
 };

@@ -1,38 +1,43 @@
-import React from "react";
 import type {
   FieldValues,
   UseFormRegister,
   FieldErrors,
   RegisterOptions,
+  Path,
 } from "react-hook-form";
 
-interface InputComponentProps {
-  name: string; // Name of the input field
-  label: string; // Label for the input field
-  className?: string; // Optional additional class names
-  register: UseFormRegister<FieldValues>; // React Hook Form's register function
-  rules?: RegisterOptions; // Optional validation rules
-  errors?: FieldErrors<FieldValues>; // Full errors object from React Hook Form
+interface InputComponentProps<T extends FieldValues> {
+  name: Path<T>;
+  label: string;
+  className?: string;
+  register?: UseFormRegister<T>; // Made optional
+  rules?: RegisterOptions<T, Path<T>>;
+  errors?: FieldErrors<T>;
   placeholder?: string;
   type?: string;
   labelClassName?: string;
-  inputClassName?:string // Optional class name for the label
+  inputClassName?: string;
+  value?: string; // Made optional
+  onChange?: React.ChangeEventHandler<HTMLInputElement>; // Made optional
 }
 
-const InputComponent: React.FC<InputComponentProps> = ({
+const InputComponent = <T extends FieldValues>({
   name,
   label,
   className = "",
   labelClassName = "",
-  inputClassName="",
+  inputClassName = "",
   register,
   rules = {},
   errors,
   placeholder,
-  type,
+  type = "text",
+  value,
+  onChange,
   ...props
-}) => {
+}: InputComponentProps<T>) => {
   const error = errors ? errors[name] : undefined;
+
   return (
     <div className={`w-full ${className}`}>
       <label
@@ -41,24 +46,36 @@ const InputComponent: React.FC<InputComponentProps> = ({
       >
         {label}
       </label>
-      <div className="relative w-full">
-        {/* Display Icon if provided */}
-        <input
-          {...props} // Spread other props like placeholder, type, etc.
-          {...register(name, rules)} // Register the input field with React Hook Form, with optional rules
-          id={name}
-          name={name}
-          className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
-            error ? "border-red-500" : ""
-          }`}
-          placeholder={placeholder || "Type here"}
-          type={type || "text"}
-        />
+      <div className="relative w-full flex flex-row gap-2">
+        {register ? (
+          <input
+            {...register(name, rules)}
+            id={name}
+            className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
+              error ? "border-red-500" : ""
+            }`}
+            placeholder={placeholder || "Type here"}
+            type={type}
+            {...props}
+          />
+        ) : (
+          <input
+            id={name}
+            name={name}
+            value={value}
+            onChange={onChange}
+            className={`border border-[#EDF1F3] rounded-lg py-[13px] px-3 pr-4 w-full focus:outline-none ${inputClassName} ${
+              error ? "border-red-500" : ""
+            }`}
+            placeholder={placeholder || "Type here"}
+            type={type}
+            {...props}
+          />
+        )}
       </div>
       {error?.message && (
         <p className="text-red-500 text-sm">{String(error.message)}</p>
       )}
-      {/* Display error message */}
     </div>
   );
 };

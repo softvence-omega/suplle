@@ -1,34 +1,61 @@
-import { generateRandomId } from '@/utils/utils'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+// components/dynamicResturants/FoodCategory.tsx
+import React from "react";
+import Wrapper from "../shared/Wrapper";
+import type { IMenuItem } from "@/Types/customerMenuTypes"; // Make sure to import your IMenuItem interface
 
-const foodCategoryData = [
-    { id: generateRandomId(), name: 'Offers', url: '/offers', value: 'offers' },	
-    { id: generateRandomId(), name: 'Burgers', url: '/burgers', value: 'burgers' },
-    { id: generateRandomId(), name: 'Fries', url: '/fries', value: 'fries' },
-    { id: generateRandomId(), name: 'Snacks', url: '/snacks', value: 'snacks' },
-    { id: generateRandomId(), name: 'Cold Drinks', url: '/coldDrinks', value: 'coldDrinks' },
-    { id: generateRandomId(), name: 'Happy Meal', url: '/happyMeals', value: 'happyMeals' },
-    { id: generateRandomId(), name: 'Desserts', url: '/desserts', value: 'desserts' },
-    { id: generateRandomId(), name: 'Hot Drinks',url: '/hotDrinks', value: 'hotDrinks' },
-    { id: generateRandomId(), name: 'Souces', url: '/souces', value: 'souces' },
-    { id: generateRandomId(), name: 'Orbit', url: '/orbits', value: 'orbits' },
-    ]      
-const FoodCategory = () => {
-    const [selectFilteredValue, setselectFilteredValue] = useState('offers')
+type Props = {
+  selectedCategory: string;
+  setSelectedCategory: (value: string) => void;
+  menus: IMenuItem[]; // Add menus prop
+};
+
+const FoodCategory: React.FC<Props> = ({
+  selectedCategory,
+  setSelectedCategory,
+  menus,
+}) => {
+  // Extract unique categories from menus
+  const categories = menus.reduce(
+    (acc: { id: string; name: string }[], menu) => {
+      const existingCategory = acc.find((cat) => cat.id === menu.category._id);
+      if (!existingCategory) {
+        acc.push({
+          id: menu.category._id,
+          name: menu.category.categoryName,
+        });
+      }
+      return acc;
+    },
+    []
+  );
+
+  // Add "Offers" as the first category
+  // { id: "offers", name: "Offers" }
+  const allCategories = [...categories];
+
   return (
-    <div className='bg-[#F3F3F3] border-1 border-solid w-full'>
-        <div className="flex flex-col md:flex-row items-center justify-evenly-start  md:justify-start  space-x-4 items-center gap-5">
-          {
-            foodCategoryData.map((item) => (
-              <button onClick={()=>setselectFilteredValue(item.value)} key={item.id}  className={`${item.value === selectFilteredValue ? 'text-white bg-black': 'text-[#252525] bg-[#F3F3F3]'}   text-xl font-bold px-3 py-2 rounded-xl hover:bg-black hover:text-white`}>
-                {item.name}
-              </button>
-            ))
-          }
+    <Wrapper>
+      <div className="bg-[#F3F3F3] dark:bg-secondary-dark w-full rounded-xl p-5 mt-16">
+        <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+          {allCategories.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSelectedCategory(item.id)}
+              className={`${
+                item.id === selectedCategory
+                  ? "text-white bg-black"
+                  : "text-white bg-[#009689]"
+              } transition hover:bg-[#009689]/80 cursor-pointer hover:text-white 
+                rounded-xl font-semibold text-sm sm:text-base md:text-lg lg:text-xl
+                px-3 sm:px-4 py-1 whitespace-nowrap`}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
-    </div>
-  )
-}
+      </div>
+    </Wrapper>
+  );
+};
 
-export default FoodCategory
+export default FoodCategory;

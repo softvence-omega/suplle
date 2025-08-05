@@ -1,15 +1,91 @@
 import logo from "@/assets/logo.png";
 import computerImage from "@/assets/Auth/computer.png";
 import PrimaryButton from "@/components/shared/PrimaryButton";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { resendCode, verifyOtp } from "@/store/features/auth/authSlice";
+import Cookies from "js-cookie";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const OTP = () => {
-  const { register, handleSubmit } = useForm();
+  const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+  const [otpValues, setOtpValues] = useState(["", "", "", ""]);
+
+  const dispatch = useAppDispatch();
+  const { error } = useAppSelector((state) => state.auth);
+  const email = Cookies.get("userEmail");
+
+  const navigate = useNavigate();
+
+  //maks email
+  interface MaskEmail {
+    (email: string | undefined): string;
+  }
+
+  const maskEmail: MaskEmail = (email) => {
+    if (!email || typeof email !== "string") return "";
+
+    const atIndex = email.indexOf("@");
+    const dotComIndex = email.lastIndexOf(".com");
+
+    if (atIndex === -1 || dotComIndex === -1) return "***@***.com";
+
+    const firstTwo = email.slice(0, 2);
+    const beforeAt = email.charAt(atIndex - 1);
+    const beforeDotCom = email.slice(dotComIndex - 2, dotComIndex);
+
+    // Count characters to mask
+    const hiddenPart1Length = atIndex - 3; // between firstTwo and beforeAt
+    const hiddenPart2Length = dotComIndex - atIndex - 1 - 2; // between @ and beforeDotCom
+
+    const hiddenStars1 = "*".repeat(Math.max(0, hiddenPart1Length));
+    const hiddenStars2 = "*".repeat(Math.max(0, hiddenPart2Length));
+
+    return `${firstTwo}${hiddenStars1}${beforeAt}@${hiddenStars2}${beforeDotCom}.com`;
+  };
 
   // Handle form submission
-  const onSubmit = (data: unknown) => {
-    console.log("Form Data:", data);
-    // Here, you can send the data to an API or perform other actions
+  const handleChange = (index: number, value: string) => {
+    if (!/^[0-9a-zA-Z]?$/.test(value)) return; // allow only single char
+
+    const updatedOtp = [...otpValues];
+    updatedOtp[index] = value;
+    setOtpValues(updatedOtp);
+
+    if (value && index < 3) {
+      inputsRef.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === "Backspace" && !otpValues[index] && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+    }
+    if (e.key === "ArrowLeft" && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+    }
+    if (e.key === "ArrowRight" && index < 3) {
+      inputsRef.current[index + 1]?.focus();
+    }
+  };
+
+  const handleSubmitOtp = () => {
+    const otp = otpValues.join("");
+    if (otp.length === 4) {
+      dispatch(verifyOtp({ otp }));
+    } else {
+      alert("Please enter the complete 4-digit code.");
+    }
+    navigate("/login");
+  };
+
+  console.log("Email in OTP:", email);
+
+  const handleResendCode = () => {
+    if (email) {
+      dispatch(resendCode(email));
+    }
   };
 
   return (
@@ -41,32 +117,42 @@ const OTP = () => {
                   Enter the confirmation code
                 </p>
               </div>
-              <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className="space-y-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmitOtp();
+                }}
+              >
                 <div className="flex justify-center text-[#9B9FA8] space-x-3">
-                  {Array(6)
+                  {Array(4)
                     .fill(null)
-                    .map((_, index) => {
-                      return (
-                        <input
-                          {...register(`${index + 1}`)}
-                          className="border p-3 border-[#EDF1F3] rounded-lg h-[40px] w-[40px] pr-4 focus:outline-none"
-                          required
-                        />
-                      );
-                    })}
+                    .map((_, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => {
+                          inputsRef.current[index] = el;
+                        }}
+                        type="text"
+                        maxLength={1}
+                        value={otpValues[index]}
+                        onChange={(e) => handleChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        className="border p-3 border-[#EDF1F3] rounded-lg h-[40px] w-[40px] text-center text-lg focus:outline-none"
+                      />
+                    ))}
                 </div>
+
+                {error && (
+                  <p className="text-center" style={{ color: "red" }}>
+                    {error}
+                  </p>
+                )}
                 <p className="text-[#333] text-base px-4 text-center">
-                  Verification code has been sent to the phone number Your
-                  <span className="text-primary pl-2">0724****</span>
+                  Verification code has been sent to your email
+                  <span className="text-primary pl-2">{maskEmail(email)}</span>
                 </p>
-                <div className="flex justify-center">
-                  <button
-                    type="button"
-                    className="text-sm text-[#333] text-center cursor-pointer"
-                  >
-                    Resend Code
-                  </button>
-                </div>
+
                 <PrimaryButton
                   className="w-full text-base font-medium cursor-pointer"
                   type="submit"
@@ -74,6 +160,17 @@ const OTP = () => {
                   Continue
                 </PrimaryButton>
               </form>
+              <div className="flex justify-center">
+                <div className="text-sm text-[#333] text-center cursor-pointer">
+                  Didn't receive the code?{" "}
+                  <button
+                    className="text-blue-500 underline"
+                    onClick={handleResendCode}
+                  >
+                    Resend Code
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
