@@ -4,72 +4,12 @@ import RecentyActivityItem, {
 import PeopleGroupIcon from "@/components/icons/PeopleGroupIcon";
 import QRIcon from "@/components/icons/QRIcon";
 import SectionHeader from "@/components/ui/sectionHeader";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { fetchNotifications } from "@/store/features/admin/recentActivity/recentActivitySlice";
+import type { Notification } from "@/Types/notificationTypes";
+import { formatRelativeTime } from "@/utils/time";
 import { generateRandomId } from "@/utils/utils";
-
-const mockOrders: RecentItem[] = [
-  { id: "1023", vendor: "Pizza Place", status: "Pending", time: "2 min ago" },
-  {
-    id: "1024",
-    vendor: "Pizza Place",
-    status: "Processing",
-    time: "5 min ago",
-  },
-  {
-    id: "1025",
-    vendor: "Pizza Place",
-    status: "Completed",
-    time: "10 min ago",
-  },
-  {
-    id: "1026",
-    vendor: "Pizza Place",
-    status: "Cancelled",
-    time: "30 min ago",
-  },
-  {
-    id: "1027",
-    vendor: "Pizza Place",
-    status: "Completed",
-    time: "10 min ago",
-  },
-  { id: "1028", vendor: "Pizza Place", status: "Pending", time: "2 min ago" },
-  {
-    id: "1029",
-    vendor: "Pizza Place",
-    status: "Cancelled",
-    time: "30 min ago",
-  },
-  {
-    id: "1030",
-    vendor: "Pizza Place",
-    status: "Completed",
-    time: "10 min ago",
-  },
-  {
-    id: "1031",
-    vendor: "Pizza Place",
-    status: "Processing",
-    time: "5 min ago",
-  },
-  {
-    id: "1032",
-    vendor: "Pizza Place",
-    status: "Cancelled",
-    time: "30 min ago",
-  },
-  {
-    id: "1033",
-    vendor: "Pizza Place",
-    status: "Processing",
-    time: "5 min ago",
-  },
-  {
-    id: "1034",
-    vendor: "Pizza Place",
-    status: "Cancelled",
-    time: "30 min ago",
-  },
-];
+import { useEffect } from "react";
 
 const cardList = [
   {
@@ -97,6 +37,26 @@ const cardList = [
 ];
 
 const AdminDashboardHome = () => {
+  const dispatch = useAppDispatch();
+
+  // Adjust the selector to match the actual state shape, e.g. notifications or recentActivity
+  const { notifications } = useAppSelector((state) => state.notification);
+
+  const recentActivityItems: RecentItem[] = notifications.map(
+    (n: Notification) => ({
+      id: n._id,
+      vendor: n.type === "Qr Order" ? "QR Vendor" : "New User", // customize vendor name if needed
+      status: (n.status.charAt(0).toUpperCase() +
+        n.status.slice(1)) as RecentItem["status"], // Capitalize status and cast
+      time: formatRelativeTime(n.createdAt), // we’ll define this next
+    })
+  );
+
+  useEffect(() => {
+    dispatch(fetchNotifications());
+  }, [dispatch]);
+
+  console.log(notifications, "notification from admin dashboard home");
   return (
     <div className="space-y-5">
       <div>
@@ -138,8 +98,8 @@ const AdminDashboardHome = () => {
           titleClassName="text-2xl font-light"
         />
         <div className="divide-y divide-gray-200">
-          {mockOrders.length > 0 ? (
-            mockOrders.map((item) => (
+          {recentActivityItems.length > 0 ? (
+            recentActivityItems.map((item) => (
               <RecentyActivityItem
                 key={item.id}
                 item={item}

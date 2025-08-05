@@ -101,13 +101,13 @@ const BuySubscription = () => {
 
         {/* Step Content (Optional) */}
         <div className="mt-10 space-y-1 ">
-          <p className="text-gray-900 dark:text-white font-normal">
+          {/* <p className="text-gray-900 dark:text-white font-normal">
             Purchase QR Codes & Subscription
-          </p>
-          <p className="text-[8px] sm:text-xs text-green-800 dark:text-white  font-light">
+          </p> */}
+          {/* <p className="text-[8px] sm:text-xs text-green-800 dark:text-white  font-light">
             Generate branded QR codes for your tables and unlock powerful
             restaurant management features
-          </p>
+          </p> */}
         </div>
         {/* ELEMENTS */}
         {/* Render step-specific child */}

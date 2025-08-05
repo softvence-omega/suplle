@@ -63,6 +63,7 @@ const TableQuantity = ({
           className=""
           containerClassName=""
           type="number"
+          placeholder="Enter Table Quantity"
           required
         />
         <button

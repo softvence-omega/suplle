@@ -15,6 +15,7 @@ import switchAccountReducer from "../store/features/Switch Account/switchAccount
 import fetchMenusByRestaurant from "./features/Customer Menu/customerMenuSlice";
 import updatePlan from "./features/admin/plan/updatePlanSlice";
 import deletePlan from "./features/admin/plan/deletePlanSlice";
+import notification from "./features/admin/recentActivity/recentActivitySlice";
 
 export const store = configureStore({
   reducer: {
@@ -33,6 +34,7 @@ export const store = configureStore({
     dynamicMenu: fetchMenusByRestaurant,
     updatePlan: updatePlan,
     deletePlan: deletePlan,
+    notification: notification,
   },
 });
 
