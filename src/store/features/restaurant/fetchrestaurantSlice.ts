@@ -2,22 +2,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchRestaurantById = createAsyncThunk(
-  "restaurant/fetchById",
-  async (id, thunkAPI) => {
-    try {
-      const res = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_BASE_URL
-        }/restaurant/single-restaurant/${id}`
-      );
-      return res.data.data; // Adjust based on actual API response shape
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
 export interface RestaurantMenu {
   _id: string;
   category: string;
@@ -63,6 +47,22 @@ export interface RestaurantState {
   loading: boolean;
   error: string | null;
 }
+
+export const fetchRestaurantById = createAsyncThunk(
+  "restaurant/fetchById",
+  async (id: string, thunkAPI) => {
+    try {
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/restaurant/single-restaurant/${id}`
+      );
+      return res.data.data; // Adjust based on actual API response shape
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 const initialState: RestaurantState = {
   data: null,
