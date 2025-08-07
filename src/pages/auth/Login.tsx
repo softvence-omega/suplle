@@ -1,7 +1,5 @@
 import logo from "@/assets/logo.png";
 import computerImage from "@/assets/Auth/computer.png";
-import GoogleIcon from "@/components/icons/GoogleIcon";
-import FacebookIcon from "@/components/icons/FacebookIcon";
 import { Link, useNavigate } from "react-router-dom";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 import MessageSquareIcon from "@/components/icons/MessageSquareIcon";
