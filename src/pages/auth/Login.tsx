@@ -158,21 +158,6 @@ const Login = () => {
                   {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
               </form>
-
-              <div className="w-full space-y-3">
-                <div className="flex justify-center border-[1px] border-[#F4F5F7] rounded-[10px] w-full py-[13px] text-[#050505] dark:text-white">
-                  <Link className="flex gap-4" to={"/login"}>
-                    <GoogleIcon />
-                    <p className="text-sm">Continue with Google</p>
-                  </Link>
-                </div>
-                <div className="flex justify-center border-[1px] border-[#F4F5F7] rounded-[10px] w-full py-[13px]">
-                  <Link className="flex gap-4" to={"/login"}>
-                    <FacebookIcon />
-                    <p className="text-sm">Continue with Facebook</p>
-                  </Link>
-                </div>
-              </div>
               <div className="space-y-3">
                 <p className="text-center text-[#59606E] text-sm">
                   Don’t have an account?{" "}
