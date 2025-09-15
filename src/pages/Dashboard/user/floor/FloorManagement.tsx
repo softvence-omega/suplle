@@ -93,8 +93,11 @@ const FloorManagement: React.FC<FloorManagementProps> = ({
         alert("Failed to add floor. Try again.");
       }
     } catch (err) {
-      console.error(err);
-      alert("Error occurred while creating floor.");
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "Something went wrong");
+      } else {
+        toast.error("Unexpected error occurred");
+      }
     } finally {
       setIsLoading(false);
     }

@@ -7,7 +7,7 @@ import DollarIcon from "@/components/icons/DollerIcon";
 import RestaurantIcon from "@/components/icons/RestaurantIcon";
 import MountainSvg from "@/components/icons/MountainSvg";
 import OwnerAnalyticsChart from "@/components/dashboard/analytics/OwnerAnalyticsChart";
-import { Star } from "lucide-react";
+// import { Star } from "lucide-react";
 
 const AnalyticsAndReport = () => {
   const [analytics, setAnalytics] = useState({
@@ -85,20 +85,28 @@ const AnalyticsAndReport = () => {
     },
     {
       id: generateRandomId(),
-      label: "Customer Rating",
-      value: analytics.customerRating,
+      label: "Delivered Orders",
+      value: analytics.deliveredOrders,
+      icon: RestaurantIcon,
+      isSvg: true,
+      chart: MountainSvg,
+    },
+    {
+      id: generateRandomId(),
+      label: "Total Customers",
+      value: analytics.totalCustomers,
       icon: RestaurantIcon,
       isSvg: true,
       chart: MountainSvg,
     },
   ];
 
-  const staffPerformanceList = [
-    { id: generateRandomId(), name: "John Smith", order: 145, rating: 4.9 },
-    { id: generateRandomId(), name: "Sarah Johnson", order: 132, rating: 4.9 },
-    { id: generateRandomId(), name: "Mike Wilson", order: 128, rating: 4.9 },
-    { id: generateRandomId(), name: "Emily Brown", order: 120, rating: 4.9 },
-  ];
+  // const staffPerformanceList = [
+  //   { id: generateRandomId(), name: "John Smith", order: 145, rating: 4.9 },
+  //   { id: generateRandomId(), name: "Sarah Johnson", order: 132, rating: 4.9 },
+  //   { id: generateRandomId(), name: "Mike Wilson", order: 128, rating: 4.9 },
+  //   { id: generateRandomId(), name: "Emily Brown", order: 120, rating: 4.9 },
+  // ];
 
   return (
     <div className="space-y-3">
@@ -139,7 +147,7 @@ const AnalyticsAndReport = () => {
           <OwnerAnalyticsChart chartData={monthlyRevenueData} />
         </div>
 
-        <div className="w-full lg:w-[30%] shadow-lg p-6 bg-white dark:bg-[#161616] dark:text-white rounded-lg space-y-5">
+        {/* <div className="w-full lg:w-[30%] shadow-lg p-6 bg-white dark:bg-[#161616] dark:text-white rounded-lg space-y-5">
           <p className="text-[18px] text-[#131313]">Staff Performance</p>
           <div className="space-y-3">
             {staffPerformanceList.map((item) => (
@@ -157,7 +165,7 @@ const AnalyticsAndReport = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

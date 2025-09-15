@@ -11,6 +11,7 @@ import SuppleTextarea from "@/components/Forms/SuppleTextarea";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import {
   addCategory,
+  deleteCategory,
   fetchCategories,
   type Category,
 } from "@/store/features/category/createCategorySlice";
@@ -85,7 +86,8 @@ const MenuAddForOwner = () => {
 
   const handleDeleteCategory = (categoryId: string) => {
     console.log("Delete category:", categoryId);
-    // Add your delete logic here
+    dispatch(deleteCategory(categoryId));
+    dispatch(fetchCategories());
   };
 
   return (

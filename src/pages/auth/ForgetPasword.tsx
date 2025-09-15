@@ -2,10 +2,13 @@ import logo from "@/assets/logo.png";
 import computerImage from "@/assets/Auth/computer.png";
 import PrimaryButton from "@/components/shared/PrimaryButton";
 import { generateRandomId } from "@/utils/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputComponent from "@/components/shared/input/auth/TextInput";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { forgetPassword } from "@/store/features/auth/authSlice";
+import { toast } from "react-toastify";
 
 const buttonList = [
   {
@@ -13,25 +16,41 @@ const buttonList = [
     label: "Email",
     value: "email",
   },
-  {
-    id: generateRandomId(),
-    label: "Phone",
-    value: "phone",
-  },
+  // If you want phone later, just uncomment
 ];
 
-const ForgetPasword = () => {
+const ForgetPassword = () => {
   const [selectedType, setSelectedType] = useState("email");
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<{ email: string }>();
+
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  // Watch for API errors
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   // Handle form submission
-  const onSubmit = (data: unknown) => {
-    console.log("Form Data:", data);
-    // Here, you can send the data to an API or perform other actions
+  const onSubmit = (data: { email: string }) => {
+    const payload = { email: data.email };
+    // localStorage.setItem("forget-pass-mail", JSON.stringify(payload));
+    dispatch(forgetPassword(payload))
+      .unwrap()
+      .then((res) => {
+        toast.success(res?.message || "Reset link sent to your email!");
+        navigate("/forget-otp");
+      })
+      .catch(() => {
+        // error is already handled in slice + toast, but optional
+      });
   };
 
   return (
@@ -57,6 +76,7 @@ const ForgetPasword = () => {
             <img src={computerImage} alt="Computer Desk" />
           </div>
         </div>
+
         <div className="py-10 w-full md:w-1/2 bg-white dark:bg-primary-dark md:rounded-l-[50px] flex justify-center items-center">
           <div className="max-w-[445px] w-full">
             <div className="space-y-10">
@@ -66,44 +86,36 @@ const ForgetPasword = () => {
                 </p>
               </div>
               <p className="text-[#5F5F5F] dark:text-white text-base text-center">
-                Please enter your email address or phone number for confirmation
-                code.
+                Please enter your email address for confirmation code.
               </p>
 
               <div className="flex gap-2 justify-center">
-                {buttonList.map((item) => {
-                  return (
-                    <PrimaryButton
-                      key={item.id}
-                      className="max-w-20"
-                      isActive={item.value === selectedType ? true : false}
-                      onClick={() => setSelectedType(item.value)}
-                    >
-                      {item.label}
-                    </PrimaryButton>
-                  );
-                })}
+                {buttonList.map((item) => (
+                  <PrimaryButton
+                    key={item.id}
+                    className="max-w-20"
+                    isActive={item.value === selectedType}
+                    onClick={() => setSelectedType(item.value)}
+                  >
+                    {item.label}
+                  </PrimaryButton>
+                ))}
               </div>
+
               <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 {selectedType === "email" && (
                   <InputComponent
                     name="email"
-                    placeholder="Enter eamil"
+                    placeholder="Enter email"
                     register={register}
                     errors={errors}
                     label="Email"
+                    rules={{ required: "Email is required" }}
                   />
                 )}
-                {selectedType === "phone" && (
-                  <InputComponent
-                    name="phone"
-                    placeholder="Enter phone"
-                    register={register}
-                    errors={errors}
-                    label="Phone"
-                  />
-                )}
-                <PrimaryButton type="submit">Send</PrimaryButton>
+                <PrimaryButton type="submit" disabled={loading}>
+                  {loading ? "Sending..." : "Send"}
+                </PrimaryButton>
               </form>
             </div>
           </div>
@@ -113,4 +125,4 @@ const ForgetPasword = () => {
   );
 };
 
-export default ForgetPasword;
+export default ForgetPassword;

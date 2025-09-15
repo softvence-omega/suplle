@@ -43,7 +43,7 @@ export const addCategory = createAsyncThunk(
           },
         }
       );
-      return response.data; // Assuming it returns the newly created category
+      return response.data;
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response) {
         return rejectWithValue(
@@ -55,6 +55,7 @@ export const addCategory = createAsyncThunk(
   }
 );
 
+// ✅ GET: Fetch all categories
 export const fetchCategories = createAsyncThunk(
   "category/fetchCategories",
   async (_, { rejectWithValue }) => {
@@ -68,7 +69,7 @@ export const fetchCategories = createAsyncThunk(
           },
         }
       );
-      return response.data?.data || {}; // Adjust based on your actual response structure
+      return response.data?.data || {};
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response) {
         return rejectWithValue(
@@ -76,6 +77,34 @@ export const fetchCategories = createAsyncThunk(
         );
       }
       return rejectWithValue("Failed to fetch categories");
+    }
+  }
+);
+
+// ✅ DELETE: Remove category by ID
+export const deleteCategory = createAsyncThunk(
+  "category/deleteCategory",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const token = Cookies.get("accessToken");
+      const response = await axios.delete(
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/categories/delete-category/${id}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      return { id, message: response.data?.message || "Category deleted" };
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(
+          err.response.data?.message || "Failed to delete category"
+        );
+      }
+      return rejectWithValue("Failed to delete category");
     }
   }
 );
@@ -102,7 +131,7 @@ const categorySlice = createSlice({
       .addCase(addCategory.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        state.categories.push(action.payload?.data); // Adjust path if needed
+        state.categories.push(action.payload?.data);
       })
       .addCase(addCategory.rejected, (state, action) => {
         state.loading = false;
@@ -119,6 +148,24 @@ const categorySlice = createSlice({
         state.categories = action.payload.result || [];
       })
       .addCase(fetchCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // 🔄 Delete Category
+      .addCase(deleteCategory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.categories = state.categories.filter(
+          (cat) => cat._id !== action.payload.id
+        );
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

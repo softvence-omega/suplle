@@ -44,6 +44,8 @@ import AdminSetting from "@/pages/setting/AdminSetting";
 import QrDesign from "@/components/DashboardSubscription/QrDesign";
 import BuySubscription from "@/pages/BuySubscription/BuySubscription";
 import ResetPassword from "@/pages/auth/ResetPassword";
+import ResetGlobalPassword from "@/pages/auth/ResetGlobalPassword";
+import ForgetOtp from "@/pages/auth/ForgetOtp";
 
 const AppRoutes = () => {
   return (
@@ -57,7 +59,9 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/otp" element={<OTP />} />
+      <Route path="/forget-otp" element={<ForgetOtp />} />
       <Route path="/forgot-password" element={<ForgetPasword />} />
+      <Route path="/reset-global-password" element={<ResetGlobalPassword />} />
 
       {/* dahboard routes for owner ************************************************************* */}
       <Route

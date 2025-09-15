@@ -72,7 +72,7 @@ const StepTwoPointFive = ({
     <div>
       <select
         name="month"
-        className="border rounded px-2 py-1 w-full mt-6"
+        className="border rounded px-2 py-1 w-full mt-6 dark:bg-primary-dark"
         required
         value={month}
         onChange={(e) => handleChange(e.target.value)}

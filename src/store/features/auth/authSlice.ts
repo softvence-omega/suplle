@@ -21,6 +21,7 @@ interface AuthState {
   accessToken: string | null;
   loading: boolean;
   error: string | null;
+  resetEmail: string | null;
 }
 
 const initialState: AuthState = {
@@ -28,6 +29,7 @@ const initialState: AuthState = {
   accessToken: null,
   loading: false,
   error: null,
+  resetEmail: null,
 };
 
 const baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
@@ -231,6 +233,96 @@ export const resendCode = createAsyncThunk(
   }
 );
 
+// Forget Password
+export const forgetPassword = createAsyncThunk(
+  "auth/forgetPassword",
+  async ({ email }: { email: string }, thunkAPI) => {
+    try {
+      const res = await axios.post(`${baseURL}/auth/forgot-password`, {
+        email,
+      });
+
+      return res.data; // adjust if API returns { message: string } or something else
+    } catch (error: unknown) {
+      let message = "Password reset request failed";
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        error.response &&
+        typeof error.response === "object" &&
+        "data" in error.response &&
+        error.response.data &&
+        typeof error.response.data === "object" &&
+        "message" in error.response.data
+      ) {
+        message =
+          (error.response as { data: { message?: string } }).data.message ||
+          message;
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// verify password otp
+export const verifyPasswordOtp = createAsyncThunk(
+  "auth/verifyPasswordOtp",
+  async ({ email, otp }: { email: string | null; otp: string }, thunkAPI) => {
+    try {
+      if (!email) {
+        throw new Error(
+          "No email found in state. Forgot password must be called first."
+        );
+      }
+
+      const res = await axios.post(`${baseURL}/auth/verify-password-otp`, {
+        otp,
+        email,
+      });
+
+      return res.data;
+    } catch (error: any) {
+      let message = "Password OTP verification failed";
+      if (error?.response?.data?.message) {
+        message = error.response.data.message;
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Reset Password
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async ({ newPassword }: { newPassword: string }, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState() as { auth: AuthState };
+      const email = state.auth.resetEmail;
+
+      if (!email) {
+        throw new Error("No email found in state for reset password.");
+      }
+
+      const res = await axios.post(
+        `${baseURL}/auth/reset-password?email=${email}`,
+        {
+          email,
+          newPassword,
+        }
+      );
+
+      return res.data;
+    } catch (error: any) {
+      let message = "Password reset failed";
+      if (error?.response?.data?.message) {
+        message = error.response.data.message;
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -329,7 +421,57 @@ const authSlice = createSlice({
       .addCase(resendCode.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(forgetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(forgetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.resetEmail = action.meta.arg.email;
+        localStorage.setItem("resetEmail", action.meta.arg.email);
+      })
+
+      .addCase(
+        forgetPassword.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        }
+      )
+      .addCase(verifyPasswordOtp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyPasswordOtp.fulfilled, (state, action) => {
+        state.loading = false;
+        // your API might just return a success message at this stage
+        // or possibly return a token if you want to log them in directly
+        console.log("verifyPasswordOtp success:", action.payload);
+      })
+      .addCase(
+        verifyPasswordOtp.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        }
+      )
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        // you can store a success message if API returns one
+        console.log("Password reset success:", action.payload);
+      })
+      .addCase(
+        resetPassword.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        }
+      );
   },
 });
 

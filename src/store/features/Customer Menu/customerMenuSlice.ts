@@ -15,7 +15,9 @@ export const fetchMenusByRestaurant = createAsyncThunk(
   async (restaurantId: string, { rejectWithValue }) => {
     try {
       const response = await axios.get<IMenuResponse>(
-        `https://suplle-server-v2-1ydl.onrender.com/api/v1/menus/get-all-menu-by-restaurant?restaurant=${restaurantId}`
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/menus/get-all-menu-by-restaurant?restaurant=${restaurantId}`
       );
       return response.data;
     } catch (error: any) {
