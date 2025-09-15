@@ -345,9 +345,15 @@ const CreateOrderForOwner = () => {
                       if (response.data.success === true) {
                         toast.success("Order created successfully");
                       }
-                    } catch (error) {
-                      // handle error
-                      console.error(error);
+                    } catch (error: unknown) {
+                      if (axios.isAxiosError(error)) {
+                        toast.error(
+                          error.response?.data?.message ||
+                            "Failed to create order"
+                        );
+                      } else {
+                        toast.error("Something went wrong");
+                      }
                     }
                   }}
                 />
