@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface Restaurant {
   _id: string;
@@ -113,8 +114,8 @@ const DashbordComponent = () => {
       });
       // Optionally, refresh restaurant list here
       window.location.reload();
-    } catch {
-      alert("Failed to create restaurant. Please try again.");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message);
     } finally {
       setCreating(false);
     }
@@ -135,8 +136,8 @@ const DashbordComponent = () => {
       )}
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-opacity-40">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-opacity-40 ">
+          <div className="bg-white dark:bg-primary-dark rounded-lg p-6 w-full max-w-md relative">
             <button
               className="absolute top-2 right-3 text-xl"
               onClick={() => setShowModal(false)}
